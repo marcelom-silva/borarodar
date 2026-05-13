@@ -7,6 +7,7 @@ import BudgetBreakdown from './BudgetBreakdown';
 import StopPoints from './StopPoints';
 import SafetyAlerts from './SafetyAlerts';
 import ExportOptions from './ExportOptions';
+import DayItinerary from './DayItinerary';
 import { calculateRoute, geocode } from '@/lib/routing';
 import { calculateBudget } from '@/lib/budget';
 import { Map, AlertCircle } from 'lucide-react';
@@ -32,8 +33,10 @@ export default function PlannerMain() {
     km_litro:    '12',
     preco_litro: '5.89',
     passageiros: '2',
-    noites:      '0',
-    waypoints:   [], // V2: paradas intermediarias
+    noites:      '2',
+    perfil:      'casal',
+    interesses:  [],
+    waypoints:   [],
   });
 
   useEffect(function() {
@@ -44,48 +47,31 @@ export default function PlannerMain() {
   async function handleCalculate(values) {
     setLoading(true); setError(''); setRouteData(null); setBudgetData(null);
     try {
-      // Geocodificar origem e destino
       var origResults = await geocode(values.origem);
       var destResults = await geocode(values.destino);
-      if (!origResults.length) throw new Error('Origem nao encontrada. Seja mais especifico (ex: Sao Paulo, SP).');
-      if (!destResults.length) throw new Error('Destino nao encontrado. Seja mais especifico.');
+      if (!origResults.length) throw new Error('Origem nao encontrada. Tente: "Sao Paulo, SP"');
+      if (!destResults.length) throw new Error('Destino nao encontrado. Tente: "Rio de Janeiro, RJ"');
 
       var orig = { lat: parseFloat(origResults[0].lat), lng: parseFloat(origResults[0].lon) };
       var dest = { lat: parseFloat(destResults[0].lat), lng: parseFloat(destResults[0].lon) };
 
-      // Geocodificar waypoints
-      var resolvedWaypoints = [];
+      // Resolver waypoints
+      var resolvedWPs = [];
       for (var i = 0; i < (values.waypoints || []).length; i++) {
         var wp = values.waypoints[i];
         if (wp.name && wp.name.trim()) {
-          var wpResults = await geocode(wp.name);
-          if (wpResults.length) {
-            resolvedWaypoints.push({
-              name: wp.name,
-              coords: { lat: parseFloat(wpResults[0].lat), lng: parseFloat(wpResults[0].lon) },
-              label: wpResults[0].display_name,
-            });
+          var res = await geocode(wp.name);
+          if (res.length) {
+            resolvedWPs.push({ name: wp.name, coords: { lat: parseFloat(res[0].lat), lng: parseFloat(res[0].lon) }, label: res[0].display_name });
           }
         }
       }
 
-      // Calcular rota (com waypoints se houver)
-      var route = await calculateRoute(orig, dest, resolvedWaypoints);
-      if (!route) throw new Error('Nao foi possivel calcular a rota.');
-
+      var route  = await calculateRoute(orig, dest, resolvedWPs);
       var distKm = route.distance / 1000;
       var durHrs = route.duration / 3600;
 
-      var rd = {
-        distance:    distKm,
-        duration:    durHrs,
-        geometry:    route.geometry,
-        origin:      orig,
-        destination: dest,
-        origLabel:   values.origem,
-        destLabel:   values.destino,
-        waypoints:   resolvedWaypoints,
-      };
+      var rd = { distance: distKm, duration: durHrs, geometry: route.geometry, origin: orig, destination: dest, origLabel: values.origem, destLabel: values.destino, waypoints: resolvedWPs };
       setRouteData(rd);
       setBudgetData(calculateBudget({
         distanceKm:    distKm,
@@ -107,7 +93,7 @@ export default function PlannerMain() {
       <div className="mb-8">
         <span className="text-br-green font-mono text-xs uppercase tracking-widest">Planejador</span>
         <h1 className="font-syne font-extrabold text-3xl sm:text-4xl mt-1">Pit Stop do Role 🗺️</h1>
-        <p className="text-gray-500 mt-2">Calcule sua rota, adicione paradas e saiba quanto vai gastar.</p>
+        <p className="text-gray-500 mt-2">Rota, orcamento, paradas e roteiro dia a dia — tudo em um lugar.</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-5 gap-6">
@@ -115,14 +101,14 @@ export default function PlannerMain() {
           <RouteForm values={formValues} onChange={setFormValues} onCalculate={handleCalculate} loading={loading} />
         </div>
         <div className="lg:col-span-3">
-          <div className="br-card overflow-hidden h-[420px] sm:h-[500px] flex items-center justify-center">
+          <div className="br-card overflow-hidden h-[480px] sm:h-[560px] flex items-center justify-center">
             {routeData
               ? <MapView routeData={routeData} />
               : (
-                <div className="flex flex-col items-center gap-3 text-gray-600">
+                <div className="flex flex-col items-center gap-3 text-gray-600 p-6 text-center">
                   <Map className="w-12 h-12 opacity-30" />
-                  <p className="text-sm">Preencha a rota e clique em Calcular</p>
-                  <p className="text-xs text-gray-700">Suporte a paradas intermediarias</p>
+                  <p className="text-sm">Preencha origem e destino e clique em Calcular</p>
+                  <p className="text-xs text-gray-700">Suporte a paradas intermediarias e roteiro dia a dia</p>
                 </div>
               )
             }
@@ -138,28 +124,26 @@ export default function PlannerMain() {
       {loading && (
         <div className="mt-6 flex items-center gap-3 text-gray-400 text-sm">
           <div className="w-5 h-5 border-2 border-br-green/30 border-t-br-green rounded-full animate-spin" />
-          Calculando sua rota...
+          Calculando rota e montando seu roteiro...
         </div>
       )}
 
       {routeData && budgetData && (
         <div className="mt-8 space-y-6 animate-slide-up">
+
           {/* Waypoints confirmados */}
           {routeData.waypoints && routeData.waypoints.length > 0 && (
             <div className="br-card p-4">
-              <p className="font-syne font-bold text-sm mb-3 text-br-orange">Paradas intermediarias confirmadas:</p>
+              <p className="font-syne font-bold text-sm mb-3 text-br-orange">Paradas confirmadas na rota:</p>
               <div className="flex flex-wrap gap-2">
                 {routeData.waypoints.map(function(wp, i) {
-                  return (
-                    <span key={i} className="waypoint-item text-xs">
-                      📍 {wp.name}
-                    </span>
-                  );
+                  return <span key={i} className="waypoint-item text-xs">📍 {wp.name}</span>;
                 })}
               </div>
             </div>
           )}
 
+          {/* Cards de resumo */}
           <div className="grid grid-cols-3 gap-4">
             {[
               { l: 'Distancia',   v: routeData.distance.toFixed(0) + ' km', c: '#39FF14' },
@@ -176,6 +160,10 @@ export default function PlannerMain() {
           </div>
 
           <BudgetBreakdown budget={budgetData} />
+
+          {/* ROTEIRO DIA A DIA (novo!) */}
+          <DayItinerary formValues={formValues} routeData={routeData} />
+
           <SafetyAlerts distance={routeData.distance} />
           <StopPoints distance={routeData.distance} />
           <ExportOptions routeData={routeData} budgetData={budgetData} formValues={formValues} />
