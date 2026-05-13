@@ -1,0 +1,578 @@
+// src/lib/translations.js
+// Dicionario de traducoes: Portugues, Ingles, Espanhol
+
+export var translations = {
+
+  // ============================================================
+  // PORTUGUES (padrao)
+  // ============================================================
+  pt: {
+    // Navegacao
+    nav_planejar:   'Planejar',
+    nav_galera:     'Galera',
+    nav_explorar:   'Explorar',
+    nav_perfil:     'Perfil',
+    nav_ajuda:      'Ajuda',
+
+    // Hero
+    hero_badge:     'Nova forma de explorar o Brasil',
+    hero_subtitle:  'Planeje sua rota, calcule os gastos e viva a viagem dos sonhos.',
+    hero_cta:       'Partiu, galera?',
+    hero_origem:    'De onde voce vai sair?',
+    hero_destino:   'Onde voce quer chegar?',
+    hero_btn:       'BORA!',
+    hero_stats_rotas:     'rotas criadas',
+    hero_stats_viajantes: 'viajantes',
+    hero_stats_destinos:  'destinos',
+    hero_scroll:    'Role para baixo',
+    hero_hover_tip: 'passe o mouse no titulo para ver as rodas girarem',
+
+    // Features
+    features_tag:       'Por que usar',
+    features_title:     'Tudo que sua viagem precisa',
+    features_subtitle:  'De Oiapoque ao Chui, do litoral ao sertao. O BoraRodar tem tudo para sua aventura ser incrivel.',
+    feat1_title: 'Rotas Inteligentes',
+    feat1_desc:  'Calcule o melhor caminho considerando pedagios, balsas e trechos ruins. Dados reais do Brasil.',
+    feat2_title: 'Orcamento Detalhado',
+    feat2_desc:  'Combustivel, pedagios, alimentacao e hospedagem calculados antes de sair. Sem surpresas.',
+    feat3_title: 'Pit Stops Incriveis',
+    feat3_desc:  'Restaurantes, postos, cachoeiras, mirantes e apoio para bebes ao longo da rota.',
+    feat4_title: 'Alertas de Seguranca',
+    feat4_desc:  'Avisos sobre trechos ruins, condicoes da pista e dicas para uma viagem mais segura.',
+    feat5_title: 'Comunidade',
+    feat5_desc:  'Avalie rotas, compartilhe dicas, ganha medalhas e suba no ranking dos exploradores.',
+    feat6_title: 'Exportar Tudo',
+    feat6_desc:  'Mande o roteiro pelo WhatsApp, salve em PDF, envie por e-mail. Simples assim.',
+
+    // Mapa animado
+    map_tag:      'Cobertura Nacional',
+    map_title:    'De qualquer cidade a qualquer destino',
+    map_subtitle: 'Calcule rotas em todo o Brasil. O carrinho abaixo percorre uma das rotas mais populares do pais.',
+    map_live:     'BRASIL - MAPA ESQUEMATICO',
+    map_btn:      'Planejar minha rota',
+    map_route_label: 'Rota em destaque',
+    map_distance: 'Distancia',
+    map_time:     'Tempo',
+    map_fuel:     'Combustivel',
+
+    // Trending Routes
+    trending_tag:   'Em alta',
+    trending_title: 'Rotas mais curtidas',
+    trending_all:   'Ver todas',
+
+    // Community preview
+    community_tag:    'Comunidade',
+    community_title:  'O que a galera ta falando',
+    community_all:    'Ver tudo',
+    community_cta_title: 'Partiu fazer parte da galera?',
+    community_cta_sub:   'Cadastre-se gratis e comece a planejar sua proxima aventura.',
+    community_cta_btn1:  'Criar conta gratis',
+    community_cta_btn2:  'Testar sem cadastro',
+
+    // Planner
+    planner_tag:    'Planejador',
+    planner_title:  'Pit Stop do Role',
+    planner_sub:    'Calcule sua rota, adicione paradas e saiba quanto vai gastar.',
+    planner_origem: 'Origem',
+    planner_destino:'Destino',
+    planner_stop:   'Parada',
+    planner_add_wp: 'Adicionar parada intermediaria',
+    planner_fuel:   'Combustivel',
+    planner_kml:    'Km/L do carro',
+    planner_price:  'Preco/litro (R$)',
+    planner_pax:    'Passageiros',
+    planner_nights: 'Noites (hotel)',
+    planner_btn:    'Calcular Rota',
+    planner_loading:'Calculando...',
+    planner_map_hint:'Preencha a rota e clique em Calcular',
+
+    // Budget
+    budget_title:   'Orcamento do Role',
+    budget_fuel:    'Combustivel',
+    budget_toll:    'Pedagios (est.)',
+    budget_food:    'Alimentacao',
+    budget_hotel:   'Hospedagem',
+    budget_total:   'Total estimado',
+    budget_note:    '* Pedagios estimados por media por km. Valores de alimentacao e hospedagem sao medias nacionais.',
+
+    // Safety
+    safety_title: 'Alertas de Seguranca',
+
+    // Stops
+    stops_title:  'Paradas e Atracoes',
+    stops_pitstop:'Pit Stops',
+    stops_attr:   'Atracoes',
+    stops_nearby: 'Proximas da rota',
+    stops_detour: 'Vale o Desvio',
+    stops_detour_sub: 'mais de 40 km, mas valem demais!',
+    stops_empty:  'Insira um destino conhecido para ver as atracoes da regiao.',
+
+    // Itinerary AI
+    itinerary_title:  'Roteiro com IA',
+    itinerary_sub:    'Google Gemini — 1.500 req/dia gratis',
+    itinerary_interests: 'Seus interesses (ate 4)',
+    itinerary_budget: 'Perfil de orcamento',
+    itinerary_btn:    'Gerar Roteiro',
+    itinerary_loading:'Gerando roteiro...',
+    itinerary_new:    'Gerar novo roteiro',
+    itinerary_morning:'Manha',
+    itinerary_afternoon:'Tarde',
+    itinerary_evening:'Noite',
+    itinerary_tip:    'Dica local',
+    itinerary_hotel:  'Hospedagem',
+    itinerary_day:    'Dia',
+    itinerary_no_dest:'Calcule uma rota primeiro para definir o destino.',
+
+    // Export
+    export_title: 'Exportar Roteiro',
+    export_sub:   'Compartilhe com a galera ou salve para depois.',
+    export_whats: 'WhatsApp',
+    export_email: 'E-mail',
+    export_pdf:   'PDF',
+    export_link:  'Copiar link',
+    export_copied:'Link copiado!',
+
+    // Community page
+    comm_tag:     'Comunidade',
+    comm_title:   'O Role da Galera',
+    comm_sub:     'Dicas, alertas, rotas e rankings dos maiores viajantes do Brasil.',
+    comm_feed:    'Feed de Dicas',
+    comm_ranking: 'Ranking',
+    comm_publish: 'Publicar',
+    comm_placeholder: 'Compartilhe uma dica, alerta ou avaliacao de rota...',
+    comm_km:      'Km rodados',
+    comm_tips:    'Dicas publicadas',
+    comm_explorers:'Exploradores',
+
+    // Explore
+    explore_tag:     'Descubra',
+    explore_title:   'Explorar o Brasil',
+    explore_sub:     'Rotas tematicas, destinos incriveis e achados secretos.',
+    explore_routes:  'Rotas Tematicas',
+    explore_dest:    'Destinos',
+    explore_all:     'Todos',
+    explore_plan:    'Planejar',
+
+    // Profile
+    profile_greeting: 'Ola, aventureiro!',
+    profile_trips:    'Viagens',
+    profile_km:       'Km rodados',
+    profile_tips_ct:  'Dicas',
+    profile_badges:   'Minhas Medalhas',
+    profile_badges_sub:'Conquiste medalhas planejando viagens e participando da comunidade.',
+    profile_history:  'Minhas Viagens',
+    profile_empty:    'Voce ainda nao salvou viagens.',
+    profile_plan_first:'Planejar minha primeira rota',
+    profile_logout:   'Sair',
+    profile_login_title: 'Entrar na conta',
+    profile_register_title: 'Criar conta gratis',
+    profile_google:   'Continuar com Google',
+    profile_email_ph: 'seu@email.com',
+    profile_pass_ph:  'Minimo 6 caracteres',
+    profile_login_btn:'Entrar',
+    profile_register_btn: 'Criar conta',
+    profile_no_account:'Nao tem conta? Crie gratis',
+    profile_has_account:'Ja tem conta? Entrar',
+    profile_use_free:  'Usar sem cadastro',
+
+    // Help
+    help_tag:    'Suporte',
+    help_title:  'Duvidas? A gente explica tudo',
+    help_sub:    'Encontre respostas rapidas sobre o BoraRodar.',
+
+    // Footer
+    footer_nav:    'Navegacao',
+    footer_routes: 'Rotas Tematicas',
+    footer_made:   'Feito com amor para quem ama a estrada brasileira.',
+
+    // Common
+    common_loading: 'Carregando...',
+    common_error:   'Algo deu errado. Tente novamente.',
+    common_back:    'Voltar',
+    common_save:    'Salvar',
+    common_cancel:  'Cancelar',
+    common_close:   'Fechar',
+  },
+
+  // ============================================================
+  // ENGLISH
+  // ============================================================
+  en: {
+    // Navigation
+    nav_planejar:   'Plan',
+    nav_galera:     'Community',
+    nav_explorar:   'Explore',
+    nav_perfil:     'Profile',
+    nav_ajuda:      'Help',
+
+    // Hero
+    hero_badge:     'New way to explore Brazil',
+    hero_subtitle:  'Plan your route, calculate expenses and live your dream road trip.',
+    hero_cta:       "Let's go?",
+    hero_origem:    'Where are you starting from?',
+    hero_destino:   'Where do you want to go?',
+    hero_btn:       "LET'S GO!",
+    hero_stats_rotas:     'routes created',
+    hero_stats_viajantes: 'travelers',
+    hero_stats_destinos:  'destinations',
+    hero_scroll:    'Scroll down',
+    hero_hover_tip: 'hover over the title to see the wheels spin',
+
+    // Features
+    features_tag:       'Why use it',
+    features_title:     'Everything your trip needs',
+    features_subtitle:  'From the Amazon to the Pampas. BoraRodar has everything for an incredible adventure.',
+    feat1_title: 'Smart Routes',
+    feat1_desc:  'Calculate the best route considering tolls, ferries and bad road sections. Real Brazilian data.',
+    feat2_title: 'Detailed Budget',
+    feat2_desc:  'Fuel, tolls, food and accommodation all calculated before you leave. No surprises.',
+    feat3_title: 'Amazing Pit Stops',
+    feat3_desc:  'Restaurants, gas stations, waterfalls, viewpoints and baby-friendly stops along the route.',
+    feat4_title: 'Safety Alerts',
+    feat4_desc:  'Warnings about bad road sections, road conditions and safety tips for a smooth trip.',
+    feat5_title: 'Community',
+    feat5_desc:  'Rate routes, share tips, earn badges and climb the explorers leaderboard.',
+    feat6_title: 'Export Everything',
+    feat6_desc:  'Share the itinerary via WhatsApp, save as PDF, send by email. Simple as that.',
+
+    // Animated map
+    map_tag:      'National Coverage',
+    map_title:    'From any city to any destination',
+    map_subtitle: 'Calculate routes anywhere in Brazil. The car below follows one of the most popular routes.',
+    map_live:     'BRAZIL - SCHEMATIC MAP',
+    map_btn:      'Plan my route',
+    map_route_label: 'Featured route',
+    map_distance: 'Distance',
+    map_time:     'Time',
+    map_fuel:     'Fuel',
+
+    // Trending Routes
+    trending_tag:   'Trending',
+    trending_title: 'Most liked routes',
+    trending_all:   'See all',
+
+    // Community preview
+    community_tag:    'Community',
+    community_title:  "What people are saying",
+    community_all:    'See all',
+    community_cta_title: 'Ready to join the crew?',
+    community_cta_sub:   'Sign up for free and start planning your next adventure.',
+    community_cta_btn1:  'Create free account',
+    community_cta_btn2:  'Try without signing up',
+
+    // Planner
+    planner_tag:    'Planner',
+    planner_title:  'Route Pit Stop',
+    planner_sub:    'Calculate your route, add stops and know your budget.',
+    planner_origem: 'Origin',
+    planner_destino:'Destination',
+    planner_stop:   'Stop',
+    planner_add_wp: 'Add intermediate stop',
+    planner_fuel:   'Fuel type',
+    planner_kml:    'Car fuel efficiency (km/L)',
+    planner_price:  'Price per liter (R$)',
+    planner_pax:    'Passengers',
+    planner_nights: 'Nights (hotel)',
+    planner_btn:    'Calculate Route',
+    planner_loading:'Calculating...',
+    planner_map_hint:'Fill in the route and click Calculate',
+
+    // Budget
+    budget_title:   'Trip Budget',
+    budget_fuel:    'Fuel',
+    budget_toll:    'Tolls (est.)',
+    budget_food:    'Food',
+    budget_hotel:   'Accommodation',
+    budget_total:   'Estimated total',
+    budget_note:    '* Tolls estimated per km average. Food and accommodation are national averages.',
+
+    // Safety
+    safety_title: 'Safety Alerts',
+
+    // Stops
+    stops_title:  'Stops & Attractions',
+    stops_pitstop:'Pit Stops',
+    stops_attr:   'Attractions',
+    stops_nearby: 'Near the route',
+    stops_detour: 'Worth the Detour',
+    stops_detour_sub: 'over 40 km away, but absolutely worth it!',
+    stops_empty:  'Enter a known destination to see regional attractions.',
+
+    // Itinerary AI
+    itinerary_title:  'AI Itinerary',
+    itinerary_sub:    'Google Gemini — 1,500 free req/day',
+    itinerary_interests: 'Your interests (up to 4)',
+    itinerary_budget: 'Budget profile',
+    itinerary_btn:    'Generate Itinerary',
+    itinerary_loading:'Generating itinerary...',
+    itinerary_new:    'Generate new itinerary',
+    itinerary_morning:'Morning',
+    itinerary_afternoon:'Afternoon',
+    itinerary_evening:'Evening',
+    itinerary_tip:    'Local tip',
+    itinerary_hotel:  'Accommodation',
+    itinerary_day:    'Day',
+    itinerary_no_dest:'Calculate a route first to set the destination.',
+
+    // Export
+    export_title: 'Export Itinerary',
+    export_sub:   'Share with friends or save for later.',
+    export_whats: 'WhatsApp',
+    export_email: 'Email',
+    export_pdf:   'PDF',
+    export_link:  'Copy link',
+    export_copied:'Link copied!',
+
+    // Community page
+    comm_tag:      'Community',
+    comm_title:    "The Crew's Trips",
+    comm_sub:      'Tips, alerts, routes and rankings from Brazil\'s greatest road travelers.',
+    comm_feed:     'Tips Feed',
+    comm_ranking:  'Rankings',
+    comm_publish:  'Publish',
+    comm_placeholder: 'Share a tip, alert or route review...',
+    comm_km:       'Km traveled',
+    comm_tips:     'Tips published',
+    comm_explorers:'Explorers',
+
+    // Explore
+    explore_tag:     'Discover',
+    explore_title:   'Explore Brazil',
+    explore_sub:     'Thematic routes, amazing destinations and hidden gems.',
+    explore_routes:  'Thematic Routes',
+    explore_dest:    'Destinations',
+    explore_all:     'All',
+    explore_plan:    'Plan',
+
+    // Profile
+    profile_greeting: 'Hey, adventurer!',
+    profile_trips:    'Trips',
+    profile_km:       'Km traveled',
+    profile_tips_ct:  'Tips',
+    profile_badges:   'My Badges',
+    profile_badges_sub:'Earn badges by planning trips and participating in the community.',
+    profile_history:  'My Trips',
+    profile_empty:    "You haven't saved any trips yet.",
+    profile_plan_first:'Plan my first route',
+    profile_logout:   'Sign out',
+    profile_login_title: 'Sign in',
+    profile_register_title: 'Create free account',
+    profile_google:   'Continue with Google',
+    profile_email_ph: 'your@email.com',
+    profile_pass_ph:  'Minimum 6 characters',
+    profile_login_btn:'Sign in',
+    profile_register_btn: 'Create account',
+    profile_no_account:"Don't have an account? Sign up free",
+    profile_has_account:'Already have an account? Sign in',
+    profile_use_free:  'Use without signing up',
+
+    // Help
+    help_tag:    'Support',
+    help_title:  'Questions? We explain everything',
+    help_sub:    'Find quick answers about BoraRodar.',
+
+    // Footer
+    footer_nav:    'Navigation',
+    footer_routes: 'Thematic Routes',
+    footer_made:   'Made with love for those who love Brazilian roads.',
+
+    // Common
+    common_loading: 'Loading...',
+    common_error:   'Something went wrong. Please try again.',
+    common_back:    'Back',
+    common_save:    'Save',
+    common_cancel:  'Cancel',
+    common_close:   'Close',
+  },
+
+  // ============================================================
+  // ESPANOL
+  // ============================================================
+  es: {
+    // Navegacion
+    nav_planejar:   'Planificar',
+    nav_galera:     'Comunidad',
+    nav_explorar:   'Explorar',
+    nav_perfil:     'Perfil',
+    nav_ajuda:      'Ayuda',
+
+    // Hero
+    hero_badge:     'Nueva forma de explorar Brasil',
+    hero_subtitle:  'Planifica tu ruta, calcula los gastos y vive el viaje de tus suenos.',
+    hero_cta:       'Vamos?',
+    hero_origem:    'Desde donde vas a salir?',
+    hero_destino:   'Adonde quieres llegar?',
+    hero_btn:       'VAMOS!',
+    hero_stats_rotas:     'rutas creadas',
+    hero_stats_viajantes: 'viajeros',
+    hero_stats_destinos:  'destinos',
+    hero_scroll:    'Desplaza hacia abajo',
+    hero_hover_tip: 'pasa el mouse por el titulo para ver las ruedas girar',
+
+    // Features
+    features_tag:       'Por que usarlo',
+    features_title:     'Todo lo que tu viaje necesita',
+    features_subtitle:  'De norte a sur de Brasil. BoraRodar tiene todo para una aventura increible.',
+    feat1_title: 'Rutas Inteligentes',
+    feat1_desc:  'Calcula el mejor camino considerando peajes, transbordadores y tramos malos. Datos reales de Brasil.',
+    feat2_title: 'Presupuesto Detallado',
+    feat2_desc:  'Combustible, peajes, comida y alojamiento calculados antes de salir. Sin sorpresas.',
+    feat3_title: 'Paradas Increibles',
+    feat3_desc:  'Restaurantes, gasolineras, cascadas, miradores y paradas para bebes en la ruta.',
+    feat4_title: 'Alertas de Seguridad',
+    feat4_desc:  'Avisos sobre tramos malos, condiciones de la carretera y consejos de seguridad.',
+    feat5_title: 'Comunidad',
+    feat5_desc:  'Evalua rutas, comparte consejos, gana medallas y sube en el ranking de exploradores.',
+    feat6_title: 'Exportar Todo',
+    feat6_desc:  'Comparte el itinerario por WhatsApp, guarda como PDF o envialo por correo.',
+
+    // Mapa animado
+    map_tag:      'Cobertura Nacional',
+    map_title:    'De cualquier ciudad a cualquier destino',
+    map_subtitle: 'Calcula rutas en todo Brasil. El auto de abajo recorre una de las rutas mas populares.',
+    map_live:     'BRASIL - MAPA ESQUEMATICO',
+    map_btn:      'Planificar mi ruta',
+    map_route_label: 'Ruta destacada',
+    map_distance: 'Distancia',
+    map_time:     'Tiempo',
+    map_fuel:     'Combustible',
+
+    // Trending
+    trending_tag:   'En tendencia',
+    trending_title: 'Rutas mas populares',
+    trending_all:   'Ver todas',
+
+    // Community preview
+    community_tag:    'Comunidad',
+    community_title:  'Lo que dice la gente',
+    community_all:    'Ver todo',
+    community_cta_title: 'Listo para unirte?',
+    community_cta_sub:   'Registrate gratis y comienza a planificar tu proxima aventura.',
+    community_cta_btn1:  'Crear cuenta gratis',
+    community_cta_btn2:  'Probar sin registrarse',
+
+    // Planner
+    planner_tag:    'Planificador',
+    planner_title:  'Parada de Ruta',
+    planner_sub:    'Calcula tu ruta, agrega paradas y conoce tu presupuesto.',
+    planner_origem: 'Origen',
+    planner_destino:'Destino',
+    planner_stop:   'Parada',
+    planner_add_wp: 'Agregar parada intermedia',
+    planner_fuel:   'Combustible',
+    planner_kml:    'Eficiencia del auto (km/L)',
+    planner_price:  'Precio por litro (R$)',
+    planner_pax:    'Pasajeros',
+    planner_nights: 'Noches (hotel)',
+    planner_btn:    'Calcular Ruta',
+    planner_loading:'Calculando...',
+    planner_map_hint:'Completa la ruta y haz clic en Calcular',
+
+    // Budget
+    budget_title:   'Presupuesto del Viaje',
+    budget_fuel:    'Combustible',
+    budget_toll:    'Peajes (est.)',
+    budget_food:    'Alimentacion',
+    budget_hotel:   'Alojamiento',
+    budget_total:   'Total estimado',
+    budget_note:    '* Peajes estimados por promedio por km. Comida y alojamiento son promedios nacionales.',
+
+    // Safety
+    safety_title: 'Alertas de Seguridad',
+
+    // Stops
+    stops_title:  'Paradas y Atracciones',
+    stops_pitstop:'Paradas',
+    stops_attr:   'Atracciones',
+    stops_nearby: 'Cerca de la ruta',
+    stops_detour: 'Vale el Desvio',
+    stops_detour_sub: 'mas de 40 km, pero absolutamente vale la pena!',
+    stops_empty:  'Ingresa un destino conocido para ver las atracciones de la region.',
+
+    // Itinerary AI
+    itinerary_title:  'Itinerario con IA',
+    itinerary_sub:    'Google Gemini — 1.500 req/dia gratis',
+    itinerary_interests: 'Tus intereses (hasta 4)',
+    itinerary_budget: 'Perfil de presupuesto',
+    itinerary_btn:    'Generar Itinerario',
+    itinerary_loading:'Generando itinerario...',
+    itinerary_new:    'Generar nuevo itinerario',
+    itinerary_morning:'Manana',
+    itinerary_afternoon:'Tarde',
+    itinerary_evening:'Noche',
+    itinerary_tip:    'Consejo local',
+    itinerary_hotel:  'Alojamiento',
+    itinerary_day:    'Dia',
+    itinerary_no_dest:'Calcula una ruta primero para definir el destino.',
+
+    // Export
+    export_title: 'Exportar Itinerario',
+    export_sub:   'Comparte con amigos o guarda para despues.',
+    export_whats: 'WhatsApp',
+    export_email: 'Correo',
+    export_pdf:   'PDF',
+    export_link:  'Copiar enlace',
+    export_copied:'Enlace copiado!',
+
+    // Community page
+    comm_tag:      'Comunidad',
+    comm_title:    'Los Viajes del Equipo',
+    comm_sub:      'Consejos, alertas, rutas y rankings de los mejores viajeros de Brasil.',
+    comm_feed:     'Feed de Consejos',
+    comm_ranking:  'Rankings',
+    comm_publish:  'Publicar',
+    comm_placeholder: 'Comparte un consejo, alerta o evaluacion de ruta...',
+    comm_km:       'Km recorridos',
+    comm_tips:     'Consejos publicados',
+    comm_explorers:'Exploradores',
+
+    // Explore
+    explore_tag:     'Descubrir',
+    explore_title:   'Explorar Brasil',
+    explore_sub:     'Rutas tematicas, destinos increibles y joyas escondidas.',
+    explore_routes:  'Rutas Tematicas',
+    explore_dest:    'Destinos',
+    explore_all:     'Todos',
+    explore_plan:    'Planificar',
+
+    // Profile
+    profile_greeting: 'Hola, aventurero!',
+    profile_trips:    'Viajes',
+    profile_km:       'Km recorridos',
+    profile_tips_ct:  'Consejos',
+    profile_badges:   'Mis Medallas',
+    profile_badges_sub:'Gana medallas planificando viajes y participando en la comunidad.',
+    profile_history:  'Mis Viajes',
+    profile_empty:    'Todavia no guardaste ningun viaje.',
+    profile_plan_first:'Planificar mi primera ruta',
+    profile_logout:   'Cerrar sesion',
+    profile_login_title: 'Iniciar sesion',
+    profile_register_title: 'Crear cuenta gratis',
+    profile_google:   'Continuar con Google',
+    profile_email_ph: 'tu@correo.com',
+    profile_pass_ph:  'Minimo 6 caracteres',
+    profile_login_btn:'Iniciar sesion',
+    profile_register_btn: 'Crear cuenta',
+    profile_no_account:'No tienes cuenta? Registrate gratis',
+    profile_has_account:'Ya tienes cuenta? Iniciar sesion',
+    profile_use_free:  'Usar sin registrarse',
+
+    // Help
+    help_tag:    'Soporte',
+    help_title:  'Preguntas? Lo explicamos todo',
+    help_sub:    'Encuentra respuestas rapidas sobre BoraRodar.',
+
+    // Footer
+    footer_nav:    'Navegacion',
+    footer_routes: 'Rutas Tematicas',
+    footer_made:   'Hecho con amor para quienes aman las carreteras de Brasil.',
+
+    // Common
+    common_loading: 'Cargando...',
+    common_error:   'Algo salio mal. Intentalo de nuevo.',
+    common_back:    'Volver',
+    common_save:    'Guardar',
+    common_cancel:  'Cancelar',
+    common_close:   'Cerrar',
+  },
+};
