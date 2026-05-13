@@ -9,22 +9,62 @@
   --neon-purple: #B24BF3;
 }
 
+/* ============================================================
+   BASE — grid sutil em TODO o site
+   ============================================================ */
 * { box-sizing: border-box; margin: 0; padding: 0; }
 html { scroll-behavior: smooth; }
+
 body {
   background-color: #0A0A0A;
+  background-image:
+    linear-gradient(rgba(57,255,20,0.028) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(57,255,20,0.028) 1px, transparent 1px);
+  background-size: 60px 60px;
   color: #fff;
   font-family: var(--font-dm), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
 
+/* Luzes ambiente nos cantos — aparece em TODAS as paginas */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 55% 35% at 0%   0%,   rgba(57,255,20,0.045)  0%, transparent 60%),
+    radial-gradient(ellipse 55% 35% at 100% 100%, rgba(0,212,255,0.03)   0%, transparent 60%),
+    radial-gradient(ellipse 40% 25% at 100% 0%,   rgba(178,75,243,0.025) 0%, transparent 55%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+main { position: relative; z-index: 1; }
+
 ::-webkit-scrollbar { width: 5px; }
 ::-webkit-scrollbar-track { background: #0A0A0A; }
 ::-webkit-scrollbar-thumb { background: #39FF14; border-radius: 3px; }
 ::selection { background: rgba(57,255,20,0.25); color: #fff; }
 
-/* Road animation */
+/* ============================================================
+   SECOES — backgrounds alternados para quebrar monotonia
+   ============================================================ */
+.section-alt {
+  background: rgba(255,255,255,0.014);
+  border-top:    1px solid rgba(255,255,255,0.045);
+  border-bottom: 1px solid rgba(255,255,255,0.045);
+}
+.section-glow-green {
+  background: radial-gradient(ellipse 90% 50% at 50% 0%, rgba(57,255,20,0.055) 0%, transparent 70%);
+}
+.section-glow-blue {
+  background: radial-gradient(ellipse 90% 50% at 50% 0%, rgba(0,212,255,0.04) 0%, transparent 70%);
+}
+
+/* ============================================================
+   ESTRADA (hero)
+   ============================================================ */
 .road-lane {
   display: flex;
   flex-direction: column;
@@ -42,41 +82,44 @@ body {
   border-radius: 2px;
 }
 
-/* Grid background */
-.grid-bg {
-  background-image:
-    linear-gradient(rgba(57,255,20,0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(57,255,20,0.04) 1px, transparent 1px);
-  background-size: 60px 60px;
-}
-
-/* Glassmorphism */
+/* ============================================================
+   GLASSMORPHISM
+   ============================================================ */
 .glass {
   background: rgba(255,255,255,0.04);
-  backdrop-filter: blur(12px);
+  backdrop-filter: blur(14px);
   border: 1px solid rgba(255,255,255,0.08);
 }
 
-/* Input base */
-.br-input {
-  width: 100%;
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 10px;
-  padding: 12px 16px;
-  color: #fff;
-  font-size: 15px;
-  transition: border-color 0.2s, box-shadow 0.2s;
-  outline: none;
+/* ============================================================
+   INPUT (em @layer para utilidades sobrescreverem)
+   ============================================================ */
+@layer components {
+  .br-input {
+    width: 100%;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 10px;
+    padding: 12px 16px;
+    color: #fff;
+    font-size: 15px;
+    transition: border-color 0.25s, box-shadow 0.25s;
+    outline: none;
+    font-family: var(--font-dm), sans-serif;
+  }
+  .br-input:focus {
+    border-color: rgba(57,255,20,0.45);
+    box-shadow: 0 0 0 3px rgba(57,255,20,0.1);
+  }
+  .br-input::placeholder { color: #4B5563; }
+  .br-input:disabled { opacity: 0.5; cursor: not-allowed; }
 }
-.br-input:focus {
-  border-color: rgba(57,255,20,0.4);
-  box-shadow: 0 0 0 3px rgba(57,255,20,0.1);
-}
-.br-input::placeholder { color: #4B5563; }
 
-/* Buttons */
+/* ============================================================
+   BOTOES
+   ============================================================ */
 .btn-neon {
+  position: relative;
   background: #39FF14;
   color: #000;
   font-weight: 700;
@@ -87,9 +130,20 @@ body {
   cursor: pointer;
   font-family: var(--font-syne), sans-serif;
   font-size: 14px;
+  overflow: hidden;
 }
-.btn-neon:hover { box-shadow: 0 0 28px rgba(57,255,20,0.45); }
-.btn-neon:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-neon::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+.btn-neon:hover  { box-shadow: 0 0 36px rgba(57,255,20,0.55); }
+.btn-neon:hover::before { opacity: 1; }
+.btn-neon:active { transform: scale(0.97); }
+.btn-neon:disabled { opacity: 0.5; cursor: not-allowed; box-shadow: none; }
 
 .btn-ghost {
   background: transparent;
@@ -106,16 +160,124 @@ body {
   display: inline-flex;
   align-items: center;
 }
-.btn-ghost:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.2); }
+.btn-ghost:hover { background: rgba(255,255,255,0.07); border-color: rgba(255,255,255,0.22); }
 
-/* Card base */
+.btn-google {
+  width: 100%;
+  background: #fff;
+  color: #111;
+  font-weight: 700;
+  border-radius: 10px;
+  padding: 12px 24px;
+  transition: all 0.2s;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-syne), sans-serif;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+.btn-google:hover { box-shadow: 0 4px 24px rgba(255,255,255,0.2); transform: translateY(-1px); }
+
+/* ============================================================
+   CARD BASE
+   ============================================================ */
 .br-card {
   background: #141414;
   border: 1px solid rgba(255,255,255,0.07);
   border-radius: 16px;
-  transition: border-color 0.2s, transform 0.2s;
+  transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+}
+.br-card:hover { border-color: rgba(57,255,20,0.2); box-shadow: 0 8px 40px rgba(0,0,0,0.5); }
+
+/* ============================================================
+   SCROLL REVEAL — bug corrigido
+   ============================================================ */
+.reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity 0.65s cubic-bezier(.16,1,.3,1), transform 0.65s cubic-bezier(.16,1,.3,1);
+}
+.reveal.visible { opacity: 1 !important; transform: translateY(0) !important; }
+
+.reveal-left  { opacity: 0; transform: translateX(-32px); transition: opacity 0.65s cubic-bezier(.16,1,.3,1), transform 0.65s cubic-bezier(.16,1,.3,1); }
+.reveal-left.visible  { opacity: 1; transform: translateX(0); }
+
+.reveal-right { opacity: 0; transform: translateX(32px);  transition: opacity 0.65s cubic-bezier(.16,1,.3,1), transform 0.65s cubic-bezier(.16,1,.3,1); }
+.reveal-right.visible { opacity: 1; transform: translateX(0); }
+
+/* ============================================================
+   KEYFRAMES
+   ============================================================ */
+@keyframes float {
+  0%,100% { transform: translateY(0) rotate(0deg); }
+  33%      { transform: translateY(-8px) rotate(2deg); }
+  66%      { transform: translateY(-4px) rotate(-2deg); }
+}
+@keyframes pulse-neon {
+  0%,100% { opacity: 1; }
+  50%      { opacity: 0.55; }
+}
+@keyframes slide-up {
+  from { opacity: 0; transform: translateY(32px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes letter-pop {
+  0%   { opacity: 0; transform: translateY(24px) scale(0.82); }
+  60%  { transform: translateY(-4px) scale(1.04); }
+  100% { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes scan-line {
+  0%   { top: -2%;  opacity: 0.5; }
+  100% { top: 102%; opacity: 0; }
+}
+@keyframes glow-pulse {
+  0%,100% { box-shadow: 0 0 8px rgba(57,255,20,0.15); }
+  50%      { box-shadow: 0 0 28px rgba(57,255,20,0.55); }
+}
+@keyframes ping-city {
+  0%   { transform: scale(1);   opacity: 0.7; }
+  100% { transform: scale(3.5); opacity: 0; }
+}
+@keyframes car-glow {
+  0%,100% { filter: drop-shadow(0 0 4px #39FF14) drop-shadow(0 0 2px #39FF14); }
+  50%      { filter: drop-shadow(0 0 10px #39FF14) drop-shadow(0 0 5px rgba(57,255,20,0.6)); }
 }
 
-/* Leaflet dark theme */
+/* ============================================================
+   HELPERS
+   ============================================================ */
+.animate-float      { animation: float 3.5s ease-in-out infinite; }
+.animate-pulse-neon { animation: pulse-neon 2s ease-in-out infinite; }
+.animate-slide-up   { animation: slide-up 0.55s cubic-bezier(.16,1,.3,1) both; }
+.animate-fade-in    { animation: fade-in 0.45s ease both; }
+.animate-letter     { animation: letter-pop 0.5s cubic-bezier(.16,1,.3,1) both; }
+.animate-glow       { animation: glow-pulse 2.5s ease-in-out infinite; }
+
+/* ============================================================
+   LEAFLET
+   ============================================================ */
 .leaflet-container { background: #141414 !important; border-radius: 12px; }
 .leaflet-tile-pane { filter: brightness(0.75) saturate(0.6) hue-rotate(180deg); }
+.leaflet-control-attribution { display: none; }
+
+/* ============================================================
+   WAYPOINT
+   ============================================================ */
+.waypoint-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255,107,53,0.08);
+  border: 1px solid rgba(255,107,53,0.2);
+  border-radius: 8px;
+  padding: 7px 10px;
+  font-size: 13px;
+  color: #FF6B35;
+}
