@@ -165,7 +165,11 @@ export default function PlannerMain() {
           <DayItinerary formValues={formValues} routeData={routeData} />
 
           <SafetyAlerts distance={routeData.distance} />
-          <StopPoints distance={routeData.distance} />
+          <StopPoints
+            distance={routeData.distance}
+            days={parseInt(formValues.noites) + 1 || 1}
+            destLabel={formValues.destino}
+          />
           <ExportOptions routeData={routeData} budgetData={budgetData} formValues={formValues} />
         </div>
       )}
