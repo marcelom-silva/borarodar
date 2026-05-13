@@ -1,210 +1,267 @@
 'use client';
 import { useState } from 'react';
-import { generateDayPlan, catColor } from '@/lib/itinerary';
-import { ChevronDown, ChevronUp, AlertTriangle, Car, MapPin, Clock } from 'lucide-react';
+import { generateItinerary } from '@/lib/ai';
+import { generateStaticItinerary } from '@/lib/itinerary';
+import { Sparkles, Coffee, Sun, Moon, Utensils, Bed, Lightbulb, Calendar, ChevronLeft, ChevronRight, Loader2, AlertCircle, Star } from 'lucide-react';
 
-var CAT_ICONS = {
-  'Praia':       '🏖️',
-  'Natureza':    '🌿',
-  'Historia':    '🏛️',
-  'Cultura':     '🎨',
-  'Gastronomia': '🍽️',
-  'Aventura':    '🏄',
-  'Logistica':   '📌',
-  'Geral':       '📍',
-};
+var INTERESTS = [
+  { id: 'gastronomia', label: 'Gastronomia', emoji: 'X' },
+  { id: 'natureza',    label: 'Natureza',    emoji: 'O' },
+  { id: 'historia',    label: 'Historia',    emoji: 'H' },
+  { id: 'aventura',    label: 'Aventura',    emoji: 'A' },
+  { id: 'cultura',     label: 'Cultura',     emoji: 'C' },
+  { id: 'praia',       label: 'Praia',       emoji: 'P' },
+  { id: 'compras',     label: 'Compras',     emoji: 'S' },
+  { id: 'relax',       label: 'Relax',       emoji: 'R' },
+];
 
-function ActivityCard({ act, index }) {
-  var [open, setOpen] = useState(false);
-  var color = catColor(act.cat);
-  var isDistante = act.distante || act.dist >= 80;
-  var isLogistica = act.cat === 'Logistica' || act.cat === 'Geral';
+var BUDGETS = [
+  { id: 'economico',   label: 'Economico',   desc: 'Hostel, lanchonetes' },
+  { id: 'medio',       label: 'Moderado',    desc: 'Pousadas, restaurantes' },
+  { id: 'confortavel', label: 'Confortavel', desc: 'Hoteis, jantares' },
+];
 
+function DayCard({ day }) {
   return (
-    <div
-      className="relative pl-8 pb-5 last:pb-0"
-      style={{ borderLeft: '2px solid ' + (isLogistica ? 'rgba(255,255,255,0.06)' : color + '30') }}
-    >
-      {/* Bolinha na linha do tempo */}
-      <div
-        className="absolute left-[-7px] top-1 w-3 h-3 rounded-full border-2 border-[#141414]"
-        style={{ background: isLogistica ? '#333' : color }}
-      />
-
-      <div
-        className="br-card p-4 cursor-pointer hover:-translate-y-0.5 transition-transform"
-        onClick={function() { setOpen(!open); }}
-        style={{ borderColor: open ? (color + '30') : 'rgba(255,255,255,0.07)' }}
-      >
-        <div className="flex items-start justify-between gap-3">
-          <div className="flex items-start gap-3 flex-1 min-w-0">
-            {/* Horario + icone */}
-            <div className="flex-shrink-0 text-center">
-              <div className="text-xs font-mono text-gray-500">{act.time}</div>
-              <div className="text-lg mt-0.5">{act.icon || CAT_ICONS[act.cat] || '📍'}</div>
-            </div>
-
-            <div className="flex-1 min-w-0">
-              <div className="flex items-center gap-2 flex-wrap">
-                <span className="font-syne font-bold text-sm">{act.name}</span>
-
-                {/* Badge distante */}
-                {isDistante && (
-                  <span
-                    className="inline-flex items-center gap-1 text-[10px] font-bold px-2 py-0.5 rounded-full flex-shrink-0"
-                    style={{ background: 'rgba(255,107,53,0.15)', color: '#FF6B35', border: '1px solid rgba(255,107,53,0.3)' }}
-                  >
-                    <AlertTriangle className="w-2.5 h-2.5" />
-                    EXCURSAO — {act.dist} km
-                  </span>
-                )}
-
-                {/* Badge distancia normal */}
-                {!isDistante && act.dist > 0 && !isLogistica && (
-                  <span className="text-[10px] text-gray-600 font-mono">{act.dist} km</span>
-                )}
-              </div>
-
-              {/* Categoria */}
-              {!isLogistica && (
-                <span
-                  className="inline-block text-[10px] px-2 py-0.5 rounded-full mt-1 font-medium"
-                  style={{ background: color + '14', color: color }}
-                >
-                  {act.cat}
-                </span>
-              )}
-            </div>
-          </div>
-
-          {/* Toggle */}
-          <button className="text-gray-600 hover:text-white transition-colors flex-shrink-0">
-            {open ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-          </button>
+    <div className="space-y-3">
+      <div className="flex gap-3 p-4 rounded-xl" style={{ background: 'rgba(234,179,8,0.05)', border: '1px solid rgba(234,179,8,0.1)' }}>
+        <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(234,179,8,0.12)' }}>
+          <Coffee className="w-4 h-4 text-yellow-400"/>
         </div>
-
-        {/* Descricao expandida */}
-        {open && (
-          <div className="mt-3 pt-3 border-t border-white/5">
-            <p className="text-sm text-gray-400 leading-relaxed">{act.desc}</p>
-            {isDistante && (
-              <div className="mt-2 flex items-center gap-2 text-xs text-br-orange">
-                <Car className="w-3.5 h-3.5" />
-                <span>Saida recomendada: {act.time} — retorno previsto a noite. Vale muito a visita!</span>
-              </div>
-            )}
-            {act.dist > 0 && !isDistante && !isLogistica && (
-              <div className="mt-2 flex items-center gap-2 text-xs text-gray-600">
-                <MapPin className="w-3.5 h-3.5" />
-                <span>Aproximadamente {act.dist} km do centro</span>
-              </div>
-            )}
-          </div>
-        )}
+        <div>
+          <p className="text-xs text-yellow-400 font-mono uppercase tracking-wide mb-1">Manha</p>
+          <p className="text-sm text-gray-300 leading-relaxed">{day.morning}</p>
+          {day.meals && day.meals.breakfast && (
+            <p className="text-xs text-gray-600 mt-1.5">Cafe: {day.meals.breakfast}</p>
+          )}
+        </div>
       </div>
-    </div>
-  );
-}
 
-function DayCard({ dayPlan }) {
-  var [open, setOpen] = useState(dayPlan.day <= 2);
-  var isFirst = dayPlan.label === 'Chegada';
-  var isLast  = dayPlan.label === 'Partida';
-
-  return (
-    <div className="br-card overflow-hidden">
-      {/* Header do dia */}
-      <button
-        className="w-full flex items-center justify-between px-5 py-4 hover:bg-white/3 transition-colors"
-        onClick={function() { setOpen(!open); }}
-      >
-        <div className="flex items-center gap-3">
-          <div
-            className="w-8 h-8 rounded-lg flex items-center justify-center font-syne font-black text-sm flex-shrink-0"
-            style={isFirst || isLast
-              ? { background: 'rgba(255,255,255,0.08)', color: '#aaa' }
-              : { background: 'rgba(57,255,20,0.12)', color: '#39FF14' }
-            }
-          >
-            {dayPlan.day}
-          </div>
-          <div className="text-left">
-            <div className="font-syne font-bold text-sm">{dayPlan.label}</div>
-            <div className="text-xs text-gray-600">{dayPlan.activities.length} atividade{dayPlan.activities.length !== 1 ? 's' : ''}</div>
-          </div>
+      <div className="flex gap-3 p-4 rounded-xl" style={{ background: 'rgba(255,107,53,0.05)', border: '1px solid rgba(255,107,53,0.1)' }}>
+        <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(255,107,53,0.12)' }}>
+          <Sun className="w-4 h-4 text-br-orange"/>
         </div>
-        <div className="text-gray-600">{open ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}</div>
-      </button>
+        <div>
+          <p className="text-xs text-br-orange font-mono uppercase tracking-wide mb-1">Tarde</p>
+          <p className="text-sm text-gray-300 leading-relaxed">{day.afternoon}</p>
+          {day.meals && day.meals.lunch && (
+            <p className="text-xs text-gray-600 mt-1.5">Almoco: {day.meals.lunch}</p>
+          )}
+        </div>
+      </div>
 
-      {open && (
-        <div className="px-5 pb-5 pt-2">
-          {dayPlan.activities.map(function(act, i) {
-            return <ActivityCard key={i} act={act} index={i} />;
-          })}
+      <div className="flex gap-3 p-4 rounded-xl" style={{ background: 'rgba(0,212,255,0.05)', border: '1px solid rgba(0,212,255,0.1)' }}>
+        <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background: 'rgba(0,212,255,0.12)' }}>
+          <Moon className="w-4 h-4 text-br-blue"/>
+        </div>
+        <div>
+          <p className="text-xs text-br-blue font-mono uppercase tracking-wide mb-1">Noite</p>
+          <p className="text-sm text-gray-300 leading-relaxed">{day.evening}</p>
+          {day.meals && day.meals.dinner && (
+            <p className="text-xs text-gray-600 mt-1.5">Jantar: {day.meals.dinner}</p>
+          )}
+        </div>
+      </div>
+
+      {day.accommodation && (
+        <div className="flex gap-3 p-3 rounded-xl" style={{ background: 'rgba(178,75,243,0.05)', border: '1px solid rgba(178,75,243,0.1)' }}>
+          <Bed className="w-4 h-4 text-br-purple flex-shrink-0 mt-0.5"/>
+          <p className="text-xs text-gray-400"><span className="text-br-purple font-medium">Hospedagem: </span>{day.accommodation}</p>
+        </div>
+      )}
+
+      {day.tip && (
+        <div className="flex gap-3 p-3 rounded-xl" style={{ background: 'rgba(57,255,20,0.05)', border: '1px solid rgba(57,255,20,0.12)' }}>
+          <Lightbulb className="w-4 h-4 text-br-green flex-shrink-0 mt-0.5"/>
+          <p className="text-xs text-gray-400"><span className="text-br-green font-medium">Dica local: </span>{day.tip}</p>
         </div>
       )}
     </div>
   );
 }
 
-export default function DayItinerary({ formValues, routeData }) {
-  var dias      = parseInt(formValues.noites) || 0;
-  var interests = formValues.interesses || [];
-  var tripType  = formValues.perfil || 'casal';
-  var dest      = formValues.destino || '';
+export default function DayItinerary({ destination, days, passengers }) {
+  var [selectedInterests, setSelectedInterests] = useState(['gastronomia', 'natureza']);
+  var [budget,     setBudget]     = useState('medio');
+  var [itinerary,  setItinerary]  = useState(null);
+  var [loading,    setLoading]    = useState(false);
+  var [error,      setError]      = useState('');
+  var [activeDay,  setActiveDay]  = useState(0);
+  var [usingAI,    setUsingAI]    = useState(false);
 
-  if (!dias || dias < 1 || !dest) return null;
+  function toggleInterest(id) {
+    setSelectedInterests(function(prev) {
+      if (prev.includes(id)) return prev.filter(function(x) { return x !== id; });
+      if (prev.length >= 4) return prev;
+      return prev.concat([id]);
+    });
+  }
 
-  var plan = generateDayPlan({ destination: dest, days: dias + 1, interests: interests, tripType: tripType });
+  async function generate() {
+    if (!destination) { setError('Calcule uma rota primeiro para definir o destino.'); return; }
+    setLoading(true); setError(''); setItinerary(null); setUsingAI(false);
+    try {
+      var result = await generateItinerary({
+        destination: destination, days: days || 1,
+        passengers: passengers || 1, interests: selectedInterests, budget: budget,
+      });
+      setItinerary(result); setUsingAI(true);
+    } catch (aiErr) {
+      var staticResult = generateStaticItinerary({ destination: destination, days: days || 1 });
+      if (staticResult) {
+        setItinerary(staticResult);
+        if (aiErr.message === 'GEMINI_KEY_MISSING') {
+          setError('Roteiro base exibido. Adicione NEXT_PUBLIC_GEMINI_API_KEY para roteiros personalizados por IA.');
+        }
+      } else {
+        if (aiErr.message === 'GEMINI_KEY_MISSING') {
+          setError('Configure a chave Gemini em .env.local para gerar roteiros com IA.');
+        } else if (aiErr.message === 'RATE_LIMIT') {
+          setError('Limite da API atingido (1.500/dia gratis). Tente amanha.');
+        } else {
+          setError('Erro ao gerar roteiro: ' + aiErr.message);
+        }
+      }
+    } finally { setLoading(false); }
+  }
 
-  if (!plan || !plan.length) return null;
-
-  var distantes = plan.flatMap(function(d) { return d.activities; }).filter(function(a) { return a.distante; });
+  var totalDays = itinerary && itinerary.days ? itinerary.days.length : 0;
 
   return (
     <div className="br-card p-6">
-      <div className="flex items-start justify-between mb-6">
-        <div>
-          <h2 className="font-syne font-bold text-lg">Roteiro Dia a Dia 📅</h2>
-          <p className="text-gray-500 text-sm mt-1">
-            {dias} noite{dias !== 1 ? 's' : ''} em <span className="text-white font-medium">{dest.split(',')[0]}</span>
-            {' '} — {dias + 1} dia{dias + 1 !== 1 ? 's' : ''}
-          </p>
+      <div className="flex items-center gap-3 mb-5">
+        <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'rgba(178,75,243,0.15)' }}>
+          <Sparkles className="w-5 h-5 text-br-purple"/>
         </div>
-        {distantes.length > 0 && (
-          <div
-            className="flex items-center gap-2 text-xs px-3 py-1.5 rounded-full flex-shrink-0"
-            style={{ background: 'rgba(255,107,53,0.1)', color: '#FF6B35', border: '1px solid rgba(255,107,53,0.2)' }}
-          >
-            <AlertTriangle className="w-3.5 h-3.5" />
-            {distantes.length} excursao{distantes.length !== 1 ? 'es' : ''} sugerida{distantes.length !== 1 ? 's' : ''}
-          </div>
-        )}
+        <div>
+          <h2 className="font-syne font-bold text-lg">Roteiro com IA</h2>
+          <p className="text-xs text-gray-600">Google Gemini — 1.500 req/dia gratis</p>
+        </div>
       </div>
 
-      {/* Aviso sobre excursoes distantes */}
-      {distantes.length > 0 && (
-        <div
-          className="mb-5 flex items-start gap-3 p-4 rounded-xl text-sm"
-          style={{ background: 'rgba(255,107,53,0.08)', border: '1px solid rgba(255,107,53,0.2)' }}
-        >
-          <Car className="w-4 h-4 text-br-orange flex-shrink-0 mt-0.5" />
-          <p className="text-gray-300 leading-relaxed">
-            <span className="text-br-orange font-semibold">Excursoes marcadas:</span> algumas atrações ficam mais longe, mas como voce esta de carro, vale totalmente a pena! 
-            Planeje sair cedo e reserve um dia exclusivo para elas.
-          </p>
+      {!itinerary && (
+        <div className="space-y-5">
+          <div>
+            <label className="text-xs text-gray-400 uppercase tracking-wide mb-2 block">Interesses (ate 4)</label>
+            <div className="flex flex-wrap gap-2">
+              {INTERESTS.map(function(item) {
+                var active = selectedInterests.includes(item.id);
+                return (
+                  <button key={item.id} type="button" onClick={function() { toggleInterest(item.id); }}
+                    className="px-3 py-1.5 rounded-full text-xs font-medium transition-all border"
+                    style={active
+                      ? { background: 'rgba(178,75,243,0.15)', borderColor: 'rgba(178,75,243,0.4)', color: '#B24BF3' }
+                      : { background: 'rgba(255,255,255,0.04)', borderColor: 'rgba(255,255,255,0.08)', color: '#6B7280' }
+                    }
+                  >
+                    {item.label}
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          <div>
+            <label className="text-xs text-gray-400 uppercase tracking-wide mb-2 block">Perfil de orcamento</label>
+            <div className="grid grid-cols-3 gap-2">
+              {BUDGETS.map(function(b) {
+                return (
+                  <button key={b.id} type="button" onClick={function() { setBudget(b.id); }}
+                    className="p-3 rounded-xl border text-left transition-all"
+                    style={budget === b.id
+                      ? { background: 'rgba(57,255,20,0.08)', borderColor: 'rgba(57,255,20,0.3)' }
+                      : { background: 'rgba(255,255,255,0.03)', borderColor: 'rgba(255,255,255,0.07)' }
+                    }
+                  >
+                    <p className="font-syne font-bold text-xs" style={{ color: budget === b.id ? '#39FF14' : '#fff' }}>{b.label}</p>
+                    <p className="text-gray-600 text-xs mt-0.5">{b.desc}</p>
+                  </button>
+                );
+              })}
+            </div>
+          </div>
+
+          <div className="p-3 rounded-xl text-xs text-gray-500" style={{ background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.05)' }}>
+            <span className="text-white font-medium">{destination || 'Defina um destino acima'}</span>
+            {' · '}{days || 1} dia(s) · {passengers || 1} pessoa(s)
+            {' · '}<span style={{ color: '#B24BF3' }}>{selectedInterests.join(', ')}</span>
+          </div>
+
+          {error && (
+            <div className="flex items-start gap-2 p-3 rounded-xl text-xs" style={{ background: 'rgba(234,179,8,0.08)', border: '1px solid rgba(234,179,8,0.2)', color: '#d97706' }}>
+              <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5"/> {error}
+            </div>
+          )}
+
+          <button type="button" onClick={generate} disabled={loading || !destination}
+            className="w-full flex items-center justify-center gap-2 rounded-xl py-3 font-syne font-bold text-sm transition-all"
+            style={{ background: loading || !destination ? 'rgba(178,75,243,0.3)' : '#B24BF3', color: '#fff', cursor: loading || !destination ? 'not-allowed' : 'pointer' }}
+          >
+            {loading ? <><Loader2 className="w-4 h-4 animate-spin"/> Gerando roteiro...</> : <><Sparkles className="w-4 h-4"/> Gerar Roteiro</>}
+          </button>
         </div>
       )}
 
-      <div className="space-y-3">
-        {plan.map(function(dayPlan) {
-          return <DayCard key={dayPlan.day} dayPlan={dayPlan} />;
-        })}
-      </div>
+      {itinerary && (
+        <div>
+          <div className="rounded-xl p-4 mb-5" style={{ background: 'linear-gradient(135deg,rgba(178,75,243,0.1),rgba(0,212,255,0.08))', border: '1px solid rgba(178,75,243,0.2)' }}>
+            <div className="flex items-start justify-between gap-3">
+              <div>
+                <h3 className="font-syne font-extrabold text-lg">{itinerary.destination}</h3>
+                <p className="text-gray-400 text-sm mt-1">{itinerary.summary}</p>
+              </div>
+              {usingAI && (
+                <span className="flex items-center gap-1 text-xs px-2.5 py-1 rounded-full flex-shrink-0" style={{ background: 'rgba(178,75,243,0.2)', color: '#B24BF3' }}>
+                  <Star className="w-3 h-3 fill-current"/> Gemini
+                </span>
+              )}
+            </div>
+            {(itinerary.bestPeriod || itinerary.totalBudget) && (
+              <div className="flex flex-wrap gap-3 mt-3 text-xs">
+                {itinerary.bestPeriod && <span className="text-gray-500 flex items-center gap-1"><Calendar className="w-3 h-3"/>{itinerary.bestPeriod}</span>}
+                {itinerary.totalBudget && <span className="text-br-green font-mono">{itinerary.totalBudget}</span>}
+              </div>
+            )}
+            {error && <p className="text-yellow-600 text-xs mt-2">{error}</p>}
+          </div>
 
-      <p className="text-xs text-gray-700 mt-5">
-        * Roteiro sugerido com base no destino. Clique em cada atividade para ver detalhes e dicas.
-      </p>
+          <div className="flex items-center gap-2 mb-4">
+            <button type="button" onClick={function() { setActiveDay(function(p) { return Math.max(0, p-1); }); }} disabled={activeDay===0}
+              className="w-8 h-8 rounded-lg flex items-center justify-center transition-all" style={{ border: '1px solid rgba(255,255,255,0.1)', color: activeDay===0 ? '#374151' : '#9CA3AF' }}>
+              <ChevronLeft className="w-4 h-4"/>
+            </button>
+            <div className="flex gap-1.5 flex-1 overflow-x-auto pb-1">
+              {itinerary.days.map(function(d, i) {
+                return (
+                  <button key={i} type="button" onClick={function() { setActiveDay(i); }}
+                    className="flex-shrink-0 px-3 py-1.5 rounded-lg text-xs font-syne font-bold transition-all"
+                    style={activeDay===i
+                      ? { background: 'rgba(178,75,243,0.15)', color: '#B24BF3', border: '1px solid rgba(178,75,243,0.3)' }
+                      : { background: 'rgba(255,255,255,0.04)', color: '#6B7280', border: '1px solid rgba(255,255,255,0.07)' }
+                    }
+                  >Dia {d.day}</button>
+                );
+              })}
+            </div>
+            <button type="button" onClick={function() { setActiveDay(function(p) { return Math.min(totalDays-1, p+1); }); }} disabled={activeDay===totalDays-1}
+              className="w-8 h-8 rounded-lg flex items-center justify-center transition-all" style={{ border: '1px solid rgba(255,255,255,0.1)', color: activeDay===totalDays-1 ? '#374151' : '#9CA3AF' }}>
+              <ChevronRight className="w-4 h-4"/>
+            </button>
+          </div>
+
+          <div className="mb-4">
+            <p className="text-xs text-gray-600 font-mono">DIA {itinerary.days[activeDay].day}</p>
+            <h4 className="font-syne font-bold">{itinerary.days[activeDay].title}</h4>
+          </div>
+
+          <DayCard day={itinerary.days[activeDay]}/>
+
+          <button type="button" onClick={function() { setItinerary(null); setError(''); setActiveDay(0); }}
+            className="btn-ghost w-full mt-4 text-sm justify-center">
+            Gerar novo roteiro
+          </button>
+        </div>
+      )}
     </div>
   );
 }

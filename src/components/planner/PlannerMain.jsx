@@ -162,7 +162,11 @@ export default function PlannerMain() {
           <BudgetBreakdown budget={budgetData} />
 
           {/* ROTEIRO DIA A DIA (novo!) */}
-          <DayItinerary formValues={formValues} routeData={routeData} />
+          <DayItinerary
+            destination={formValues.destino}
+            days={parseInt(formValues.noites) + 1 || 1}
+            passengers={parseInt(formValues.passageiros) || 1}
+          />
 
           <SafetyAlerts distance={routeData.distance} />
           <StopPoints
