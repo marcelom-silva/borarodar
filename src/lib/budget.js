@@ -1,5 +1,4 @@
 // src/lib/budget.js
-
 var FUEL_PRICES = {
   gasolina:      5.89,
   etanol:        3.99,
@@ -8,17 +7,15 @@ var FUEL_PRICES = {
   flex_etanol:   3.99,
 };
 
-// Consumo padrao por tipo de veiculo (km/L)
 export var DEFAULT_KML = {
-  carro:    12,
-  suv:      10,
-  pickup:    9,
-  moto:     22,
-  motohome:  6,
-  caminhao:  8,
+  carro:    13.0,
+  suv:      10.0,
+  pickup:    9.0,
+  moto:     22.0,
+  motohome:  6.0,
+  caminhao:  8.0,
 };
 
-// Multiplicador de pedagio por tipo de veiculo (relativo ao carro basico)
 var TOLL_MULT = {
   carro:    1.0,
   suv:      1.0,
@@ -28,87 +25,44 @@ var TOLL_MULT = {
   caminhao: 2.5,
 };
 
-// Custo de hospedagem por quarto/noite por estilo
 var HOTEL_COST = {
   economico:  80,
   moderado:   150,
   esbanjando: 420,
 };
 
-// Custo de alimentacao por pessoa/refeicao por estilo
 var FOOD_COST = {
   economico:  15,
   moderado:   28,
   esbanjando: 75,
 };
 
-export function calculateBudget({
-  distanceKm,
-  fuelType,
-  kmPerLiter,
-  pricePerLiter,
-  passengers,
-  nights,
-  travelStyle,
-  vehicleType,
-  isRoundTrip,
-  avoidTolls,
-}) {
-  var style       = travelStyle  || 'moderado';
-  var vType       = vehicleType  || 'carro';
-  var roundTrip   = isRoundTrip  || false;
-  var noTolls     = avoidTolls   || false;
-  var litPrice    = pricePerLiter || FUEL_PRICES[fuelType] || 5.89;
-  var kml         = kmPerLiter   || DEFAULT_KML[vType] || 12;
-  var tollMult    = TOLL_MULT[vType] || 1.0;
+export function calculateBudget({ distanceKm, fuelType, kmPerLiter, pricePerLiter, passengers, nights, travelStyle, vehicleType, isRoundTrip, avoidTolls }) {
+  var style     = travelStyle  || 'moderado';
+  var vType     = vehicleType  || 'carro';
+  var roundTrip = isRoundTrip  || false;
+  var noTolls   = avoidTolls   || false;
+  var litPrice  = pricePerLiter || FUEL_PRICES[fuelType] || 5.89;
+  var kml       = kmPerLiter   || DEFAULT_KML[vType] || 13;
+  var tollMult  = TOLL_MULT[vType] || 1.0;
+  var totalKm   = roundTrip ? distanceKm * 2 : distanceKm;
 
-  // Distancia total (dobra se for ida e volta)
-  var totalKm = roundTrip ? distanceKm * 2 : distanceKm;
-
-  // Combustivel
-  var liters = totalKm / kml;
-  var fuel   = Math.round(liters * litPrice);
-
-  // Pedagio (estimativa ~R$ 0,07/km + multiplicador de veiculo)
-  var toll = noTolls ? 0 : Math.round(totalKm * 0.07 * tollMult);
-
-  // Total do veiculo
+  var liters       = totalKm / kml;
+  var fuel         = Math.round(liters * litPrice);
+  var toll         = noTolls ? 0 : Math.round(totalKm * 0.07 * tollMult);
   var vehicleTotal = fuel + toll;
 
-  // Alimentacao (refeicoes na estrada + dias de destino)
-  var tripDays    = Math.max(1, Math.ceil(totalKm / 500)) + (nights || 0);
-  var foodSessions= Math.max(2, tripDays * 3);
-  var food        = Math.round(passengers * foodSessions * FOOD_COST[style]);
-
-  // Hospedagem
+  var tripDays      = Math.max(1, Math.ceil(totalKm / 500)) + (nights || 0);
+  var foodSessions  = Math.max(2, tripDays * 3);
+  var food          = Math.round(passengers * foodSessions * FOOD_COST[style]);
   var rooms         = Math.ceil(passengers / 2);
   var accommodation = (nights || 0) > 0 ? Math.round(nights * rooms * HOTEL_COST[style]) : 0;
+  var itineraryTotal= food + accommodation;
 
-  // Total do roteiro
-  var itineraryTotal = food + accommodation;
-
-  // Total geral e por pessoa
   var total     = vehicleTotal + itineraryTotal;
   var perPerson = Math.round(total / Math.max(1, passengers));
 
-  return {
-    // Custos do veiculo
-    fuel:          fuel,
-    toll:          toll,
-    vehicleTotal:  vehicleTotal,
-    // Custos do roteiro
-    food:          food,
-    accommodation: accommodation,
-    itineraryTotal: itineraryTotal,
-    // Totais
-    total:         total,
-    perPerson:     perPerson,
-    // Meta
-    liters:        Math.round(liters * 10) / 10,
-    isRoundTrip:   roundTrip,
-    avoidTolls:    noTolls,
-    totalKm:       Math.round(totalKm),
-  };
+  return { fuel, toll, vehicleTotal, food, accommodation, itineraryTotal, total, perPerson, liters: Math.round(liters * 10) / 10, isRoundTrip: roundTrip, avoidTolls: noTolls, totalKm: Math.round(totalKm) };
 }
 
 export function getStyleLabel(style) {
@@ -116,43 +70,54 @@ export function getStyleLabel(style) {
   return m[style] || m.moderado;
 }
 
-// Dicas de clima/vestuario por mes (0=jan ... 11=dez)
-export function getSeasonalTips(month, interests) {
+// Aceita dateStr no formato 'YYYY-MM-DD' para dicas mais precisas
+export function getSeasonalTips(dateStr, interests) {
+  if (!dateStr) return [];
   var tips  = [];
-  var month = parseInt(month);
+  var d     = new Date(dateStr + 'T12:00:00');
+  var month = d.getMonth();    // 0-11
+  var day   = d.getDate();     // 1-31
 
-  // Estacoes no Brasil (Hemisferio Sul / Sudeste-Centro-Oeste)
-  var isSummer = month >= 11 || month <= 2;   // dez-fev
-  var isAutumn = month >= 3  && month <= 5;   // mar-mai
-  var isWinter = month >= 6  && month <= 8;   // jun-ago
-  var isSpring = month >= 9  && month <= 11;  // set-nov
-  var isRainy  = month >= 10 || month <= 3;   // nov-abr
+  // Estacoes (Hemisferio Sul / Sudeste)
+  var isSummer = month >= 11 || month <= 2;
+  var isWinter = month >= 6  && month <= 8;
+  var isRainy  = month >= 10 || month <= 3;
 
   if (isSummer) {
-    tips.push({ icon:'🌡️', color:'#FF6B35', msg:'Verao: calor intenso no SE/CO. Carregue muita agua, protetor solar e repelente.' });
+    tips.push({ icon:'🌡️', color:'#FF6B35', msg:'Verao: calor intenso. Leve muita agua, protetor solar FPS50+ e repelente.' });
   }
   if (isWinter) {
-    tips.push({ icon:'🧥', color:'#00D4FF', msg:'Inverno: frio no Sul/Serra. Leve agasalho, principalmente para noites e manha.' });
-  }
-  if (isAutumn || isSpring) {
-    tips.push({ icon:'🌤️', color:'#39FF14', msg:'Outono/Primavera: clima agradavel. Ideal para viagem — dias amenos e noites frescas.' });
+    tips.push({ icon:'🧥', color:'#00D4FF', msg:'Inverno: frio no Sul e na Serra. Leve agasalho para manha e noite.' });
   }
   if (isRainy) {
-    tips.push({ icon:'🌧️', color:'#FF6B35', msg:'Epoca de chuvas no Sudeste (nov-abr). Atencao a deslizamentos em estradas serranas.' });
+    tips.push({ icon:'🌧️', color:'#FF6B35', msg:'Epoca de chuvas (nov-abr): atencao a alagamentos e deslizamentos em estradas serranas.' });
+  }
+  if (!isSummer && !isWinter) {
+    tips.push({ icon:'🌤️', color:'#39FF14', msg:'Clima agradavel para viagem — dias amenos e noites frescas.' });
   }
 
-  if (interests) {
-    var inter = Array.isArray(interests) ? interests : [interests];
-    if (inter.includes('aventura')) {
-      tips.push({ icon:'🥾', color:'#B24BF3', msg:'Aventura: leve calcado antiderrapante, roupas de secagem rapida, mochila com snacks e muito repelente.' });
-    }
-    if (inter.includes('praia')) {
-      tips.push({ icon:'🏖️', color:'#00D4FF', msg:'Praia: protetor solar FPS 50+, roupa UV, chapeu de aba. Evite sol entre 10h-16h.' });
-    }
-    if (inter.includes('natureza')) {
-      tips.push({ icon:'🌿', color:'#39FF14', msg:'Trilhas: repelente DEET 20%+, calca comprida, lanterna extra e kit de primeiros socorros.' });
-    }
+  // Eventos especiais por data
+  if (month === 1 || (month === 2 && day <= 15)) {
+    tips.push({ icon:'🎭', color:'#B24BF3', msg:'Periodo de Carnaval: transito intenso nas estradas, reserve hospedagem com antecedencia.' });
+  }
+  if (month === 3 && day >= 15 && month <= 3) {
+    tips.push({ icon:'✝️', color:'#00D4FF', msg:'Semana Santa: destinos historicos com alta ocupacao. Reserve com antecedencia.' });
+  }
+  if (month === 5 || month === 6) {
+    tips.push({ icon:'🎪', color:'#FF6B35', msg:'Festas Juninas: excelente epoca para o Nordeste! Sao Joao em Campina Grande e Caruaru sao imperdíveis.' });
   }
 
-  return tips;
+  // Interesses especificos
+  var inter = Array.isArray(interests) ? interests : (interests ? [interests] : []);
+  if (inter.includes('aventura')) {
+    tips.push({ icon:'🥾', color:'#B24BF3', msg:'Aventura: leve calcado antiderrapante, roupas de secagem rapida e repelente DEET 20%+.' });
+  }
+  if (inter.includes('praia')) {
+    tips.push({ icon:'🏖️', color:'#00D4FF', msg:'Praia: protetor solar FPS50+, roupa UV, chapeu. Evite sol entre 10h e 16h.' });
+  }
+  if (inter.includes('natureza')) {
+    tips.push({ icon:'🌿', color:'#39FF14', msg:'Trilhas: leve lanterna, kit de primeiros socorros e muita agua.' });
+  }
+
+  return tips.slice(0, 4); // max 4 dicas para nao poluir o formulario
 }
