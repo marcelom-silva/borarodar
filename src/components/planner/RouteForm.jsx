@@ -27,6 +27,15 @@ var TRAVEL_PROFILES = [
   { id:'friends',       emoji:'👥', color:'#FFD700' },
 ];
 
+// Calcula numero de noites entre duas datas
+function calcNights(from, to) {
+  if (!from || !to) return null;
+  var d1   = new Date(from + 'T12:00:00');
+  var d2   = new Date(to   + 'T12:00:00');
+  var diff = Math.round((d2 - d1) / (1000 * 60 * 60 * 24));
+  return diff > 0 ? diff : null;
+}
+
 export default function RouteForm({ values, onChange, onCalculate, loading }) {
   var { t } = useLanguage();
 
@@ -36,19 +45,38 @@ export default function RouteForm({ values, onChange, onCalculate, loading }) {
   function handle(e) { set(e.target.name, e.target.value); }
   function submit(e) { e.preventDefault(); onCalculate(values); }
 
+  // Handler especial para campos de data: auto-calcula noites
+  function handleDate(e) {
+    var name  = e.target.name;
+    var value = e.target.value;
+    var newFrom = name === 'date_from' ? value : (values.date_from || '');
+    var newTo   = name === 'date_to'   ? value : (values.date_to   || '');
+    var nights  = calcNights(newFrom, newTo);
+    onChange(function(prev) {
+      var updated = Object.assign({}, prev, { [name]: value });
+      if (nights !== null) {
+        updated.noites          = String(nights);
+        updated.nights_auto_set = true;  // flag para mostrar hint
+      }
+      return updated;
+    });
+  }
+
   function addWaypoint()     { set('waypoints', (values.waypoints||[]).concat([{name:'',coords:null}])); }
   function removeWaypoint(i) { set('waypoints', (values.waypoints||[]).filter(function(_,idx){return idx!==i;})); }
   function updateWaypoint(i, name) {
     var wps=(values.waypoints||[]).slice(); wps[i]=Object.assign({},wps[i],{name:name}); set('waypoints',wps);
   }
 
-  // Dicas sazonais — passa t() para traducao correta
-  var seasonalTips = getSeasonalTips(values.date_from || '', values.interests || [], t);
+  var seasonalTips = getSeasonalTips(values.date_from||'', values.interests||[], t);
+  var isRoundTrip  = values.is_round_trip || false;
+  var avoidTolls   = values.avoid_tolls   || false;
+  var style        = values.viagem_style  || 'moderado';
+  var profile      = values.travel_profile|| 'couple';
 
-  var isRoundTrip = values.is_round_trip || false;
-  var avoidTolls  = values.avoid_tolls   || false;
-  var style       = values.viagem_style  || 'moderado';
-  var profile     = values.travel_profile|| 'couple';
+  // Calcula duracao em dias para exibir no resumo
+  var autoNights = calcNights(values.date_from, values.date_to);
+  var totalDays  = parseInt(values.noites || '0') + 1;
 
   return (
     <form onSubmit={submit} className="br-card p-5 space-y-5">
@@ -97,7 +125,7 @@ export default function RouteForm({ values, onChange, onCalculate, loading }) {
       </div>
 
       {/* WAYPOINTS */}
-      {(values.waypoints||[]).map(function(wp,i){
+      {(values.waypoints||[]).map(function(wp,i) {
         return (
           <div key={i}>
             <label className="text-xs text-gray-400 uppercase tracking-wide mb-1.5 block">{t('planner_stop')} {i+1}</label>
@@ -206,15 +234,28 @@ export default function RouteForm({ values, onChange, onCalculate, loading }) {
         <div className="grid grid-cols-2 gap-2">
           <div>
             <p className="text-[10px] text-gray-600 mb-1">{t('period_from')}</p>
-            <input type="date" name="date_from" value={values.date_from||''} onChange={handle}
+            <input type="date" name="date_from" value={values.date_from||''} onChange={handleDate}
               className="br-input text-sm" style={{paddingLeft:'12px',colorScheme:'dark'}}/>
           </div>
           <div>
             <p className="text-[10px] text-gray-600 mb-1">{t('period_to')}</p>
-            <input type="date" name="date_to" value={values.date_to||''} onChange={handle}
+            <input type="date" name="date_to" value={values.date_to||''} onChange={handleDate}
               className="br-input text-sm" style={{paddingLeft:'12px',colorScheme:'dark'}} min={values.date_from||undefined}/>
           </div>
         </div>
+
+        {/* Resumo do periodo calculado */}
+        {autoNights !== null && (
+          <div className="mt-2 flex items-center gap-2 px-3 py-2 rounded-lg text-xs" style={{background:'rgba(57,255,20,0.06)',border:'1px solid rgba(57,255,20,0.2)'}}>
+            <span className="text-br-green">📅</span>
+            <span className="text-br-green font-medium">
+              {autoNights} {autoNights === 1 ? t('person') : t('planner_nights').toLowerCase()} → {autoNights + 1} dias de roteiro
+            </span>
+            <span className="text-gray-600 ml-auto">{t('period_nights_auto')}</span>
+          </div>
+        )}
+
+        {/* Dicas sazonais */}
         {seasonalTips.length > 0 && (
           <div className="mt-2 space-y-1.5">
             {seasonalTips.map(function(tip,i){
@@ -241,13 +282,46 @@ export default function RouteForm({ values, onChange, onCalculate, loading }) {
           </div>
         </div>
         <div>
-          <label className="text-xs text-gray-400 uppercase tracking-wide mb-1.5 block">{t('planner_nights')}</label>
+          <label className="text-xs text-gray-400 uppercase tracking-wide mb-1.5 block">
+            {t('planner_nights')}
+            {values.nights_auto_set && (
+              <span className="ml-1.5 text-br-green font-normal normal-case text-[9px]">✓ auto</span>
+            )}
+          </label>
           <div className="relative">
             <Moon className="absolute top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 pointer-events-none z-10" style={{left:'12px'}}/>
-            <input name="noites" type="number" min="0" max="30" value={values.noites} onChange={handle} className="br-input" style={{paddingLeft:'2.25rem'}}/>
+            <input
+              name="noites"
+              type="number"
+              min="0"
+              max="30"
+              value={values.noites}
+              onChange={function(e) {
+                handle(e);
+                set('nights_auto_set', false); // usuario editou manualmente
+              }}
+              className="br-input"
+              style={{
+                paddingLeft:'2.25rem',
+                borderColor: values.nights_auto_set ? 'rgba(57,255,20,0.35)' : undefined,
+              }}
+            />
           </div>
+          {values.nights_auto_set && (
+            <p className="text-[10px] text-gray-600 mt-1">Altere se necessario</p>
+          )}
         </div>
       </div>
+
+      {/* Resumo: total de dias do roteiro */}
+      {parseInt(values.noites||'0') > 0 && (
+        <div className="flex items-center justify-center gap-2 py-2 rounded-xl text-xs" style={{background:'rgba(178,75,243,0.06)',border:'1px solid rgba(178,75,243,0.15)'}}>
+          <span className="text-br-purple">🗓️</span>
+          <span className="text-gray-400">Roteiro de</span>
+          <span className="font-syne font-bold text-br-purple">{totalDays} dias</span>
+          <span className="text-gray-400">/ {values.noites} noites no destino</span>
+        </div>
+      )}
 
       <button type="submit" disabled={loading} className="btn-neon w-full flex items-center justify-center gap-2 mt-1">
         {loading?<><Loader2 className="w-4 h-4 animate-spin"/>{t('planner_loading')}</>:<><Car className="w-4 h-4"/>{t('planner_btn')}</>}

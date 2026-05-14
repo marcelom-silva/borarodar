@@ -37,7 +37,7 @@ export var translations = {
     vehicle_default_note:'Sem veiculo selecionado: consumo padrao sedan/hatch 1.6 (13 km/L).',
     vehicle_filter_ph:'Filtrar...', vehicle_no_results:'Nenhum resultado',
     period_label:'Periodo da Viagem', period_from:'Data de Ida', period_to:'Data de Retorno',
-    date_optional:'(opcional)', date_hint:'Usamos para dicas de clima e vestuario.',
+    date_optional:'(opcional)', date_hint:'Usamos para dicas de clima e vestuario.', period_nights_auto:'auto',
     seasonal_summer:'Verao: calor intenso. Leve muita agua, protetor solar FPS50+ e repelente.',
     seasonal_winter:'Inverno: frio no Sul e na Serra. Leve agasalho para a manha e noite.',
     seasonal_mild:'Clima agradavel para viagem — dias amenos e noites frescas.',
@@ -155,7 +155,7 @@ export var translations = {
     vehicle_default_note:'No vehicle selected: sedan/hatch 1.6 default (13 km/L).',
     vehicle_filter_ph:'Filter...', vehicle_no_results:'No results',
     period_label:'Travel Period', period_from:'Departure Date', period_to:'Return Date',
-    date_optional:'(optional)', date_hint:'Used for weather and clothing tips.',
+    date_optional:'(optional)', date_hint:'Used for weather and clothing tips.', period_nights_auto:'auto',
     seasonal_summer:'Summer: intense heat. Bring water, SPF50+ sunscreen and insect repellent.',
     seasonal_winter:'Winter: cold in the South and mountains. Bring warm clothes.',
     seasonal_mild:'Pleasant weather — mild days and cool nights, great for traveling.',
@@ -263,7 +263,7 @@ export var translations = {
     vehicle_default_note:'Sin vehiculo seleccionado: sedan/hatch 1.6 (13 km/L).',
     vehicle_filter_ph:'Filtrar...', vehicle_no_results:'Sin resultados',
     period_label:'Periodo del Viaje', period_from:'Fecha de Ida', period_to:'Fecha de Retorno',
-    date_optional:'(opcional)', date_hint:'Usado para consejos de clima y ropa.',
+    date_optional:'(opcional)', date_hint:'Usado para consejos de clima y ropa.', period_nights_auto:'auto',
     seasonal_summer:'Verano: calor intenso. Lleva agua, protector FPS50+ y repelente.',
     seasonal_winter:'Invierno: frio en el Sur y la Sierra. Lleva ropa abrigada.',
     seasonal_mild:'Clima agradable — dias templados y noches frescas.',
@@ -334,3 +334,4 @@ export var translations = {
     common_back:'Volver', common_save:'Guardar', common_cancel:'Cancelar', common_close:'Cerrar',
   },
 };
+
