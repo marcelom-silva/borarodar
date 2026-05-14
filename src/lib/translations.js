@@ -1,7 +1,5 @@
 // src/lib/translations.js
 export var translations = {
-
-  // ============================================================
   pt: {
     nav_planejar:'Planejar', nav_galera:'Galera', nav_explorar:'Explorar', nav_perfil:'Perfil', nav_ajuda:'Ajuda',
     hero_badge:'Nova forma de explorar o Brasil', hero_subtitle:'Planeje sua rota, calcule os gastos e viva a viagem dos sonhos.', hero_cta:'Partiu, galera?',
@@ -14,7 +12,7 @@ export var translations = {
     feat3_title:'Pit Stops Incriveis', feat3_desc:'Restaurantes, postos, cachoeiras, mirantes e apoio para bebes na rota.',
     feat4_title:'Alertas de Seguranca', feat4_desc:'Avisos sobre trechos ruins, condicoes da pista e dicas de seguranca.',
     feat5_title:'Comunidade', feat5_desc:'Avalie rotas, compartilhe dicas e suba no ranking dos exploradores.',
-    feat6_title:'Exportar Tudo', feat6_desc:'Mande por WhatsApp, salve em PDF, envie por e-mail. Simples assim.',
+    feat6_title:'Exportar Tudo', feat6_desc:'Mande por WhatsApp, salve em PDF, envie por e-mail.',
     map_tag:'Cobertura Nacional', map_title:'De qualquer cidade a qualquer destino', map_subtitle:'Calcule rotas em todo o Brasil.',
     map_live:'BRASIL - MAPA ESQUEMATICO', map_btn:'Planejar minha rota', map_route_label:'Rota em destaque',
     map_distance:'Distancia', map_time:'Tempo', map_fuel:'Combustivel',
@@ -22,64 +20,57 @@ export var translations = {
     community_tag:'Comunidade', community_title:'O que a galera ta falando', community_all:'Ver tudo',
     community_cta_title:'Partiu fazer parte da galera?', community_cta_sub:'Cadastre-se gratis e comece a planejar sua proxima aventura.',
     community_cta_btn1:'Criar conta gratis', community_cta_btn2:'Testar sem cadastro',
-
-    // Planner
     planner_tag:'Planejador', planner_title:'Pit Stop do Role', planner_sub:'Calcule sua rota, adicione paradas e saiba quanto vai gastar.',
     planner_origem:'Origem', planner_destino:'Destino', planner_stop:'Parada',
     planner_add_wp:'Adicionar parada intermediaria', planner_fuel:'Combustivel',
     planner_kml:'Km/L do veiculo', planner_price:'Preco/litro (R$)',
     planner_pax:'Passageiros', planner_nights:'Noites no destino',
     planner_btn:'Calcular Rota', planner_loading:'Calculando...', planner_map_hint:'Preencha a rota e clique em Calcular',
-
-    // Modo de planejamento
     mode_complete:'Planejamento Completo', mode_complete_desc:'Rota + orcamento + paradas + roteiro',
     mode_itinerary:'Montar Roteiro', mode_itinerary_desc:'Apenas o roteiro dia a dia com IA',
     mode_itinerary_hint:'Preencha o destino e os dias. O roteiro sera gerado pela IA.',
-
     // Veiculo
-    vehicle_label:'Tipo de Veiculo', vehicle_model_ph:'Marca / Modelo / Ano (ex: Honda Civic 2020)',
-    vehicle_kml_hint:'Consumo padrao sugerido para este veiculo:',
-
+    vehicle_label:'Tipo e Modelo do Veiculo',
+    vehicle_brand_ph:'Selecione a marca...',
+    vehicle_model_ph2:'Selecione o modelo...',
+    vehicle_year_ph:'Ano do veiculo...',
+    vehicle_kml_hint:'Consumo estimado sugerido:',
+    vehicle_kml_editable:'voce pode alterar acima.',
+    vehicle_default_note:'Sem veiculo selecionado: sera usado consumo de sedan/hatch 1.6 (13 km/L).',
+    // Periodos
+    period_label:'Periodo da Viagem', period_from:'Data de Ida', period_to:'Data de Retorno',
+    date_optional:'(opcional)', date_hint:'Usamos para dicas de clima e vestuario.',
     // Ida e volta / pedagios
     trip_roundtrip:'Ida e Volta', trip_oneway:'Apenas Ida',
     avoid_tolls:'Evitar Pedagios',
-    avoid_tolls_note:'Sem pedagios, a rota pode ficar mais longa e consumir mais combustivel. O custo total pode ser similar ou maior.',
-
-    // Data
-    date_label:'Data da Viagem', date_optional:'(opcional)',
-    date_hint:'Usamos para dicas de clima e vestuario.',
-
+    avoid_tolls_note:'Sem pedagios, a rota pode ser mais longa e o custo total pode ser similar.',
     // Estilo
     style_label:'Estilo de Viagem',
     style_economico:'Economico', style_economico_desc:'Hostel, lanchonetes',
     style_moderado:'Moderado',   style_moderado_desc:'Pousadas, restaurantes',
     style_esbanjando:'Esbanjando',style_esbanjando_desc:'Hoteis, fine dining',
-
     // Orcamento
     budget_title:'Orcamento do Role',
     budget_fuel:'Combustivel', budget_toll:'Pedagios', budget_food:'Alimentacao', budget_hotel:'Hospedagem',
     budget_total:'Total estimado', budget_no_tolls:'Sem pedagios',
-    budget_note:'* Pedagios estimados por media por km × tipo de veiculo. Alimentacao e hospedagem sao medias nacionais.',
-
-    // Custo separado
+    budget_note:'* Pedagios estimados por media x tipo de veiculo. Alimentacao e hospedagem sao medias nacionais.',
     cost_vehicle:'Custos do Veiculo', cost_vehicle_total:'Total veiculo',
     cost_itinerary:'Custos do Roteiro', cost_itinerary_total:'Total roteiro',
     cost_per_person:'Por pessoa (racha)', person:'pessoa', people:'pessoas',
-
-    // Alertas de seguranca — CORRIGIDOS
+    // Links externos
+    link_maps:'Ver no Maps', link_booking:'Ver hospedagem', link_external:'Abre em nova aba',
+    // Alertas de seguranca
     safety_title:'Alertas de Seguranca',
-    safety_long_trip:'Viagem longa: pare e descanse a cada 2 horas de conducao. Fadiga e a principal causa de acidentes em rodovias.',
+    safety_long_trip:'Viagem longa: pare e descanse a cada 2 horas. Fadiga e a principal causa de acidentes em rodovias.',
     safety_check_car:'Antes de sair: verifique oleo, agua do radiador, calibragem dos pneus e nivel de combustivel.',
-    safety_seatbelt:'Sempre use o cinto de seguranca e evite usar o celular ao volante. Salve o roteiro antes de partir.',
+    safety_seatbelt:'Sempre use cinto de seguranca e evite usar o celular ao volante. Salve o roteiro antes de partir.',
     safety_overnight:'Trecho muito longo: considere pernoitar no meio do caminho para mais seguranca e conforto.',
     safety_moto:'Motociclista: use equipamento completo (capacete, luva, jaqueta). Atencao ao vento lateral em rodovias.',
-    safety_roundtrip:'Ida e volta: planeje um intervalo de descanso de pelo menos 30 min entre as duas etapas.',
-
-    // Paradas e atracoes
+    safety_roundtrip:'Ida e volta: planeje ao menos 30 min de descanso entre os dois trechos.',
+    // Paradas
     stops_title:'Paradas e Atracoes', stops_pitstop:'Pit Stops', stops_attr:'Atracoes',
     stops_nearby:'Proximas da rota', stops_detour:'Vale o Desvio',
     stops_detour_sub:'mais de 40 km, mas valem muito!', stops_empty:'Insira um destino para ver as atracoes da regiao.',
-
     // IA
     itinerary_title:'Roteiro com IA', itinerary_sub:'Google Gemini — 1.500 req/dia gratis',
     itinerary_interests:'Seus interesses (ate 4)', itinerary_budget:'Perfil de orcamento',
@@ -87,22 +78,18 @@ export var translations = {
     itinerary_new:'Gerar novo roteiro', itinerary_morning:'Manha', itinerary_afternoon:'Tarde',
     itinerary_evening:'Noite', itinerary_tip:'Dica local', itinerary_hotel:'Hospedagem',
     itinerary_day:'Dia', itinerary_no_dest:'Calcule uma rota primeiro para definir o destino.',
-
     // Export
     export_title:'Exportar Roteiro', export_sub:'Compartilhe com a galera ou salve para depois.',
     export_whats:'WhatsApp', export_email:'E-mail', export_pdf:'PDF',
     export_link:'Copiar link', export_copied:'Link copiado!',
-
     // Comunidade
     comm_tag:'Comunidade', comm_title:'O Role da Galera', comm_sub:'Dicas, alertas, rotas e rankings dos viajantes do Brasil.',
     comm_feed:'Feed de Dicas', comm_ranking:'Ranking', comm_publish:'Publicar',
     comm_placeholder:'Compartilhe uma dica, alerta ou avaliacao de rota...',
     comm_km:'Km rodados', comm_tips:'Dicas publicadas', comm_explorers:'Exploradores',
-
     // Explorar
     explore_tag:'Descubra', explore_title:'Explorar o Brasil', explore_sub:'Rotas tematicas, destinos incriveis e achados secretos.',
     explore_routes:'Rotas Tematicas', explore_dest:'Destinos', explore_all:'Todos', explore_plan:'Planejar',
-
     // Perfil
     profile_greeting:'Ola, aventureiro!', profile_trips:'Viagens', profile_km:'Km rodados', profile_tips_ct:'Dicas',
     profile_badges:'Minhas Medalhas', profile_badges_sub:'Conquiste medalhas planejando viagens e participando da comunidade.',
@@ -113,18 +100,11 @@ export var translations = {
     profile_pass_ph:'Minimo 6 caracteres', profile_login_btn:'Entrar', profile_register_btn:'Criar conta',
     profile_no_account:'Nao tem conta? Crie gratis', profile_has_account:'Ja tem conta? Entrar',
     profile_use_free:'Usar sem cadastro',
-
-    // Ajuda
+    // Ajuda / Footer / Comum
     help_tag:'Suporte', help_title:'Duvidas? A gente explica tudo', help_sub:'Encontre respostas rapidas sobre o BoraRodar.',
-
-    // Footer
     footer_nav:'Navegacao', footer_routes:'Rotas Tematicas', footer_made:'Feito com amor para quem ama a estrada brasileira.',
-
-    // Comum
     common_loading:'Carregando...', common_error:'Algo deu errado. Tente novamente.', common_back:'Voltar', common_save:'Salvar', common_cancel:'Cancelar', common_close:'Fechar',
   },
-
-  // ============================================================
   en: {
     nav_planejar:'Plan', nav_galera:'Community', nav_explorar:'Explore', nav_perfil:'Profile', nav_ajuda:'Help',
     hero_badge:'New way to explore Brazil', hero_subtitle:'Plan your route, calculate expenses and live your dream road trip.', hero_cta:"Let's go?",
@@ -132,18 +112,18 @@ export var translations = {
     hero_stats_rotas:'routes created', hero_stats_viajantes:'travelers', hero_stats_destinos:'destinations',
     hero_scroll:'Scroll down', hero_hover_tip:'hover over the title to see the wheels spin',
     features_tag:'Why use it', features_title:'Everything your trip needs', features_subtitle:'From the Amazon to the Pampas.',
-    feat1_title:'Smart Routes', feat1_desc:'Best route considering tolls, ferries and bad road sections.',
-    feat2_title:'Detailed Budget', feat2_desc:'Fuel, tolls, food and accommodation calculated before you leave.',
+    feat1_title:'Smart Routes', feat1_desc:'Best route with tolls, ferries and bad sections. Real data.',
+    feat2_title:'Detailed Budget', feat2_desc:'Fuel, tolls, food and accommodation before you leave.',
     feat3_title:'Amazing Pit Stops', feat3_desc:'Restaurants, gas stations, waterfalls and baby-friendly stops.',
-    feat4_title:'Safety Alerts', feat4_desc:'Warnings about bad roads, road conditions and safety tips.',
-    feat5_title:'Community', feat5_desc:'Rate routes, share tips and climb the explorers leaderboard.',
-    feat6_title:'Export Everything', feat6_desc:'Share via WhatsApp, save as PDF, send by email.',
+    feat4_title:'Safety Alerts', feat4_desc:'Warnings about bad roads and safety tips.',
+    feat5_title:'Community', feat5_desc:'Rate routes, share tips and climb the leaderboard.',
+    feat6_title:'Export Everything', feat6_desc:'Share via WhatsApp, PDF or email.',
     map_tag:'National Coverage', map_title:'From any city to any destination', map_subtitle:'Calculate routes anywhere in Brazil.',
     map_live:'BRAZIL - SCHEMATIC MAP', map_btn:'Plan my route', map_route_label:'Featured route',
     map_distance:'Distance', map_time:'Time', map_fuel:'Fuel',
     trending_tag:'Trending', trending_title:'Most liked routes', trending_all:'See all',
     community_tag:'Community', community_title:"What people are saying", community_all:'See all',
-    community_cta_title:'Ready to join the crew?', community_cta_sub:'Sign up for free and start planning your next adventure.',
+    community_cta_title:'Ready to join the crew?', community_cta_sub:'Sign up free and start planning your next adventure.',
     community_cta_btn1:'Create free account', community_cta_btn2:'Try without signing up',
     planner_tag:'Planner', planner_title:'Route Pit Stop', planner_sub:'Calculate your route, add stops and know your budget.',
     planner_origem:'Origin', planner_destino:'Destination', planner_stop:'Stop',
@@ -154,13 +134,14 @@ export var translations = {
     mode_complete:'Full Planning', mode_complete_desc:'Route + budget + stops + itinerary',
     mode_itinerary:'Build Itinerary', mode_itinerary_desc:'AI day-by-day itinerary only',
     mode_itinerary_hint:'Fill in destination and days. The AI will generate the itinerary.',
-    vehicle_label:'Vehicle Type', vehicle_model_ph:'Make / Model / Year (e.g. Honda Civic 2020)',
-    vehicle_kml_hint:'Suggested fuel efficiency for this vehicle:',
+    vehicle_label:'Vehicle Type & Model',
+    vehicle_brand_ph:'Select brand...', vehicle_model_ph2:'Select model...', vehicle_year_ph:'Vehicle year...',
+    vehicle_kml_hint:'Suggested fuel efficiency:', vehicle_kml_editable:'you can edit above.',
+    vehicle_default_note:'No vehicle selected: sedan/hatch 1.6 default (13 km/L) will be used.',
+    period_label:'Travel Period', period_from:'Departure Date', period_to:'Return Date',
+    date_optional:'(optional)', date_hint:'Used for weather and clothing tips.',
     trip_roundtrip:'Round Trip', trip_oneway:'One Way',
-    avoid_tolls:'Avoid Tolls',
-    avoid_tolls_note:'Avoiding tolls may result in a longer route and higher fuel consumption. Total cost may be similar or higher.',
-    date_label:'Travel Date', date_optional:'(optional)',
-    date_hint:'Used for weather and clothing suggestions.',
+    avoid_tolls:'Avoid Tolls', avoid_tolls_note:'Avoiding tolls may result in a longer route with similar total cost.',
     style_label:'Travel Style',
     style_economico:'Budget', style_economico_desc:'Hostel, fast food',
     style_moderado:'Moderate', style_moderado_desc:'Guesthouses, restaurants',
@@ -168,30 +149,31 @@ export var translations = {
     budget_title:'Trip Budget',
     budget_fuel:'Fuel', budget_toll:'Tolls', budget_food:'Food', budget_hotel:'Accommodation',
     budget_total:'Estimated total', budget_no_tolls:'No tolls',
-    budget_note:'* Tolls estimated per km average × vehicle type. Food and accommodation are national averages.',
+    budget_note:'* Tolls estimated per km x vehicle type. Food and accommodation are national averages.',
     cost_vehicle:'Vehicle Costs', cost_vehicle_total:'Vehicle total',
     cost_itinerary:'Itinerary Costs', cost_itinerary_total:'Itinerary total',
     cost_per_person:'Per person (split)', person:'person', people:'people',
+    link_maps:'View on Maps', link_booking:'See accommodation', link_external:'Opens in new tab',
     safety_title:'Safety Alerts',
-    safety_long_trip:'Long trip: stop and rest every 2 hours of driving. Fatigue is the leading cause of highway accidents.',
+    safety_long_trip:'Long trip: stop and rest every 2 hours. Fatigue is the leading cause of highway accidents.',
     safety_check_car:'Before leaving: check oil, coolant, tire pressure and fuel level.',
-    safety_seatbelt:'Always wear your seatbelt and avoid using your phone while driving. Save your itinerary before departing.',
-    safety_overnight:'Very long route: consider staying overnight midway for safety and comfort.',
-    safety_moto:'Motorcyclist: wear full gear (helmet, gloves, jacket). Watch out for crosswinds on highways.',
-    safety_roundtrip:'Round trip: plan at least 30 minutes of rest between the two legs.',
+    safety_seatbelt:'Always wear your seatbelt and avoid using your phone while driving.',
+    safety_overnight:'Very long route: consider staying overnight midway for safety.',
+    safety_moto:'Motorcyclist: wear full gear. Watch out for crosswinds on highways.',
+    safety_roundtrip:'Round trip: plan at least 30 min rest between the two legs.',
     stops_title:'Stops & Attractions', stops_pitstop:'Pit Stops', stops_attr:'Attractions',
     stops_nearby:'Near the route', stops_detour:'Worth the Detour',
     stops_detour_sub:'over 40 km, but absolutely worth it!', stops_empty:'Enter a destination to see regional attractions.',
     itinerary_title:'AI Itinerary', itinerary_sub:'Google Gemini — 1,500 free req/day',
     itinerary_interests:'Your interests (up to 4)', itinerary_budget:'Budget profile',
-    itinerary_btn:'Generate Itinerary', itinerary_loading:'Generating itinerary...',
+    itinerary_btn:'Generate Itinerary', itinerary_loading:'Generating...',
     itinerary_new:'Generate new itinerary', itinerary_morning:'Morning', itinerary_afternoon:'Afternoon',
     itinerary_evening:'Evening', itinerary_tip:'Local tip', itinerary_hotel:'Accommodation',
     itinerary_day:'Day', itinerary_no_dest:'Calculate a route first to set the destination.',
     export_title:'Export Itinerary', export_sub:'Share with friends or save for later.',
     export_whats:'WhatsApp', export_email:'Email', export_pdf:'PDF',
     export_link:'Copy link', export_copied:'Link copied!',
-    comm_tag:'Community', comm_title:"The Crew's Trips", comm_sub:'Tips, alerts, routes and rankings from Brazil travelers.',
+    comm_tag:'Community', comm_title:"The Crew's Trips", comm_sub:'Tips, alerts and rankings from Brazil travelers.',
     comm_feed:'Tips Feed', comm_ranking:'Rankings', comm_publish:'Publish',
     comm_placeholder:'Share a tip, alert or route review...',
     comm_km:'Km traveled', comm_tips:'Tips published', comm_explorers:'Explorers',
@@ -208,10 +190,8 @@ export var translations = {
     profile_use_free:'Use without signing up',
     help_tag:'Support', help_title:'Questions? We explain everything', help_sub:'Find quick answers about BoraRodar.',
     footer_nav:'Navigation', footer_routes:'Thematic Routes', footer_made:'Made with love for those who love Brazilian roads.',
-    common_loading:'Loading...', common_error:'Something went wrong. Please try again.', common_back:'Back', common_save:'Save', common_cancel:'Cancel', common_close:'Close',
+    common_loading:'Loading...', common_error:'Something went wrong. Try again.', common_back:'Back', common_save:'Save', common_cancel:'Cancel', common_close:'Close',
   },
-
-  // ============================================================
   es: {
     nav_planejar:'Planificar', nav_galera:'Comunidad', nav_explorar:'Explorar', nav_perfil:'Perfil', nav_ajuda:'Ayuda',
     hero_badge:'Nueva forma de explorar Brasil', hero_subtitle:'Planifica tu ruta, calcula los gastos y vive el viaje de tus suenos.', hero_cta:'Vamos?',
@@ -222,9 +202,9 @@ export var translations = {
     feat1_title:'Rutas Inteligentes', feat1_desc:'Mejor camino con peajes, transbordadores y tramos malos.',
     feat2_title:'Presupuesto Detallado', feat2_desc:'Combustible, peajes, comida y alojamiento antes de salir.',
     feat3_title:'Paradas Increibles', feat3_desc:'Restaurantes, gasolineras, cascadas y paradas para bebes.',
-    feat4_title:'Alertas de Seguridad', feat4_desc:'Avisos sobre tramos malos, condiciones de la carretera y consejos.',
+    feat4_title:'Alertas de Seguridad', feat4_desc:'Avisos sobre tramos malos y consejos de seguridad.',
     feat5_title:'Comunidad', feat5_desc:'Evalua rutas, comparte consejos y sube en el ranking.',
-    feat6_title:'Exportar Todo', feat6_desc:'Comparte por WhatsApp, guarda como PDF o envialo por correo.',
+    feat6_title:'Exportar Todo', feat6_desc:'Comparte por WhatsApp, PDF o correo.',
     map_tag:'Cobertura Nacional', map_title:'De cualquier ciudad a cualquier destino', map_subtitle:'Calcula rutas en todo Brasil.',
     map_live:'BRASIL - MAPA ESQUEMATICO', map_btn:'Planificar mi ruta', map_route_label:'Ruta destacada',
     map_distance:'Distancia', map_time:'Tiempo', map_fuel:'Combustible',
@@ -239,15 +219,16 @@ export var translations = {
     planner_pax:'Pasajeros', planner_nights:'Noches en el destino',
     planner_btn:'Calcular Ruta', planner_loading:'Calculando...', planner_map_hint:'Completa la ruta y haz clic en Calcular',
     mode_complete:'Planificacion Completa', mode_complete_desc:'Ruta + presupuesto + paradas + itinerario',
-    mode_itinerary:'Armar Itinerario', mode_itinerary_desc:'Solo el itinerario dia a dia con IA',
+    mode_itinerary:'Armar Itinerario', mode_itinerary_desc:'Solo el itinerario con IA',
     mode_itinerary_hint:'Completa el destino y los dias. La IA generara el itinerario.',
-    vehicle_label:'Tipo de Vehiculo', vehicle_model_ph:'Marca / Modelo / Ano (ej: Honda Civic 2020)',
-    vehicle_kml_hint:'Consumo sugerido para este vehiculo:',
+    vehicle_label:'Tipo y Modelo del Vehiculo',
+    vehicle_brand_ph:'Selecciona la marca...', vehicle_model_ph2:'Selecciona el modelo...', vehicle_year_ph:'Ano del vehiculo...',
+    vehicle_kml_hint:'Consumo estimado sugerido:', vehicle_kml_editable:'puedes editarlo arriba.',
+    vehicle_default_note:'Sin vehiculo seleccionado: se usara sedan/hatch 1.6 (13 km/L).',
+    period_label:'Periodo del Viaje', period_from:'Fecha de Ida', period_to:'Fecha de Retorno',
+    date_optional:'(opcional)', date_hint:'Usado para consejos de clima y ropa.',
     trip_roundtrip:'Ida y Vuelta', trip_oneway:'Solo Ida',
-    avoid_tolls:'Evitar Peajes',
-    avoid_tolls_note:'Sin peajes, la ruta puede ser mas larga y consumir mas combustible. El costo total puede ser similar o mayor.',
-    date_label:'Fecha del Viaje', date_optional:'(opcional)',
-    date_hint:'Usamos para consejos de clima y ropa.',
+    avoid_tolls:'Evitar Peajes', avoid_tolls_note:'Sin peajes, la ruta puede ser mas larga con costo similar.',
     style_label:'Estilo de Viaje',
     style_economico:'Economico', style_economico_desc:'Hostel, comida rapida',
     style_moderado:'Moderado',   style_moderado_desc:'Posadas, restaurantes',
@@ -255,23 +236,24 @@ export var translations = {
     budget_title:'Presupuesto del Viaje',
     budget_fuel:'Combustible', budget_toll:'Peajes', budget_food:'Alimentacion', budget_hotel:'Alojamiento',
     budget_total:'Total estimado', budget_no_tolls:'Sin peajes',
-    budget_note:'* Peajes estimados por km × tipo de vehiculo. Comida y alojamiento son promedios nacionales.',
+    budget_note:'* Peajes estimados por km x tipo de vehiculo. Comida y alojamiento son promedios nacionales.',
     cost_vehicle:'Costos del Vehiculo', cost_vehicle_total:'Total vehiculo',
     cost_itinerary:'Costos del Itinerario', cost_itinerary_total:'Total itinerario',
     cost_per_person:'Por persona (division)', person:'persona', people:'personas',
+    link_maps:'Ver en Maps', link_booking:'Ver alojamiento', link_external:'Abre en nueva pestana',
     safety_title:'Alertas de Seguridad',
     safety_long_trip:'Viaje largo: detente y descansa cada 2 horas. La fatiga es la principal causa de accidentes.',
-    safety_check_car:'Antes de salir: verifica aceite, agua del radiador, presion de neumaticos y nivel de combustible.',
-    safety_seatbelt:'Usa siempre el cinturon de seguridad y evita el celular al volante.',
+    safety_check_car:'Antes de salir: verifica aceite, agua del radiador, presion de neumaticos y combustible.',
+    safety_seatbelt:'Usa siempre el cinturon y evita el celular al volante.',
     safety_overnight:'Tramo muy largo: considera pernoctar a mitad de camino por seguridad.',
     safety_moto:'Motociclista: usa equipo completo. Cuidado con el viento lateral en autopistas.',
-    safety_roundtrip:'Ida y vuelta: planifica al menos 30 minutos de descanso entre los dos tramos.',
+    safety_roundtrip:'Ida y vuelta: planifica al menos 30 min de descanso entre los dos tramos.',
     stops_title:'Paradas y Atracciones', stops_pitstop:'Paradas', stops_attr:'Atracciones',
     stops_nearby:'Cerca de la ruta', stops_detour:'Vale el Desvio',
-    stops_detour_sub:'mas de 40 km, pero absolutamente vale!', stops_empty:'Ingresa un destino para ver las atracciones.',
+    stops_detour_sub:'mas de 40 km pero vale!', stops_empty:'Ingresa un destino para ver las atracciones.',
     itinerary_title:'Itinerario con IA', itinerary_sub:'Google Gemini — 1.500 req/dia gratis',
     itinerary_interests:'Tus intereses (hasta 4)', itinerary_budget:'Perfil de presupuesto',
-    itinerary_btn:'Generar Itinerario', itinerary_loading:'Generando itinerario...',
+    itinerary_btn:'Generar Itinerario', itinerary_loading:'Generando...',
     itinerary_new:'Generar nuevo itinerario', itinerary_morning:'Manana', itinerary_afternoon:'Tarde',
     itinerary_evening:'Noche', itinerary_tip:'Consejo local', itinerary_hotel:'Alojamiento',
     itinerary_day:'Dia', itinerary_no_dest:'Calcula una ruta primero para definir el destino.',
