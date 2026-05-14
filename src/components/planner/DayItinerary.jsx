@@ -2,7 +2,8 @@
 import { useState } from 'react';
 import { generateItinerary, mapsLink, bookingLink, gygLink } from '@/lib/ai';
 import { generateStaticItinerary } from '@/lib/itinerary';
-import { Sparkles, Coffee, Sun, Moon, Bed, Lightbulb, Calendar, ChevronLeft, ChevronRight, Loader2, AlertCircle, Star, ExternalLink } from 'lucide-react';
+import DayTripMap from '@/components/ui/DayTripMap';
+import { Sparkles, Coffee, Sun, Moon, Bed, Lightbulb, Calendar, ChevronLeft, ChevronRight, Loader2, AlertCircle, Star, ExternalLink, Map, Navigation } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 var INTERESTS = [
@@ -11,6 +12,24 @@ var INTERESTS = [
   {id:'cultura',label:'Cultura'},{id:'praia',label:'Praia'},
   {id:'compras',label:'Compras'},{id:'relax',label:'Relax'},
 ];
+
+// Geocodifica um local via Nominatim
+async function geocodePlace(name, destination) {
+  try {
+    var q   = name + ', ' + destination;
+    var url = 'https://nominatim.openstreetmap.org/search?' + new URLSearchParams({ q:q, format:'json', limit:'1' }).toString();
+    var res = await fetch(url, { headers:{'Accept-Language':'pt-BR','User-Agent':'BoraRodar/1.0'} });
+    var data= await res.json();
+    if (data[0]) return { lat:parseFloat(data[0].lat), lng:parseFloat(data[0].lon) };
+  } catch(_) {}
+  return null;
+}
+
+// Monta URL multi-parada do Google Maps
+function buildGoogleMapsRoute(points, destination) {
+  var stops = points.map(function(p) { return encodeURIComponent(p.name + ', ' + destination); });
+  return 'https://www.google.com/maps/dir/' + stops.join('/');
+}
 
 function ExtLink({ href, label, icon, color }) {
   return (
@@ -30,16 +49,16 @@ function extractPlaceName(text) {
 }
 
 function MealRow({ label, meal, t }) {
-  var desc  = typeof meal === 'string' ? meal : (meal && meal.description) || '';
-  var place = typeof meal === 'object' && meal ? meal.placeName : extractPlaceName(desc);
-  var query = typeof meal === 'object' && meal ? meal.mapQuery  : place;
+  var desc  = typeof meal==='string' ? meal : (meal&&meal.description)||'';
+  var place = typeof meal==='object'&&meal ? meal.placeName : extractPlaceName(desc);
+  var query = typeof meal==='object'&&meal ? meal.mapQuery  : place;
   return (
     <div className="mt-1.5">
       <p className="text-xs text-gray-600 mb-0.5">{label}</p>
       <p className="text-xs text-gray-400 leading-relaxed">{desc}</p>
       {place && (
         <div className="mt-1.5">
-          <ExtLink href={mapsLink(query || place)} label={t('link_maps')} icon="🗺️" color="#39FF14"/>
+          <ExtLink href={mapsLink(query||place)} label={t('link_maps')} icon="🗺️" color="#39FF14"/>
         </div>
       )}
     </div>
@@ -47,24 +66,111 @@ function MealRow({ label, meal, t }) {
 }
 
 function AttractionLinks({ attractions, color, t }) {
-  if (!attractions || !attractions.length) return null;
+  if (!attractions||!attractions.length) return null;
   return (
     <div className="flex flex-wrap gap-1.5 mt-2">
-      {attractions.map(function(a, i) {
-        return <ExtLink key={i} href={mapsLink(a.mapQuery || a.name)} label={a.name} icon="📍" color={color}/>;
-      })}
+      {attractions.map(function(a,i) { return <ExtLink key={i} href={mapsLink(a.mapQuery||a.name)} label={a.name} icon="📍" color={color}/>; })}
     </div>
   );
 }
 
+// Card de um dia — agora com mini-mapa e botao Maps
 function DayCard({ day, destination, t }) {
+  var [showMap,   setShowMap]   = useState(false);
+  var [mapPoints, setMapPoints] = useState(null);
+  var [geocoding, setGeocoding] = useState(false);
+
   var accom     = day.accommodation;
   var accomDesc = typeof accom==='string' ? accom : (accom&&accom.description)||'';
   var accomMap  = typeof accom==='object'&&accom ? accom.mapQuery   : null;
   var accomBook = typeof accom==='object'&&accom ? accom.bookingQuery: destination;
 
+  // Coleta todas as atracoes do dia
+  function getAllAttractions() {
+    var all = [];
+    if (day.morningAttractions)   all = all.concat(day.morningAttractions);
+    if (day.afternoonAttractions) all = all.concat(day.afternoonAttractions);
+    if (day.meals) {
+      ['breakfast','lunch','dinner'].forEach(function(m) {
+        if (day.meals[m] && day.meals[m].placeName) all.push({ name:day.meals[m].placeName, mapQuery:day.meals[m].mapQuery });
+      });
+    }
+    return all.filter(function(a,i,arr) { return arr.findIndex(function(b){return b.name===a.name;})===i; });
+  }
+
+  async function handleShowMap() {
+    if (showMap) { setShowMap(false); return; }
+    if (mapPoints) { setShowMap(true); return; }
+
+    var attractions = getAllAttractions();
+    if (!attractions.length) { setShowMap(true); return; }
+
+    setGeocoding(true);
+    try {
+      var results = await Promise.all(attractions.map(async function(a) {
+        var query = a.mapQuery || (a.name + ', ' + destination);
+        var coords= await geocodePlace(query, destination);
+        return coords ? Object.assign({}, coords, { name: a.name }) : null;
+      }));
+      var valid = results.filter(Boolean);
+      setMapPoints(valid);
+      setShowMap(true);
+    } catch(_) {
+      setShowMap(true);
+    } finally {
+      setGeocoding(false);
+    }
+  }
+
+  var allAttractions = getAllAttractions();
+  var mapsUrl = mapPoints && mapPoints.length > 1 ? buildGoogleMapsRoute(mapPoints, destination) : null;
+
   return (
     <div className="space-y-3">
+      {/* Barra de acoes do dia */}
+      {allAttractions.length > 0 && (
+        <div className="flex flex-wrap items-center gap-2 p-3 rounded-xl" style={{background:'rgba(57,255,20,0.04)',border:'1px solid rgba(57,255,20,0.12)'}}>
+          <Map className="w-3.5 h-3.5 text-br-green flex-shrink-0"/>
+          <span className="text-xs text-gray-400 flex-1">{allAttractions.length} {t('daytrip_stops')} {t('daytrip_this_day')}</span>
+          <button
+            type="button"
+            onClick={handleShowMap}
+            disabled={geocoding}
+            className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg transition-all font-medium"
+            style={{background:'rgba(57,255,20,0.12)',color:'#39FF14',border:'1px solid rgba(57,255,20,0.25)'}}>
+            {geocoding
+              ? <><Loader2 className="w-3 h-3 animate-spin"/>{t('itinerary_geocoding')}</>
+              : showMap
+              ? <><Map className="w-3 h-3"/>{t('daytrip_hide_map')}</>
+              : <><Map className="w-3 h-3"/>{t('itinerary_show_map')}</>
+            }
+          </button>
+          {mapsUrl && (
+            <a href={mapsUrl} target="_blank" rel="noopener noreferrer"
+              className="flex items-center gap-1.5 text-xs px-3 py-1.5 rounded-lg transition-all font-medium hover:opacity-80"
+              style={{background:'rgba(0,212,255,0.12)',color:'#00D4FF',border:'1px solid rgba(0,212,255,0.25)'}}>
+              <Navigation className="w-3 h-3"/>
+              {t('itinerary_open_day_maps')}
+              <ExternalLink className="w-2.5 h-2.5"/>
+            </a>
+          )}
+        </div>
+      )}
+
+      {/* Mini-mapa do dia */}
+      {showMap && (
+        <div className="rounded-xl overflow-hidden" style={{border:'1px solid rgba(57,255,20,0.2)'}}>
+          {mapPoints && mapPoints.length > 0
+            ? <DayTripMap points={mapPoints} height={240} accentColor="#39FF14"/>
+            : (
+              <div className="flex items-center justify-center rounded-xl text-gray-500 text-xs" style={{height:'80px',background:'rgba(255,255,255,0.03)'}}>
+                Sem coordenadas disponiveis para este dia.
+              </div>
+            )
+          }
+        </div>
+      )}
+
       {/* Manha */}
       <div className="flex gap-3 p-4 rounded-xl" style={{background:'rgba(234,179,8,0.05)',border:'1px solid rgba(234,179,8,0.1)'}}>
         <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{background:'rgba(234,179,8,0.12)'}}>
@@ -177,7 +283,7 @@ export default function DayItinerary({ destination, days, passengers, travelStyl
     } finally { setLoading(false); }
   }
 
-  var totalDays = itinerary && itinerary.days ? itinerary.days.length : 0;
+  var totalDays = itinerary&&itinerary.days ? itinerary.days.length : 0;
 
   return (
     <div className="br-card p-6">
@@ -208,14 +314,11 @@ export default function DayItinerary({ destination, days, passengers, travelStyl
               })}
             </div>
           </div>
-
           {error && (
-            <div className="flex items-start gap-2 p-3 rounded-xl text-xs"
-              style={{background:'rgba(234,179,8,0.08)',border:'1px solid rgba(234,179,8,0.2)',color:'#d97706'}}>
+            <div className="flex items-start gap-2 p-3 rounded-xl text-xs" style={{background:'rgba(234,179,8,0.08)',border:'1px solid rgba(234,179,8,0.2)',color:'#d97706'}}>
               <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5"/>{error}
             </div>
           )}
-
           <button type="button" onClick={generate} disabled={loading||!destination}
             className="w-full flex items-center justify-center gap-2 rounded-xl py-3 font-syne font-bold text-sm transition-all"
             style={{background:loading||!destination?'rgba(178,75,243,0.3)':'#B24BF3',color:'#fff',cursor:loading||!destination?'not-allowed':'pointer'}}>
@@ -245,7 +348,7 @@ export default function DayItinerary({ destination, days, passengers, travelStyl
             {error && <p className="text-yellow-600 text-xs mt-2">{error}</p>}
           </div>
 
-          {/* Navegacao de dias */}
+          {/* Navegacao dias */}
           <div className="flex items-center gap-2 mb-4">
             <button type="button" onClick={function(){setActiveDay(function(p){return Math.max(0,p-1);});}} disabled={activeDay===0}
               className="w-8 h-8 rounded-lg flex items-center justify-center transition-all"
@@ -275,7 +378,7 @@ export default function DayItinerary({ destination, days, passengers, travelStyl
             <h4 className="font-syne font-bold">{itinerary.days[activeDay].title}</h4>
           </div>
 
-          <DayCard day={itinerary.days[activeDay]} destination={itinerary.destination} t={t}/>
+          <DayCard key={activeDay} day={itinerary.days[activeDay]} destination={itinerary.destination} t={t}/>
 
           <button type="button" onClick={function(){setItinerary(null);setError('');setActiveDay(0);}}
             className="btn-ghost w-full mt-4 text-sm justify-center">
