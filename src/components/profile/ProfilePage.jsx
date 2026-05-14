@@ -1,7 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
-import { User, Mail, Lock, LogOut, Map, Award, Eye, EyeOff, Loader2 } from 'lucide-react';
+import { User, Mail, Lock, Map, Award, Eye, EyeOff, Loader2 } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 var BADGES = [
@@ -65,13 +65,25 @@ export default function ProfilePage() {
   async function handleGoogle() {
     setGoogleLoad(true); setAuthError('');
     try {
-      var { error } = await supabase.auth.signInWithOAuth({ provider:'google', options:{ redirectTo: window.location.origin+'/perfil' } });
+      var { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: {
+          redirectTo: window.location.origin + '/perfil',
+          // Força sempre mostrar o seletor de conta Google
+          queryParams: { prompt: 'select_account' },
+        },
+      });
       if (error) throw error;
-    } catch (err) { setAuthError('Erro Google: '+err.message); setGoogleLoad(false); }
+    } catch (err) { setAuthError('Erro Google: ' + err.message); setGoogleLoad(false); }
   }
 
-  if (loading) return <div className="min-h-screen flex items-center justify-center"><Loader2 className="w-8 h-8 animate-spin text-br-green"/></div>;
+  if (loading) return (
+    <div className="min-h-screen flex items-center justify-center">
+      <Loader2 className="w-8 h-8 animate-spin text-br-green"/>
+    </div>
+  );
 
+  // Tela de login
   if (!session) {
     return (
       <div className="max-w-md mx-auto px-4 pt-32 pb-16">
@@ -79,10 +91,13 @@ export default function ProfilePage() {
           <div className="w-16 h-16 rounded-2xl bg-br-green/10 border border-br-green/20 flex items-center justify-center mx-auto mb-4">
             <User className="w-8 h-8 text-br-green"/>
           </div>
-          <h1 className="font-syne font-extrabold text-2xl">{authMode === 'login' ? t('profile_login_title') : t('profile_register_title')}</h1>
+          <h1 className="font-syne font-extrabold text-2xl">
+            {authMode === 'login' ? t('profile_login_title') : t('profile_register_title')}
+          </h1>
         </div>
 
         <div className="br-card p-6 space-y-4">
+          {/* Google */}
           <button onClick={handleGoogle} disabled={googleLoad} className="btn-google">
             {googleLoad ? <Loader2 className="w-4 h-4 animate-spin"/> : <GoogleIcon/>}
             {googleLoad ? t('common_loading') : t('profile_google')}
@@ -99,21 +114,25 @@ export default function ProfilePage() {
               <label className="text-xs text-gray-400 uppercase tracking-wide mb-1.5 block">Email</label>
               <div className="relative">
                 <Mail className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 pointer-events-none"/>
-                <input type="email" className="br-input" style={{ paddingLeft:'2.25rem' }} placeholder={t('profile_email_ph')} value={email} onChange={function(e) { setEmail(e.target.value); }} required/>
+                <input type="email" className="br-input" style={{ paddingLeft:'2.25rem' }} placeholder={t('profile_email_ph')}
+                  value={email} onChange={function(e) { setEmail(e.target.value); }} required/>
               </div>
             </div>
             <div>
               <label className="text-xs text-gray-400 uppercase tracking-wide mb-1.5 block">Senha</label>
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 pointer-events-none"/>
-                <input type={showPass ? 'text' : 'password'} className="br-input" style={{ paddingLeft:'2.25rem', paddingRight:'2.5rem' }} placeholder={t('profile_pass_ph')} value={password} onChange={function(e) { setPassword(e.target.value); }} required minLength={6}/>
+                <input type={showPass ? 'text' : 'password'} className="br-input" style={{ paddingLeft:'2.25rem', paddingRight:'2.5rem' }}
+                  placeholder={t('profile_pass_ph')} value={password} onChange={function(e) { setPassword(e.target.value); }} required minLength={6}/>
                 <button type="button" onClick={function() { setShowPass(!showPass); }} className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-white">
                   {showPass ? <EyeOff className="w-4 h-4"/> : <Eye className="w-4 h-4"/>}
                 </button>
               </div>
             </div>
+
             {authError && <p className="text-red-400 text-sm bg-red-500/10 border border-red-500/20 rounded-lg px-4 py-3">{authError}</p>}
             {authMsg   && <p className="text-br-green text-sm bg-br-green/10 border border-br-green/20 rounded-lg px-4 py-3">{authMsg}</p>}
+
             <button type="submit" disabled={authLoading} className="btn-neon w-full flex items-center justify-center gap-2">
               {authLoading && <Loader2 className="w-4 h-4 animate-spin"/>}
               {authMode === 'login' ? t('profile_login_btn') : t('profile_register_btn')}
@@ -121,11 +140,14 @@ export default function ProfilePage() {
           </form>
 
           <div className="text-center">
-            <button type="button" onClick={function() { setAuthMode(authMode==='login' ? 'register' : 'login'); setAuthError(''); setAuthMsg(''); }} className="text-sm text-gray-500 hover:text-white transition-colors">
+            <button type="button"
+              onClick={function() { setAuthMode(authMode==='login' ? 'register' : 'login'); setAuthError(''); setAuthMsg(''); }}
+              className="text-sm text-gray-500 hover:text-white transition-colors">
               {authMode === 'login' ? t('profile_no_account') : t('profile_has_account')}
             </button>
           </div>
         </div>
+
         <p className="text-center text-xs text-gray-700 mt-4">
           <a href="/planejar" className="text-br-green hover:underline">{t('profile_use_free')} →</a>
         </p>
@@ -133,30 +155,36 @@ export default function ProfilePage() {
     );
   }
 
+  // Tela de perfil logado
   var userName   = session.user.user_metadata?.full_name || session.user.email.split('@')[0];
   var userAvatar = session.user.user_metadata?.avatar_url;
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 pt-24 pb-16">
-      <div className="mb-8 flex items-center justify-between">
-        <div>
-          <span className="text-br-green font-mono text-xs uppercase tracking-widest">Meu Espaco</span>
-          <h1 className="font-syne font-extrabold text-3xl mt-1">{t('profile_greeting').replace('aventureiro', userName.split(' ')[0])} 👋</h1>
-        </div>
-        <button onClick={function() { supabase.auth.signOut(); }} className="btn-ghost flex items-center gap-2 text-sm">
-          <LogOut className="w-4 h-4"/>{t('profile_logout')}
-        </button>
+      <div className="mb-8">
+        <span className="text-br-green font-mono text-xs uppercase tracking-widest">Meu Espaco</span>
+        <h1 className="font-syne font-extrabold text-3xl mt-1">
+          {t('profile_greeting').replace('aventureiro', userName.split(' ')[0])} 👋
+        </h1>
       </div>
 
+      {/* Card de perfil */}
       <div className="br-card p-6 mb-6 flex flex-col sm:flex-row items-center sm:items-start gap-5">
         <div className="w-20 h-20 rounded-2xl overflow-hidden flex-shrink-0 bg-br-green/15 border border-br-green/20 flex items-center justify-center">
-          {userAvatar ? <img src={userAvatar} alt={userName} className="w-full h-full object-cover"/> : <User className="w-10 h-10 text-br-green"/>}
+          {userAvatar
+            ? <img src={userAvatar} alt={userName} className="w-full h-full object-cover" referrerPolicy="no-referrer"/>
+            : <User className="w-10 h-10 text-br-green"/>
+          }
         </div>
         <div className="text-center sm:text-left">
           <h2 className="font-syne font-extrabold text-xl">{userName}</h2>
           <p className="text-gray-500 text-sm">{session.user.email}</p>
           <div className="flex flex-wrap justify-center sm:justify-start gap-6 mt-4">
-            {[{ l:t('profile_trips'), v:'0' }, { l:t('profile_km'), v:'0' }, { l:t('profile_tips_ct'), v:'0' }].map(function({ l, v }) {
+            {[
+              { l: t('profile_trips'),    v:'0' },
+              { l: t('profile_km'),       v:'0' },
+              { l: t('profile_tips_ct'),  v:'0' },
+            ].map(function({ l, v }) {
               return (
                 <div key={l} className="text-center sm:text-left">
                   <div className="font-syne font-extrabold text-xl text-br-green">{v}</div>
@@ -168,8 +196,11 @@ export default function ProfilePage() {
         </div>
       </div>
 
+      {/* Medalhas */}
       <div className="br-card p-6 mb-6">
-        <h2 className="font-syne font-bold text-lg mb-1 flex items-center gap-2"><Award className="w-5 h-5 text-br-orange"/>{t('profile_badges')}</h2>
+        <h2 className="font-syne font-bold text-lg mb-1 flex items-center gap-2">
+          <Award className="w-5 h-5 text-br-orange"/>{t('profile_badges')}
+        </h2>
         <p className="text-gray-600 text-xs mb-5">{t('profile_badges_sub')}</p>
         <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-5 gap-3">
           {BADGES.map(function(b) {
@@ -183,8 +214,11 @@ export default function ProfilePage() {
         </div>
       </div>
 
+      {/* Historico */}
       <div className="br-card p-6">
-        <h2 className="font-syne font-bold text-lg mb-4 flex items-center gap-2"><Map className="w-5 h-5 text-br-blue"/>{t('profile_history')}</h2>
+        <h2 className="font-syne font-bold text-lg mb-4 flex items-center gap-2">
+          <Map className="w-5 h-5 text-br-blue"/>{t('profile_history')}
+        </h2>
         <div className="text-center py-12 text-gray-600">
           <Map className="w-12 h-12 mx-auto mb-3 opacity-20"/>
           <p className="text-sm">{t('profile_empty')}</p>
