@@ -12,12 +12,11 @@ var INTERESTS = [
   {id:'compras',label:'Compras'},{id:'relax',label:'Relax'},
 ];
 
-// Botao de link externo
 function ExtLink({ href, label, icon, color }) {
   return (
     <a href={href} target="_blank" rel="noopener noreferrer"
       className="inline-flex items-center gap-1.5 text-[11px] px-2.5 py-1 rounded-lg transition-all hover:opacity-80 active:scale-95"
-      style={{ background: color+'18', color: color, border: '1px solid '+color+'25' }}>
+      style={{ background:color+'18', color:color, border:'1px solid '+color+'25' }}>
       {icon && <span>{icon}</span>}
       {label}
       <ExternalLink className="w-2.5 h-2.5 opacity-70"/>
@@ -25,32 +24,29 @@ function ExtLink({ href, label, icon, color }) {
   );
 }
 
-// Extrai nome de lugar de uma string legada
 function extractPlaceName(text) {
   if (!text) return '';
   return text.split('—')[0].split(' - ')[0].trim();
 }
 
-// Linha de refeicao com link Maps
-function MealRow({ label, meal }) {
+function MealRow({ label, meal, t }) {
   var desc  = typeof meal === 'string' ? meal : (meal && meal.description) || '';
   var place = typeof meal === 'object' && meal ? meal.placeName : extractPlaceName(desc);
-  var query = typeof meal === 'object' && meal ? meal.mapQuery : place;
+  var query = typeof meal === 'object' && meal ? meal.mapQuery  : place;
   return (
     <div className="mt-1.5">
       <p className="text-xs text-gray-600 mb-0.5">{label}</p>
       <p className="text-xs text-gray-400 leading-relaxed">{desc}</p>
       {place && (
         <div className="mt-1.5">
-          <ExtLink href={mapsLink(query || place)} label="Ver no Maps" icon="🗺️" color="#39FF14"/>
+          <ExtLink href={mapsLink(query || place)} label={t('link_maps')} icon="🗺️" color="#39FF14"/>
         </div>
       )}
     </div>
   );
 }
 
-// Links de atracoes
-function AttractionLinks({ attractions, color }) {
+function AttractionLinks({ attractions, color, t }) {
   if (!attractions || !attractions.length) return null;
   return (
     <div className="flex flex-wrap gap-1.5 mt-2">
@@ -61,65 +57,64 @@ function AttractionLinks({ attractions, color }) {
   );
 }
 
-// Card de um dia completo
-function DayCard({ day, destination }) {
+function DayCard({ day, destination, t }) {
   var accom     = day.accommodation;
   var accomDesc = typeof accom==='string' ? accom : (accom&&accom.description)||'';
-  var accomMap  = typeof accom==='object' && accom ? accom.mapQuery : null;
-  var accomBook = typeof accom==='object' && accom ? accom.bookingQuery : destination;
+  var accomMap  = typeof accom==='object'&&accom ? accom.mapQuery   : null;
+  var accomBook = typeof accom==='object'&&accom ? accom.bookingQuery: destination;
 
   return (
     <div className="space-y-3">
       {/* Manha */}
-      <div className="flex gap-3 p-4 rounded-xl" style={{ background:'rgba(234,179,8,0.05)', border:'1px solid rgba(234,179,8,0.1)' }}>
-        <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background:'rgba(234,179,8,0.12)' }}>
+      <div className="flex gap-3 p-4 rounded-xl" style={{background:'rgba(234,179,8,0.05)',border:'1px solid rgba(234,179,8,0.1)'}}>
+        <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{background:'rgba(234,179,8,0.12)'}}>
           <Coffee className="w-4 h-4 text-yellow-400"/>
         </div>
         <div className="flex-1 min-w-0">
-          <p className="text-xs text-yellow-400 font-mono uppercase tracking-wide mb-1">Manha</p>
+          <p className="text-xs text-yellow-400 font-mono uppercase tracking-wide mb-1">{t('itinerary_morning_label')}</p>
           <p className="text-sm text-gray-300 leading-relaxed">{day.morning}</p>
-          <AttractionLinks attractions={day.morningAttractions} color="#FBBF24"/>
-          {day.meals && <MealRow label="☕ Cafe da manha" meal={day.meals.breakfast}/>}
+          <AttractionLinks attractions={day.morningAttractions} color="#FBBF24" t={t}/>
+          {day.meals && <MealRow label={'☕ '+t('itinerary_breakfast')} meal={day.meals.breakfast} t={t}/>}
         </div>
       </div>
 
       {/* Tarde */}
-      <div className="flex gap-3 p-4 rounded-xl" style={{ background:'rgba(255,107,53,0.05)', border:'1px solid rgba(255,107,53,0.1)' }}>
-        <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background:'rgba(255,107,53,0.12)' }}>
+      <div className="flex gap-3 p-4 rounded-xl" style={{background:'rgba(255,107,53,0.05)',border:'1px solid rgba(255,107,53,0.1)'}}>
+        <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{background:'rgba(255,107,53,0.12)'}}>
           <Sun className="w-4 h-4 text-br-orange"/>
         </div>
         <div className="flex-1 min-w-0">
-          <p className="text-xs text-br-orange font-mono uppercase tracking-wide mb-1">Tarde</p>
+          <p className="text-xs text-br-orange font-mono uppercase tracking-wide mb-1">{t('itinerary_afternoon_label')}</p>
           <p className="text-sm text-gray-300 leading-relaxed">{day.afternoon}</p>
-          <AttractionLinks attractions={day.afternoonAttractions} color="#FF6B35"/>
-          {day.meals && <MealRow label="🍽️ Almoco" meal={day.meals.lunch}/>}
+          <AttractionLinks attractions={day.afternoonAttractions} color="#FF6B35" t={t}/>
+          {day.meals && <MealRow label={'🍽️ '+t('itinerary_lunch')} meal={day.meals.lunch} t={t}/>}
         </div>
       </div>
 
       {/* Noite */}
-      <div className="flex gap-3 p-4 rounded-xl" style={{ background:'rgba(0,212,255,0.05)', border:'1px solid rgba(0,212,255,0.1)' }}>
-        <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ background:'rgba(0,212,255,0.12)' }}>
+      <div className="flex gap-3 p-4 rounded-xl" style={{background:'rgba(0,212,255,0.05)',border:'1px solid rgba(0,212,255,0.1)'}}>
+        <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{background:'rgba(0,212,255,0.12)'}}>
           <Moon className="w-4 h-4 text-br-blue"/>
         </div>
         <div className="flex-1 min-w-0">
-          <p className="text-xs text-br-blue font-mono uppercase tracking-wide mb-1">Noite</p>
+          <p className="text-xs text-br-blue font-mono uppercase tracking-wide mb-1">{t('itinerary_evening_label')}</p>
           <p className="text-sm text-gray-300 leading-relaxed">{day.evening}</p>
-          {day.meals && <MealRow label="🌙 Jantar" meal={day.meals.dinner}/>}
+          {day.meals && <MealRow label={'🌙 '+t('itinerary_dinner')} meal={day.meals.dinner} t={t}/>}
         </div>
       </div>
 
       {/* Hospedagem */}
       {accomDesc && (
-        <div className="flex gap-3 p-3 rounded-xl" style={{ background:'rgba(178,75,243,0.05)', border:'1px solid rgba(178,75,243,0.1)' }}>
+        <div className="flex gap-3 p-3 rounded-xl" style={{background:'rgba(178,75,243,0.05)',border:'1px solid rgba(178,75,243,0.1)'}}>
           <Bed className="w-4 h-4 text-br-purple flex-shrink-0 mt-0.5"/>
           <div className="flex-1 min-w-0">
             <p className="text-xs text-gray-400 leading-relaxed">
-              <span className="text-br-purple font-medium">Hospedagem: </span>{accomDesc}
+              <span className="text-br-purple font-medium">{t('itinerary_accommodation_prefix')}: </span>{accomDesc}
             </p>
             <div className="flex flex-wrap gap-1.5 mt-1.5">
-              {accomMap  && <ExtLink href={mapsLink(accomMap)}       label="Ver no Maps"    icon="🗺️" color="#B24BF3"/>}
-              {accomBook && <ExtLink href={bookingLink(accomBook)}    label="Booking.com"    icon="🏨" color="#00D4FF"/>}
-              {destination && <ExtLink href={gygLink(destination)}    label="Atividades"     icon="🎯" color="#FF6B35"/>}
+              {accomMap  && <ExtLink href={mapsLink(accomMap)}     label={t('link_maps')}      icon="🗺️" color="#B24BF3"/>}
+              {accomBook && <ExtLink href={bookingLink(accomBook)} label="Booking.com"          icon="🏨" color="#00D4FF"/>}
+              {destination && <ExtLink href={gygLink(destination)} label={t('link_activities')} icon="🎯" color="#FF6B35"/>}
             </div>
           </div>
         </div>
@@ -127,14 +122,16 @@ function DayCard({ day, destination }) {
 
       {/* Dica local */}
       {day.tip && (
-        <div className="flex gap-3 p-3 rounded-xl" style={{ background:'rgba(57,255,20,0.05)', border:'1px solid rgba(57,255,20,0.12)' }}>
+        <div className="flex gap-3 p-3 rounded-xl" style={{background:'rgba(57,255,20,0.05)',border:'1px solid rgba(57,255,20,0.12)'}}>
           <Lightbulb className="w-4 h-4 text-br-green flex-shrink-0 mt-0.5"/>
-          <p className="text-xs text-gray-400"><span className="text-br-green font-medium">Dica local: </span>{day.tip}</p>
+          <p className="text-xs text-gray-400">
+            <span className="text-br-green font-medium">{t('itinerary_tip_prefix')}: </span>{day.tip}
+          </p>
         </div>
       )}
 
       <p className="text-[10px] text-gray-700 flex items-center gap-1">
-        <ExternalLink className="w-2.5 h-2.5"/> Links abrem em nova aba, fora do BoraRodar.
+        <ExternalLink className="w-2.5 h-2.5"/> {t('itinerary_external_note')}
       </p>
     </div>
   );
@@ -151,8 +148,8 @@ export default function DayItinerary({ destination, days, passengers, travelStyl
 
   function toggleInterest(id) {
     setSelectedInterests(function(prev) {
-      if (prev.includes(id)) return prev.filter(function(x){ return x !== id; });
-      if (prev.length >= 4)  return prev;
+      if(prev.includes(id)) return prev.filter(function(x){return x!==id;});
+      if(prev.length>=4)    return prev;
       return prev.concat([id]);
     });
   }
@@ -162,24 +159,20 @@ export default function DayItinerary({ destination, days, passengers, travelStyl
     setLoading(true); setError(''); setItinerary(null); setUsingAI(false);
     try {
       var result = await generateItinerary({
-        destination:   destination,
-        days:          days || 1,
-        passengers:    passengers || 1,
-        interests:     selectedInterests,
-        budget:        travelStyle || 'moderado',
-        travelDate:    travelDate,
-        travelProfile: travelProfile || 'couple',
+        destination, days:days||1, passengers:passengers||1,
+        interests:selectedInterests, budget:travelStyle||'moderado',
+        travelDate, travelProfile:travelProfile||'couple',
       });
       setItinerary(result); setUsingAI(true);
-    } catch (aiErr) {
-      var staticResult = generateStaticItinerary({ destination: destination, days: days || 1 });
+    } catch(aiErr) {
+      var staticResult = generateStaticItinerary({ destination, days:days||1 });
       if (staticResult) {
         setItinerary(staticResult);
-        if (aiErr.message === 'GEMINI_KEY_MISSING') setError('Configure NEXT_PUBLIC_GEMINI_API_KEY para roteiros personalizados.');
+        if(aiErr.message==='GEMINI_KEY_MISSING') setError('Configure NEXT_PUBLIC_GEMINI_API_KEY para roteiros personalizados.');
       } else {
-        if (aiErr.message === 'GEMINI_KEY_MISSING') setError('Configure a chave Gemini em .env.local.');
-        else if (aiErr.message === 'RATE_LIMIT')    setError('Limite da API atingido (1.500/dia). Tente amanha.');
-        else setError('Erro ao gerar: ' + aiErr.message);
+        if(aiErr.message==='GEMINI_KEY_MISSING') setError('Configure a chave Gemini em .env.local.');
+        else if(aiErr.message==='RATE_LIMIT')    setError('Limite da API atingido (1.500/dia). Tente amanha.');
+        else setError('Erro ao gerar: '+aiErr.message);
       }
     } finally { setLoading(false); }
   }
@@ -189,7 +182,7 @@ export default function DayItinerary({ destination, days, passengers, travelStyl
   return (
     <div className="br-card p-6">
       <div className="flex items-center gap-3 mb-5">
-        <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background:'rgba(178,75,243,0.15)' }}>
+        <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{background:'rgba(178,75,243,0.15)'}}>
           <Sparkles className="w-5 h-5 text-br-purple"/>
         </div>
         <div>
@@ -200,19 +193,15 @@ export default function DayItinerary({ destination, days, passengers, travelStyl
 
       {!itinerary && (
         <div className="space-y-4">
-          {/* Interesses */}
           <div>
             <label className="text-xs text-gray-400 uppercase tracking-wide mb-2 block">{t('itinerary_interests')}</label>
             <div className="flex flex-wrap gap-2">
               {INTERESTS.map(function(item) {
-                var active = selectedInterests.includes(item.id);
+                var active=selectedInterests.includes(item.id);
                 return (
-                  <button key={item.id} type="button" onClick={function(){ toggleInterest(item.id); }}
+                  <button key={item.id} type="button" onClick={function(){toggleInterest(item.id);}}
                     className="px-3 py-1.5 rounded-full text-xs font-medium transition-all border"
-                    style={active
-                      ? { background:'rgba(178,75,243,0.15)', borderColor:'rgba(178,75,243,0.4)', color:'#B24BF3' }
-                      : { background:'rgba(255,255,255,0.04)', borderColor:'rgba(255,255,255,0.08)', color:'#6B7280' }
-                    }>
+                    style={active?{background:'rgba(178,75,243,0.15)',borderColor:'rgba(178,75,243,0.4)',color:'#B24BF3'}:{background:'rgba(255,255,255,0.04)',borderColor:'rgba(255,255,255,0.08)',color:'#6B7280'}}>
                     {item.label}
                   </button>
                 );
@@ -222,33 +211,29 @@ export default function DayItinerary({ destination, days, passengers, travelStyl
 
           {error && (
             <div className="flex items-start gap-2 p-3 rounded-xl text-xs"
-              style={{ background:'rgba(234,179,8,0.08)', border:'1px solid rgba(234,179,8,0.2)', color:'#d97706' }}>
+              style={{background:'rgba(234,179,8,0.08)',border:'1px solid rgba(234,179,8,0.2)',color:'#d97706'}}>
               <AlertCircle className="w-4 h-4 flex-shrink-0 mt-0.5"/>{error}
             </div>
           )}
 
-          <button type="button" onClick={generate} disabled={loading || !destination}
+          <button type="button" onClick={generate} disabled={loading||!destination}
             className="w-full flex items-center justify-center gap-2 rounded-xl py-3 font-syne font-bold text-sm transition-all"
-            style={{ background: loading || !destination ? 'rgba(178,75,243,0.3)' : '#B24BF3', color:'#fff', cursor: loading || !destination ? 'not-allowed' : 'pointer' }}>
-            {loading
-              ? <><Loader2 className="w-4 h-4 animate-spin"/>{t('itinerary_loading')}</>
-              : <><Sparkles className="w-4 h-4"/>{t('itinerary_btn')}</>
-            }
+            style={{background:loading||!destination?'rgba(178,75,243,0.3)':'#B24BF3',color:'#fff',cursor:loading||!destination?'not-allowed':'pointer'}}>
+            {loading?<><Loader2 className="w-4 h-4 animate-spin"/>{t('itinerary_loading')}</>:<><Sparkles className="w-4 h-4"/>{t('itinerary_btn')}</>}
           </button>
         </div>
       )}
 
       {itinerary && (
         <div>
-          {/* Header do roteiro */}
-          <div className="rounded-xl p-4 mb-5" style={{ background:'linear-gradient(135deg,rgba(178,75,243,0.1),rgba(0,212,255,0.08))', border:'1px solid rgba(178,75,243,0.2)' }}>
+          <div className="rounded-xl p-4 mb-5" style={{background:'linear-gradient(135deg,rgba(178,75,243,0.1),rgba(0,212,255,0.08))',border:'1px solid rgba(178,75,243,0.2)'}}>
             <div className="flex items-start justify-between gap-3">
               <div>
                 <h3 className="font-syne font-extrabold text-lg">{itinerary.destination}</h3>
                 <p className="text-gray-400 text-sm mt-1">{itinerary.summary}</p>
               </div>
               {usingAI && (
-                <span className="flex items-center gap-1 text-xs px-2.5 py-1 rounded-full flex-shrink-0" style={{ background:'rgba(178,75,243,0.2)', color:'#B24BF3' }}>
+                <span className="flex items-center gap-1 text-xs px-2.5 py-1 rounded-full flex-shrink-0" style={{background:'rgba(178,75,243,0.2)',color:'#B24BF3'}}>
                   <Star className="w-3 h-3 fill-current"/> Gemini
                 </span>
               )}
@@ -262,28 +247,25 @@ export default function DayItinerary({ destination, days, passengers, travelStyl
 
           {/* Navegacao de dias */}
           <div className="flex items-center gap-2 mb-4">
-            <button type="button" onClick={function(){ setActiveDay(function(p){ return Math.max(0, p-1); }); }} disabled={activeDay === 0}
+            <button type="button" onClick={function(){setActiveDay(function(p){return Math.max(0,p-1);});}} disabled={activeDay===0}
               className="w-8 h-8 rounded-lg flex items-center justify-center transition-all"
-              style={{ border:'1px solid rgba(255,255,255,0.1)', color: activeDay === 0 ? '#374151' : '#9CA3AF' }}>
+              style={{border:'1px solid rgba(255,255,255,0.1)',color:activeDay===0?'#374151':'#9CA3AF'}}>
               <ChevronLeft className="w-4 h-4"/>
             </button>
             <div className="flex gap-1.5 flex-1 overflow-x-auto pb-1">
-              {itinerary.days.map(function(d, i) {
+              {itinerary.days.map(function(d,i){
                 return (
-                  <button key={i} type="button" onClick={function(){ setActiveDay(i); }}
+                  <button key={i} type="button" onClick={function(){setActiveDay(i);}}
                     className="flex-shrink-0 px-3 py-1.5 rounded-lg text-xs font-syne font-bold transition-all"
-                    style={activeDay === i
-                      ? { background:'rgba(178,75,243,0.15)', color:'#B24BF3', border:'1px solid rgba(178,75,243,0.3)' }
-                      : { background:'rgba(255,255,255,0.04)', color:'#6B7280', border:'1px solid rgba(255,255,255,0.07)' }
-                    }>
+                    style={activeDay===i?{background:'rgba(178,75,243,0.15)',color:'#B24BF3',border:'1px solid rgba(178,75,243,0.3)'}:{background:'rgba(255,255,255,0.04)',color:'#6B7280',border:'1px solid rgba(255,255,255,0.07)'}}>
                     {t('itinerary_day')} {d.day}
                   </button>
                 );
               })}
             </div>
-            <button type="button" onClick={function(){ setActiveDay(function(p){ return Math.min(totalDays-1, p+1); }); }} disabled={activeDay === totalDays-1}
+            <button type="button" onClick={function(){setActiveDay(function(p){return Math.min(totalDays-1,p+1);});}} disabled={activeDay===totalDays-1}
               className="w-8 h-8 rounded-lg flex items-center justify-center transition-all"
-              style={{ border:'1px solid rgba(255,255,255,0.1)', color: activeDay === totalDays-1 ? '#374151' : '#9CA3AF' }}>
+              style={{border:'1px solid rgba(255,255,255,0.1)',color:activeDay===totalDays-1?'#374151':'#9CA3AF'}}>
               <ChevronRight className="w-4 h-4"/>
             </button>
           </div>
@@ -293,9 +275,9 @@ export default function DayItinerary({ destination, days, passengers, travelStyl
             <h4 className="font-syne font-bold">{itinerary.days[activeDay].title}</h4>
           </div>
 
-          <DayCard day={itinerary.days[activeDay]} destination={itinerary.destination}/>
+          <DayCard day={itinerary.days[activeDay]} destination={itinerary.destination} t={t}/>
 
-          <button type="button" onClick={function(){ setItinerary(null); setError(''); setActiveDay(0); }}
+          <button type="button" onClick={function(){setItinerary(null);setError('');setActiveDay(0);}}
             className="btn-ghost w-full mt-4 text-sm justify-center">
             {t('itinerary_new')}
           </button>

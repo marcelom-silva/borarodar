@@ -36,16 +36,14 @@ export default function RouteForm({ values, onChange, onCalculate, loading }) {
   function handle(e) { set(e.target.name, e.target.value); }
   function submit(e) { e.preventDefault(); onCalculate(values); }
 
-  function addWaypoint()     { set('waypoints', (values.waypoints || []).concat([{ name:'', coords:null }])); }
-  function removeWaypoint(i) { set('waypoints', (values.waypoints || []).filter(function(_,idx){return idx!==i;})); }
+  function addWaypoint()     { set('waypoints', (values.waypoints||[]).concat([{name:'',coords:null}])); }
+  function removeWaypoint(i) { set('waypoints', (values.waypoints||[]).filter(function(_,idx){return idx!==i;})); }
   function updateWaypoint(i, name) {
-    var wps = (values.waypoints || []).slice();
-    wps[i]  = Object.assign({}, wps[i], { name: name });
-    set('waypoints', wps);
+    var wps=(values.waypoints||[]).slice(); wps[i]=Object.assign({},wps[i],{name:name}); set('waypoints',wps);
   }
 
-  // Dicas de temporada baseadas na data de ida completa
-  var seasonalTips = getSeasonalTips(values.date_from || '', values.interests || []);
+  // Dicas sazonais — passa t() para traducao correta
+  var seasonalTips = getSeasonalTips(values.date_from || '', values.interests || [], t);
 
   var isRoundTrip = values.is_round_trip || false;
   var avoidTolls  = values.avoid_tolls   || false;
@@ -59,35 +57,33 @@ export default function RouteForm({ values, onChange, onCalculate, loading }) {
       {/* MODO */}
       <div className="grid grid-cols-2 gap-2">
         {[
-          { id:'completo', label:t('mode_complete'),  desc:t('mode_complete_desc')  },
-          { id:'roteiro',  label:t('mode_itinerary'), desc:t('mode_itinerary_desc') },
+          {id:'completo', label:t('mode_complete'),  desc:t('mode_complete_desc')},
+          {id:'roteiro',  label:t('mode_itinerary'), desc:t('mode_itinerary_desc')},
         ].map(function(m) {
-          var active = (values.plan_mode || 'completo') === m.id;
+          var active=(values.plan_mode||'completo')===m.id;
           return (
-            <button key={m.id} type="button" onClick={function() { set('plan_mode', m.id); }}
+            <button key={m.id} type="button" onClick={function(){set('plan_mode',m.id);}}
               className="p-3 rounded-xl border text-left transition-all"
-              style={active ? { background:'rgba(57,255,20,0.08)', borderColor:'rgba(57,255,20,0.35)' } : { background:'rgba(255,255,255,0.03)', borderColor:'rgba(255,255,255,0.07)' }}>
-              <p className="font-syne font-bold text-xs" style={{ color: active ? '#39FF14' : '#fff' }}>{m.label}</p>
+              style={active?{background:'rgba(57,255,20,0.08)',borderColor:'rgba(57,255,20,0.35)'}:{background:'rgba(255,255,255,0.03)',borderColor:'rgba(255,255,255,0.07)'}}>
+              <p className="font-syne font-bold text-xs" style={{color:active?'#39FF14':'#fff'}}>{m.label}</p>
               <p className="text-gray-600 text-[10px] mt-0.5 leading-tight">{m.desc}</p>
             </button>
           );
         })}
       </div>
 
-      {/* PERFIL DE VIAJANTE (ambos os modos) */}
+      {/* PERFIL DE VIAJANTE */}
       <div>
         <label className="text-xs text-gray-400 uppercase tracking-wide mb-2 block">{t('profile_traveler_label')}</label>
         <div className="grid grid-cols-5 gap-1.5">
           {TRAVEL_PROFILES.map(function(p) {
-            var active = profile === p.id;
+            var active=profile===p.id;
             return (
-              <button key={p.id} type="button" onClick={function() { set('travel_profile', p.id); }}
+              <button key={p.id} type="button" onClick={function(){set('travel_profile',p.id);}}
                 className="flex flex-col items-center gap-1 py-2.5 rounded-xl border transition-all"
-                style={active ? { background: p.color+'14', borderColor: p.color+'50' } : { background:'rgba(255,255,255,0.03)', borderColor:'rgba(255,255,255,0.07)' }}>
+                style={active?{background:p.color+'14',borderColor:p.color+'50'}:{background:'rgba(255,255,255,0.03)',borderColor:'rgba(255,255,255,0.07)'}}>
                 <span className="text-lg">{p.emoji}</span>
-                <span className="text-[9px] text-center leading-tight font-medium" style={{ color: active ? p.color : '#9CA3AF' }}>
-                  {t('profile_'+p.id)}
-                </span>
+                <span className="text-[9px] text-center leading-tight font-medium" style={{color:active?p.color:'#9CA3AF'}}>{t('profile_'+p.id)}</span>
               </button>
             );
           })}
@@ -101,7 +97,7 @@ export default function RouteForm({ values, onChange, onCalculate, loading }) {
       </div>
 
       {/* WAYPOINTS */}
-      {(values.waypoints || []).map(function(wp, i) {
+      {(values.waypoints||[]).map(function(wp,i){
         return (
           <div key={i}>
             <label className="text-xs text-gray-400 uppercase tracking-wide mb-1.5 block">{t('planner_stop')} {i+1}</label>
@@ -115,7 +111,7 @@ export default function RouteForm({ values, onChange, onCalculate, loading }) {
           </div>
         );
       })}
-      {(values.waypoints || []).length < 4 && (
+      {(values.waypoints||[]).length < 4 && (
         <button type="button" onClick={addWaypoint}
           className="w-full flex items-center justify-center gap-2 py-2 rounded-xl border border-dashed border-white/12 text-gray-500 hover:text-br-orange hover:border-br-orange/30 transition-all text-xs">
           <Plus className="w-3.5 h-3.5"/>{t('planner_add_wp')}
@@ -128,54 +124,48 @@ export default function RouteForm({ values, onChange, onCalculate, loading }) {
         <CityAutocomplete value={values.destino} onChange={function(v){set('destino',v);}} placeholder="Ex: Campos do Jordao, SP" iconColor="#FF6B35" required/>
       </div>
 
-      {/* VEÍCULO (apenas planejamento completo) */}
+      {/* VEICULO (apenas modo completo) */}
       {!isItineraryOnly && (
         <>
           <div className="grid grid-cols-2 gap-2">
-            {/* Ida e Volta */}
             <label className="flex items-center gap-2.5 p-3 rounded-xl border cursor-pointer transition-all select-none"
-              style={isRoundTrip ? { background:'rgba(0,212,255,0.08)', borderColor:'rgba(0,212,255,0.3)' } : { background:'rgba(255,255,255,0.03)', borderColor:'rgba(255,255,255,0.07)' }}>
+              style={isRoundTrip?{background:'rgba(0,212,255,0.08)',borderColor:'rgba(0,212,255,0.3)'}:{background:'rgba(255,255,255,0.03)',borderColor:'rgba(255,255,255,0.07)'}}>
               <input type="checkbox" className="sr-only" checked={isRoundTrip} onChange={function(e){set('is_round_trip',e.target.checked);}}/>
-              <div className="w-4 h-4 rounded flex-shrink-0 flex items-center justify-center" style={{ background: isRoundTrip ? '#00D4FF' : 'rgba(255,255,255,0.1)' }}>
+              <div className="w-4 h-4 rounded flex-shrink-0 flex items-center justify-center" style={{background:isRoundTrip?'#00D4FF':'rgba(255,255,255,0.1)'}}>
                 {isRoundTrip && <RotateCcw className="w-2.5 h-2.5 text-black"/>}
               </div>
-              <span className="text-xs font-medium" style={{ color: isRoundTrip ? '#00D4FF' : '#9CA3AF' }}>{t('trip_roundtrip')}</span>
+              <span className="text-xs font-medium" style={{color:isRoundTrip?'#00D4FF':'#9CA3AF'}}>{t('trip_roundtrip')}</span>
             </label>
-            {/* Evitar Pedagios */}
             <label className="flex items-center gap-2.5 p-3 rounded-xl border cursor-pointer transition-all select-none"
-              style={avoidTolls ? { background:'rgba(255,107,53,0.08)', borderColor:'rgba(255,107,53,0.3)' } : { background:'rgba(255,255,255,0.03)', borderColor:'rgba(255,255,255,0.07)' }}>
+              style={avoidTolls?{background:'rgba(255,107,53,0.08)',borderColor:'rgba(255,107,53,0.3)'}:{background:'rgba(255,255,255,0.03)',borderColor:'rgba(255,255,255,0.07)'}}>
               <input type="checkbox" className="sr-only" checked={avoidTolls} onChange={function(e){set('avoid_tolls',e.target.checked);}}/>
-              <div className="w-4 h-4 rounded flex-shrink-0 flex items-center justify-center" style={{ background: avoidTolls ? '#FF6B35' : 'rgba(255,255,255,0.1)' }}>
+              <div className="w-4 h-4 rounded flex-shrink-0 flex items-center justify-center" style={{background:avoidTolls?'#FF6B35':'rgba(255,255,255,0.1)'}}>
                 {avoidTolls && <X className="w-2.5 h-2.5 text-black"/>}
               </div>
-              <span className="text-xs font-medium" style={{ color: avoidTolls ? '#FF6B35' : '#9CA3AF' }}>{t('avoid_tolls')}</span>
+              <span className="text-xs font-medium" style={{color:avoidTolls?'#FF6B35':'#9CA3AF'}}>{t('avoid_tolls')}</span>
             </label>
           </div>
-
           {avoidTolls && (
-            <div className="flex items-start gap-2 p-3 rounded-xl text-xs" style={{ background:'rgba(255,107,53,0.08)', border:'1px solid rgba(255,107,53,0.2)', color:'#FF6B35' }}>
+            <div className="flex items-start gap-2 p-3 rounded-xl text-xs" style={{background:'rgba(255,107,53,0.08)',border:'1px solid rgba(255,107,53,0.2)',color:'#FF6B35'}}>
               <AlertTriangle className="w-3.5 h-3.5 flex-shrink-0 mt-0.5"/>{t('avoid_tolls_note')}
             </div>
           )}
-
           <hr className="border-white/5"/>
           <VehicleSelect values={values} onChange={onChange}/>
-
           <div>
             <label className="text-xs text-gray-400 uppercase tracking-wide mb-1.5 block">{t('planner_fuel')}</label>
             <div className="relative">
-              <Fuel className="absolute top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 pointer-events-none z-10" style={{ left:'12px' }}/>
-              <select name="combustivel" value={values.combustivel} onChange={handle} className="br-input appearance-none cursor-pointer" style={{ paddingLeft:'2.25rem' }}>
-                {FUEL_TYPES.map(function(f){ return <option key={f.value} value={f.value} style={{ background:'#141414' }}>{f.label}</option>; })}
+              <Fuel className="absolute top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 pointer-events-none z-10" style={{left:'12px'}}/>
+              <select name="combustivel" value={values.combustivel} onChange={handle} className="br-input appearance-none cursor-pointer" style={{paddingLeft:'2.25rem'}}>
+                {FUEL_TYPES.map(function(f){return <option key={f.value} value={f.value} style={{background:'#141414'}}>{f.label}</option>;})}
               </select>
             </div>
           </div>
-
           <div className="grid grid-cols-2 gap-3">
             <div>
               <label className="text-xs text-gray-400 uppercase tracking-wide mb-1.5 block">{t('planner_kml')}</label>
               <input name="km_litro" type="number" min="3" max="40" step="0.5" value={values.km_litro}
-                onChange={function(e){ handle(e); set('kml_custom', true); }} className="br-input" placeholder="13"/>
+                onChange={function(e){handle(e);set('kml_custom',true);}} className="br-input" placeholder="13"/>
             </div>
             <div>
               <label className="text-xs text-gray-400 uppercase tracking-wide mb-1.5 block">{t('planner_price')}</label>
@@ -186,18 +176,18 @@ export default function RouteForm({ values, onChange, onCalculate, loading }) {
         </>
       )}
 
-      {/* ESTILO DE VIAGEM (ambos os modos) */}
+      {/* ESTILO */}
       <div>
         <label className="text-xs text-gray-400 uppercase tracking-wide mb-2 block">{t('style_label')}</label>
         <div className="grid grid-cols-3 gap-2">
           {TRAVEL_STYLES.map(function(s) {
-            var active = style === s.id;
+            var active=style===s.id;
             return (
-              <button key={s.id} type="button" onClick={function(){ set('viagem_style', s.id); }}
+              <button key={s.id} type="button" onClick={function(){set('viagem_style',s.id);}}
                 className="flex flex-col items-center gap-1.5 p-2.5 rounded-xl border transition-all"
-                style={active ? { background: s.color+'14', borderColor: s.color+'45' } : { background:'rgba(255,255,255,0.03)', borderColor:'rgba(255,255,255,0.07)' }}>
+                style={active?{background:s.color+'14',borderColor:s.color+'45'}:{background:'rgba(255,255,255,0.03)',borderColor:'rgba(255,255,255,0.07)'}}>
                 <span className="text-xl">{s.emoji}</span>
-                <span className="font-syne font-bold text-[10px]" style={{ color: active ? s.color : '#fff' }}>{t('style_'+s.id)}</span>
+                <span className="font-syne font-bold text-[10px]" style={{color:active?s.color:'#fff'}}>{t('style_'+s.id)}</span>
                 <span className="text-gray-600 text-[9px] leading-tight text-center">{t('style_'+s.id+'_desc')}</span>
               </button>
             );
@@ -207,48 +197,31 @@ export default function RouteForm({ values, onChange, onCalculate, loading }) {
 
       <hr className="border-white/5"/>
 
-      {/* PERIODO DA VIAGEM — dia/mes/ano completo */}
+      {/* PERIODO DA VIAGEM */}
       <div>
         <label className="text-xs text-gray-400 uppercase tracking-wide mb-1.5 flex items-center gap-2">
           <Calendar className="w-3.5 h-3.5"/>
-          {t('period_label')}{' '}
-          <span className="normal-case text-gray-600 font-normal">{t('date_optional')}</span>
+          {t('period_label')}{' '}<span className="normal-case text-gray-600 font-normal">{t('date_optional')}</span>
         </label>
         <div className="grid grid-cols-2 gap-2">
           <div>
             <p className="text-[10px] text-gray-600 mb-1">{t('period_from')}</p>
-            <input
-              type="date"
-              name="date_from"
-              value={values.date_from || ''}
-              onChange={handle}
-              className="br-input text-sm"
-              style={{ paddingLeft:'12px', colorScheme:'dark' }}
-            />
+            <input type="date" name="date_from" value={values.date_from||''} onChange={handle}
+              className="br-input text-sm" style={{paddingLeft:'12px',colorScheme:'dark'}}/>
           </div>
           <div>
             <p className="text-[10px] text-gray-600 mb-1">{t('period_to')}</p>
-            <input
-              type="date"
-              name="date_to"
-              value={values.date_to || ''}
-              onChange={handle}
-              className="br-input text-sm"
-              style={{ paddingLeft:'12px', colorScheme:'dark' }}
-              min={values.date_from || undefined}
-            />
+            <input type="date" name="date_to" value={values.date_to||''} onChange={handle}
+              className="br-input text-sm" style={{paddingLeft:'12px',colorScheme:'dark'}} min={values.date_from||undefined}/>
           </div>
         </div>
-
-        {/* Dicas sazonais */}
         {seasonalTips.length > 0 && (
           <div className="mt-2 space-y-1.5">
-            {seasonalTips.map(function(tip, i) {
+            {seasonalTips.map(function(tip,i){
               return (
-                <div key={i} className="flex items-start gap-2 p-2.5 rounded-lg text-xs"
-                  style={{ background: tip.color+'0D', border:'1px solid '+tip.color+'25' }}>
+                <div key={i} className="flex items-start gap-2 p-2.5 rounded-lg text-xs" style={{background:tip.color+'0D',border:'1px solid '+tip.color+'25'}}>
                   <span className="flex-shrink-0">{tip.icon}</span>
-                  <span style={{ color: tip.color }}>{tip.msg}</span>
+                  <span style={{color:tip.color}}>{tip.msg}</span>
                 </div>
               );
             })}
@@ -258,29 +231,26 @@ export default function RouteForm({ values, onChange, onCalculate, loading }) {
 
       <hr className="border-white/5"/>
 
-      {/* PASSAGEIROS / NOITES (ambos os modos) */}
+      {/* PASSAGEIROS / NOITES */}
       <div className="grid grid-cols-2 gap-3">
         <div>
           <label className="text-xs text-gray-400 uppercase tracking-wide mb-1.5 block">{t('planner_pax')}</label>
           <div className="relative">
-            <Users className="absolute top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 pointer-events-none z-10" style={{ left:'12px' }}/>
-            <input name="passageiros" type="number" min="1" max="12" value={values.passageiros} onChange={handle} className="br-input" style={{ paddingLeft:'2.25rem' }}/>
+            <Users className="absolute top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 pointer-events-none z-10" style={{left:'12px'}}/>
+            <input name="passageiros" type="number" min="1" max="12" value={values.passageiros} onChange={handle} className="br-input" style={{paddingLeft:'2.25rem'}}/>
           </div>
         </div>
         <div>
           <label className="text-xs text-gray-400 uppercase tracking-wide mb-1.5 block">{t('planner_nights')}</label>
           <div className="relative">
-            <Moon className="absolute top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 pointer-events-none z-10" style={{ left:'12px' }}/>
-            <input name="noites" type="number" min="0" max="30" value={values.noites} onChange={handle} className="br-input" style={{ paddingLeft:'2.25rem' }}/>
+            <Moon className="absolute top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 pointer-events-none z-10" style={{left:'12px'}}/>
+            <input name="noites" type="number" min="0" max="30" value={values.noites} onChange={handle} className="br-input" style={{paddingLeft:'2.25rem'}}/>
           </div>
         </div>
       </div>
 
       <button type="submit" disabled={loading} className="btn-neon w-full flex items-center justify-center gap-2 mt-1">
-        {loading
-          ? <><Loader2 className="w-4 h-4 animate-spin"/>{t('planner_loading')}</>
-          : <><Car className="w-4 h-4"/>{t('planner_btn')}</>
-        }
+        {loading?<><Loader2 className="w-4 h-4 animate-spin"/>{t('planner_loading')}</>:<><Car className="w-4 h-4"/>{t('planner_btn')}</>}
       </button>
     </form>
   );
