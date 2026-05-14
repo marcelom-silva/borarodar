@@ -97,7 +97,7 @@ export default function Navbar() {
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 border-b border-white/5"
-      style={{ background:'rgba(10,10,10,0.85)', backdropFilter:'blur(12px)' }}>
+      style={{ background:'rgba(15,15,19,0.88)', backdropFilter:'blur(12px)' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-4">
 
         {/* ===== LOGO ===== */}
@@ -235,3 +235,4 @@ export default function Navbar() {
     </nav>
   );
 }
+

@@ -9,7 +9,7 @@ function WheelSVG({ spinning }) {
   var spokes = [0, 72, 144, 216, 288];
   return (
     <svg viewBox="0 0 200 200" style={{ width:'100%', height:'100%', animation:spinning?'spin 0.7s linear infinite':'none', transformOrigin:'50% 50%', filter:spinning?'drop-shadow(0 0 8px rgba(57,255,20,0.5))':'drop-shadow(0 0 2px rgba(57,255,20,0.15))', transition:'filter 0.3s ease' }}>
-      <circle cx="100" cy="100" r="98" fill="#0A0A0A"/>
+      <circle cx="100" cy="100" r="98" fill="#0F0F13"/>
       <circle cx="100" cy="100" r="92" fill="#0D0D0D" stroke="#1a1a1a" strokeWidth="1"/>
       <circle cx="100" cy="100" r="85" fill="none" stroke="#151515" strokeWidth="3"/>
       <circle cx="100" cy="100" r="78" fill="#161616"/>
@@ -27,7 +27,7 @@ function WheelSVG({ spinning }) {
       <circle cx="100" cy="100" r="25" fill="#111" stroke="#2a2a2a" strokeWidth="1"/>
       <circle cx="100" cy="100" r="13" fill="#0D0D0D" stroke="#252525" strokeWidth="1"/>
       <circle cx="100" cy="100" r="6" fill="#39FF14" opacity="0.9"/>
-      <circle cx="100" cy="100" r="3" fill="#0A0A0A"/>
+      <circle cx="100" cy="100" r="3" fill="#0F0F13"/>
     </svg>
   );
 }
@@ -97,7 +97,7 @@ export default function Hero() {
 
   return (
     <section ref={heroRef} className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden pt-16">
-      <div className="absolute inset-0 bg-[#0A0A0A]">
+      <div className="absolute inset-0 bg-[#0F0F13]">
         <div className="absolute inset-0" style={{backgroundImage:'linear-gradient(rgba(57,255,20,0.028) 1px,transparent 1px),linear-gradient(90deg,rgba(57,255,20,0.028) 1px,transparent 1px)',backgroundSize:'60px 60px'}}/>
         <div className="absolute inset-0" style={{background:'radial-gradient(ellipse 80% 50% at 50% 65%,rgba(57,255,20,0.06) 0%,transparent 70%)'}}/>
         <div className="absolute pointer-events-none" style={{width:'700px',height:'700px',borderRadius:'50%',background:'radial-gradient(circle,rgba(57,255,20,0.07) 0%,transparent 65%)',left:mousePos.x-350,top:mousePos.y-350,transition:'left 0.12s ease-out,top 0.12s ease-out'}}/>
@@ -188,3 +188,4 @@ export default function Hero() {
     </section>
   );
 }
+

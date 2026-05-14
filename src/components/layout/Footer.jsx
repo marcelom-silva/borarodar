@@ -13,7 +13,7 @@ export default function Footer() {
     { href:'/perfil',     l: t('nav_perfil')   },
   ];
   return (
-    <footer className="border-t border-white/5 bg-[#080808] mt-20">
+    <footer className="border-t border-white/5 bg-[#0C0C10] mt-20">
       <div className="max-w-7xl mx-auto px-6 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
           <div className="md:col-span-2">
@@ -74,3 +74,4 @@ export default function Footer() {
     </footer>
   );
 }
+
