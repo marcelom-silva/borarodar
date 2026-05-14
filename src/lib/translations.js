@@ -20,15 +20,21 @@ export var translations = {
     community_tag:'Comunidade', community_title:'O que a galera ta falando', community_all:'Ver tudo',
     community_cta_title:'Partiu fazer parte da galera?', community_cta_sub:'Cadastre-se gratis e comece a planejar sua proxima aventura.',
     community_cta_btn1:'Criar conta gratis', community_cta_btn2:'Testar sem cadastro',
+
     planner_tag:'Planejador', planner_title:'Pit Stop do Role', planner_sub:'Calcule sua rota, adicione paradas e saiba quanto vai gastar.',
     planner_origem:'Origem', planner_destino:'Destino', planner_stop:'Parada',
     planner_add_wp:'Adicionar parada intermediaria', planner_fuel:'Combustivel',
     planner_kml:'Km/L do veiculo', planner_price:'Preco/litro (R$)',
     planner_pax:'Passageiros', planner_nights:'Noites no destino',
     planner_btn:'Calcular Rota', planner_loading:'Calculando...', planner_map_hint:'Preencha a rota e clique em Calcular',
-    mode_complete:'Planejamento Completo', mode_complete_desc:'Rota + orcamento + paradas + roteiro',
-    mode_itinerary:'Montar Roteiro', mode_itinerary_desc:'Apenas o roteiro dia a dia com IA',
-    mode_itinerary_hint:'Preencha o destino e os dias. O roteiro sera gerado pela IA.',
+
+    // Modo — sem "pela IA"
+    mode_complete:'Planejamento Completo',
+    mode_complete_desc:'Rota + orcamento + paradas + roteiro',
+    mode_itinerary:'Montar Roteiro',
+    mode_itinerary_desc:'Apenas o roteiro dia a dia',
+    mode_itinerary_hint:'Preencha o destino e os dias.',
+
     // Veiculo
     vehicle_label:'Tipo e Modelo do Veiculo',
     vehicle_brand_ph:'Selecione a marca...',
@@ -37,18 +43,22 @@ export var translations = {
     vehicle_kml_hint:'Consumo estimado sugerido:',
     vehicle_kml_editable:'voce pode alterar acima.',
     vehicle_default_note:'Sem veiculo selecionado: sera usado consumo de sedan/hatch 1.6 (13 km/L).',
-    // Periodos
+
+    // Periodo
     period_label:'Periodo da Viagem', period_from:'Data de Ida', period_to:'Data de Retorno',
     date_optional:'(opcional)', date_hint:'Usamos para dicas de clima e vestuario.',
+
     // Ida e volta / pedagios
     trip_roundtrip:'Ida e Volta', trip_oneway:'Apenas Ida',
     avoid_tolls:'Evitar Pedagios',
     avoid_tolls_note:'Sem pedagios, a rota pode ser mais longa e o custo total pode ser similar.',
+
     // Estilo
     style_label:'Estilo de Viagem',
     style_economico:'Economico', style_economico_desc:'Hostel, lanchonetes',
     style_moderado:'Moderado',   style_moderado_desc:'Pousadas, restaurantes',
     style_esbanjando:'Esbanjando',style_esbanjando_desc:'Hoteis, fine dining',
+
     // Orcamento
     budget_title:'Orcamento do Role',
     budget_fuel:'Combustivel', budget_toll:'Pedagios', budget_food:'Alimentacao', budget_hotel:'Hospedagem',
@@ -57,8 +67,10 @@ export var translations = {
     cost_vehicle:'Custos do Veiculo', cost_vehicle_total:'Total veiculo',
     cost_itinerary:'Custos do Roteiro', cost_itinerary_total:'Total roteiro',
     cost_per_person:'Por pessoa (racha)', person:'pessoa', people:'pessoas',
-    // Links externos
+
+    // Links
     link_maps:'Ver no Maps', link_booking:'Ver hospedagem', link_external:'Abre em nova aba',
+
     // Alertas de seguranca
     safety_title:'Alertas de Seguranca',
     safety_long_trip:'Viagem longa: pare e descanse a cada 2 horas. Fadiga e a principal causa de acidentes em rodovias.',
@@ -67,29 +79,35 @@ export var translations = {
     safety_overnight:'Trecho muito longo: considere pernoitar no meio do caminho para mais seguranca e conforto.',
     safety_moto:'Motociclista: use equipamento completo (capacete, luva, jaqueta). Atencao ao vento lateral em rodovias.',
     safety_roundtrip:'Ida e volta: planeje ao menos 30 min de descanso entre os dois trechos.',
+
     // Paradas
     stops_title:'Paradas e Atracoes', stops_pitstop:'Pit Stops', stops_attr:'Atracoes',
     stops_nearby:'Proximas da rota', stops_detour:'Vale o Desvio',
     stops_detour_sub:'mais de 40 km, mas valem muito!', stops_empty:'Insira um destino para ver as atracoes da regiao.',
-    // IA
-    itinerary_title:'Roteiro com IA', itinerary_sub:'Google Gemini — 1.500 req/dia gratis',
+
+    // IA / Roteiro
+    itinerary_title:'Roteiro', itinerary_sub:'Sugestoes personalizadas para seu destino',
     itinerary_interests:'Seus interesses (ate 4)', itinerary_budget:'Perfil de orcamento',
     itinerary_btn:'Gerar Roteiro', itinerary_loading:'Gerando roteiro...',
     itinerary_new:'Gerar novo roteiro', itinerary_morning:'Manha', itinerary_afternoon:'Tarde',
     itinerary_evening:'Noite', itinerary_tip:'Dica local', itinerary_hotel:'Hospedagem',
     itinerary_day:'Dia', itinerary_no_dest:'Calcule uma rota primeiro para definir o destino.',
+
     // Export
     export_title:'Exportar Roteiro', export_sub:'Compartilhe com a galera ou salve para depois.',
     export_whats:'WhatsApp', export_email:'E-mail', export_pdf:'PDF',
     export_link:'Copiar link', export_copied:'Link copiado!',
+
     // Comunidade
     comm_tag:'Comunidade', comm_title:'O Role da Galera', comm_sub:'Dicas, alertas, rotas e rankings dos viajantes do Brasil.',
     comm_feed:'Feed de Dicas', comm_ranking:'Ranking', comm_publish:'Publicar',
     comm_placeholder:'Compartilhe uma dica, alerta ou avaliacao de rota...',
     comm_km:'Km rodados', comm_tips:'Dicas publicadas', comm_explorers:'Exploradores',
+
     // Explorar
     explore_tag:'Descubra', explore_title:'Explorar o Brasil', explore_sub:'Rotas tematicas, destinos incriveis e achados secretos.',
     explore_routes:'Rotas Tematicas', explore_dest:'Destinos', explore_all:'Todos', explore_plan:'Planejar',
+
     // Perfil
     profile_greeting:'Ola, aventureiro!', profile_trips:'Viagens', profile_km:'Km rodados', profile_tips_ct:'Dicas',
     profile_badges:'Minhas Medalhas', profile_badges_sub:'Conquiste medalhas planejando viagens e participando da comunidade.',
@@ -100,11 +118,13 @@ export var translations = {
     profile_pass_ph:'Minimo 6 caracteres', profile_login_btn:'Entrar', profile_register_btn:'Criar conta',
     profile_no_account:'Nao tem conta? Crie gratis', profile_has_account:'Ja tem conta? Entrar',
     profile_use_free:'Usar sem cadastro',
+
     // Ajuda / Footer / Comum
     help_tag:'Suporte', help_title:'Duvidas? A gente explica tudo', help_sub:'Encontre respostas rapidas sobre o BoraRodar.',
     footer_nav:'Navegacao', footer_routes:'Rotas Tematicas', footer_made:'Feito com amor para quem ama a estrada brasileira.',
     common_loading:'Carregando...', common_error:'Algo deu errado. Tente novamente.', common_back:'Voltar', common_save:'Salvar', common_cancel:'Cancelar', common_close:'Fechar',
   },
+
   en: {
     nav_planejar:'Plan', nav_galera:'Community', nav_explorar:'Explore', nav_perfil:'Profile', nav_ajuda:'Help',
     hero_badge:'New way to explore Brazil', hero_subtitle:'Plan your route, calculate expenses and live your dream road trip.', hero_cta:"Let's go?",
@@ -112,7 +132,7 @@ export var translations = {
     hero_stats_rotas:'routes created', hero_stats_viajantes:'travelers', hero_stats_destinos:'destinations',
     hero_scroll:'Scroll down', hero_hover_tip:'hover over the title to see the wheels spin',
     features_tag:'Why use it', features_title:'Everything your trip needs', features_subtitle:'From the Amazon to the Pampas.',
-    feat1_title:'Smart Routes', feat1_desc:'Best route with tolls, ferries and bad sections. Real data.',
+    feat1_title:'Smart Routes', feat1_desc:'Best route with tolls, ferries and bad sections.',
     feat2_title:'Detailed Budget', feat2_desc:'Fuel, tolls, food and accommodation before you leave.',
     feat3_title:'Amazing Pit Stops', feat3_desc:'Restaurants, gas stations, waterfalls and baby-friendly stops.',
     feat4_title:'Safety Alerts', feat4_desc:'Warnings about bad roads and safety tips.',
@@ -132,8 +152,8 @@ export var translations = {
     planner_pax:'Passengers', planner_nights:'Nights at destination',
     planner_btn:'Calculate Route', planner_loading:'Calculating...', planner_map_hint:'Fill in the route and click Calculate',
     mode_complete:'Full Planning', mode_complete_desc:'Route + budget + stops + itinerary',
-    mode_itinerary:'Build Itinerary', mode_itinerary_desc:'AI day-by-day itinerary only',
-    mode_itinerary_hint:'Fill in destination and days. The AI will generate the itinerary.',
+    mode_itinerary:'Build Itinerary', mode_itinerary_desc:'Day-by-day itinerary only',
+    mode_itinerary_hint:'Fill in destination and days.',
     vehicle_label:'Vehicle Type & Model',
     vehicle_brand_ph:'Select brand...', vehicle_model_ph2:'Select model...', vehicle_year_ph:'Vehicle year...',
     vehicle_kml_hint:'Suggested fuel efficiency:', vehicle_kml_editable:'you can edit above.',
@@ -164,7 +184,7 @@ export var translations = {
     stops_title:'Stops & Attractions', stops_pitstop:'Pit Stops', stops_attr:'Attractions',
     stops_nearby:'Near the route', stops_detour:'Worth the Detour',
     stops_detour_sub:'over 40 km, but absolutely worth it!', stops_empty:'Enter a destination to see regional attractions.',
-    itinerary_title:'AI Itinerary', itinerary_sub:'Google Gemini — 1,500 free req/day',
+    itinerary_title:'Itinerary', itinerary_sub:'Personalized suggestions for your destination',
     itinerary_interests:'Your interests (up to 4)', itinerary_budget:'Budget profile',
     itinerary_btn:'Generate Itinerary', itinerary_loading:'Generating...',
     itinerary_new:'Generate new itinerary', itinerary_morning:'Morning', itinerary_afternoon:'Afternoon',
@@ -192,6 +212,7 @@ export var translations = {
     footer_nav:'Navigation', footer_routes:'Thematic Routes', footer_made:'Made with love for those who love Brazilian roads.',
     common_loading:'Loading...', common_error:'Something went wrong. Try again.', common_back:'Back', common_save:'Save', common_cancel:'Cancel', common_close:'Close',
   },
+
   es: {
     nav_planejar:'Planificar', nav_galera:'Comunidad', nav_explorar:'Explorar', nav_perfil:'Perfil', nav_ajuda:'Ayuda',
     hero_badge:'Nueva forma de explorar Brasil', hero_subtitle:'Planifica tu ruta, calcula los gastos y vive el viaje de tus suenos.', hero_cta:'Vamos?',
@@ -219,8 +240,8 @@ export var translations = {
     planner_pax:'Pasajeros', planner_nights:'Noches en el destino',
     planner_btn:'Calcular Ruta', planner_loading:'Calculando...', planner_map_hint:'Completa la ruta y haz clic en Calcular',
     mode_complete:'Planificacion Completa', mode_complete_desc:'Ruta + presupuesto + paradas + itinerario',
-    mode_itinerary:'Armar Itinerario', mode_itinerary_desc:'Solo el itinerario con IA',
-    mode_itinerary_hint:'Completa el destino y los dias. La IA generara el itinerario.',
+    mode_itinerary:'Armar Itinerario', mode_itinerary_desc:'Solo el itinerario dia a dia',
+    mode_itinerary_hint:'Completa el destino y los dias.',
     vehicle_label:'Tipo y Modelo del Vehiculo',
     vehicle_brand_ph:'Selecciona la marca...', vehicle_model_ph2:'Selecciona el modelo...', vehicle_year_ph:'Ano del vehiculo...',
     vehicle_kml_hint:'Consumo estimado sugerido:', vehicle_kml_editable:'puedes editarlo arriba.',
@@ -251,7 +272,7 @@ export var translations = {
     stops_title:'Paradas y Atracciones', stops_pitstop:'Paradas', stops_attr:'Atracciones',
     stops_nearby:'Cerca de la ruta', stops_detour:'Vale el Desvio',
     stops_detour_sub:'mas de 40 km pero vale!', stops_empty:'Ingresa un destino para ver las atracciones.',
-    itinerary_title:'Itinerario con IA', itinerary_sub:'Google Gemini — 1.500 req/dia gratis',
+    itinerary_title:'Itinerario', itinerary_sub:'Sugerencias personalizadas para tu destino',
     itinerary_interests:'Tus intereses (hasta 4)', itinerary_budget:'Perfil de presupuesto',
     itinerary_btn:'Generar Itinerario', itinerary_loading:'Generando...',
     itinerary_new:'Generar nuevo itinerario', itinerary_morning:'Manana', itinerary_afternoon:'Tarde',
