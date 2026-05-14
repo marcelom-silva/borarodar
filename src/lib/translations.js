@@ -80,7 +80,7 @@ export var translations = {
     itinerary_morning_label:'Manha', itinerary_afternoon_label:'Tarde', itinerary_evening_label:'Noite',
     itinerary_breakfast:'Cafe da manha', itinerary_lunch:'Almoco', itinerary_dinner:'Jantar',
     itinerary_accommodation_prefix:'Hospedagem', itinerary_tip_prefix:'Dica local',
-    itinerary_external_note:'Links abrem em nova aba, fora do BoraRodar.',
+    itinerary_external_note:'Links abrem em nova aba, fora do BoraRodar.', itinerary_fallback_notice:'Gemini atingiu o limite diario — usando Llama (Groq) como alternativa automatica.', itinerary_all_limits:'Limite de ambas as IAs atingido por hoje. Exibindo roteiro basico. Tente amanha!', itinerary_no_key:'Configure NEXT_PUBLIC_GEMINI_API_KEY ou NEXT_PUBLIC_GROQ_API_KEY no .env.local.', itinerary_rate_limit:'Limite diario da IA atingido. Tente amanha ou configure o Groq como alternativa.',
     // Mapa do roteiro por dia
     itinerary_show_map:'Ver no mapa',
     itinerary_open_day_maps:'Abrir dia no Google Maps',
@@ -197,7 +197,7 @@ export var translations = {
     itinerary_morning_label:'Morning', itinerary_afternoon_label:'Afternoon', itinerary_evening_label:'Evening',
     itinerary_breakfast:'Breakfast', itinerary_lunch:'Lunch', itinerary_dinner:'Dinner',
     itinerary_accommodation_prefix:'Accommodation', itinerary_tip_prefix:'Local tip',
-    itinerary_external_note:'Links open in a new tab, outside BoraRodar.',
+    itinerary_external_note:'Links open in a new tab, outside BoraRodar.', itinerary_fallback_notice:'Gemini daily limit reached — using Llama (Groq) as automatic fallback.', itinerary_all_limits:'Both AI daily limits reached. Showing basic itinerary. Try again tomorrow!', itinerary_no_key:'Set NEXT_PUBLIC_GEMINI_API_KEY or NEXT_PUBLIC_GROQ_API_KEY in .env.local.', itinerary_rate_limit:'AI daily limit reached. Try tomorrow or configure Groq as fallback.',
     itinerary_show_map:'View on map', itinerary_open_day_maps:"Open day in Google Maps", itinerary_geocoding:'Locating points...',
     daytrip_stops:'stops', daytrip_this_day:'on this day',
     daytrip_show_map:'View on map', daytrip_hide_map:'Close map', daytrip_open_maps:'Open in Google Maps',
@@ -305,7 +305,7 @@ export var translations = {
     itinerary_morning_label:'Manana', itinerary_afternoon_label:'Tarde', itinerary_evening_label:'Noche',
     itinerary_breakfast:'Desayuno', itinerary_lunch:'Almuerzo', itinerary_dinner:'Cena',
     itinerary_accommodation_prefix:'Alojamiento', itinerary_tip_prefix:'Consejo local',
-    itinerary_external_note:'Los enlaces abren en nueva pestana, fuera de BoraRodar.',
+    itinerary_external_note:'Los enlaces abren en nueva pestana, fuera de BoraRodar.', itinerary_fallback_notice:'Gemini alcanzo el limite diario — usando Llama (Groq) como alternativa automatica.', itinerary_all_limits:'Limite de ambas IAs alcanzado. Mostrando itinerario basico. Intenta manana!', itinerary_no_key:'Configura NEXT_PUBLIC_GEMINI_API_KEY o NEXT_PUBLIC_GROQ_API_KEY en .env.local.', itinerary_rate_limit:'Limite diario de la IA alcanzado. Intenta manana o configura Groq.',
     itinerary_show_map:'Ver en el mapa', itinerary_open_day_maps:'Abrir dia en Google Maps', itinerary_geocoding:'Localizando puntos...',
     daytrip_stops:'paradas', daytrip_this_day:'en este dia',
     daytrip_show_map:'Ver en el mapa', daytrip_hide_map:'Cerrar mapa', daytrip_open_maps:'Abrir en Google Maps',
@@ -334,4 +334,5 @@ export var translations = {
     common_back:'Volver', common_save:'Guardar', common_cancel:'Cancelar', common_close:'Cerrar',
   },
 };
+
 
