@@ -1,5 +1,5 @@
 // src/lib/ai.js
-var GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent';
+var GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
 
 // Contexto por perfil de viajante
 var PROFILE_CONTEXT = {
@@ -142,3 +142,4 @@ export function gygLink(city) {
   if (partnerId) base += '&partner_id=' + partnerId;
   return base;
 }
+
