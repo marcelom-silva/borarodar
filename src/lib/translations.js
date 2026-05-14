@@ -2,7 +2,7 @@
 export var translations = {
   pt: {
     nav_planejar:'Planejar', nav_galera:'Galera', nav_explorar:'Explorar', nav_perfil:'Perfil', nav_ajuda:'Ajuda',
-    hero_badge:'Nova forma de explorar o Brasil', hero_subtitle:'Planeje sua rota, calcule os gastos e viva a viagem dos sonhos.', hero_cta:'Partiu, galera?',
+    hero_badge:'Nova forma de explorar o mundo', hero_subtitle:'Planeje sua rota, calcule os gastos e viva a viagem dos sonhos.', hero_cta:'Partiu, galera?',
     hero_origem:'De onde voce vai sair?', hero_destino:'Onde voce quer chegar?', hero_btn:'BORA!',
     hero_stats_rotas:'rotas criadas', hero_stats_viajantes:'viajantes', hero_stats_destinos:'destinos',
     hero_scroll:'Role para baixo', hero_hover_tip:'passe o mouse no titulo para ver as rodas girarem',
@@ -110,7 +110,7 @@ export var translations = {
 
   en: {
     nav_planejar:'Plan', nav_galera:'Community', nav_explorar:'Explore', nav_perfil:'Profile', nav_ajuda:'Help',
-    hero_badge:'New way to explore Brazil', hero_subtitle:'Plan your route, calculate expenses and live your dream road trip.', hero_cta:"Let's go?",
+    hero_badge:'New way to explore the world', hero_subtitle:'Plan your route, calculate expenses and live your dream road trip.', hero_cta:"Let's go?",
     hero_origem:'Where are you starting from?', hero_destino:'Where do you want to go?', hero_btn:"LET'S GO!",
     hero_stats_rotas:'routes created', hero_stats_viajantes:'travelers', hero_stats_destinos:'destinations',
     hero_scroll:'Scroll down', hero_hover_tip:'hover over the title to see the wheels spin',
@@ -200,7 +200,7 @@ export var translations = {
 
   es: {
     nav_planejar:'Planificar', nav_galera:'Comunidad', nav_explorar:'Explorar', nav_perfil:'Perfil', nav_ajuda:'Ayuda',
-    hero_badge:'Nueva forma de explorar Brasil', hero_subtitle:'Planifica tu ruta, calcula los gastos y vive el viaje de tus suenos.', hero_cta:'Vamos?',
+    hero_badge:'Nueva forma de explorar el mundo', hero_subtitle:'Planifica tu ruta, calcula los gastos y vive el viaje de tus suenos.', hero_cta:'Vamos?',
     hero_origem:'Desde donde vas a salir?', hero_destino:'Adonde quieres llegar?', hero_btn:'VAMOS!',
     hero_stats_rotas:'rutas creadas', hero_stats_viajantes:'viajeros', hero_stats_destinos:'destinos',
     hero_scroll:'Desplaza hacia abajo', hero_hover_tip:'pasa el mouse por el titulo para ver las ruedas girar',
@@ -288,3 +288,4 @@ export var translations = {
     common_loading:'Cargando...', common_error:'Algo salio mal. Intentalo de nuevo.', common_back:'Volver', common_save:'Guardar', common_cancel:'Cancelar', common_close:'Cerrar',
   },
 };
+

@@ -10,7 +10,6 @@ var FLAGS = {
   pt: (
     <svg width="20" height="14" viewBox="0 0 20 14" fill="none">
       <rect width="20" height="14" rx="2" fill="#009C3B"/>
-      <rect x="6" width="8" height="14" fill="#009C3B"/>
       <polygon points="0,0 8,7 0,14" fill="#FEDF00"/>
       <polygon points="20,0 12,7 20,14" fill="#FEDF00"/>
       <circle cx="10" cy="7" r="3.5" fill="#002776"/>
@@ -30,28 +29,20 @@ var FLAGS = {
     <svg width="20" height="14" viewBox="0 0 20 14" fill="none">
       <rect width="20" height="14" rx="2" fill="#AA151B"/>
       <rect y="3.5" width="20" height="7" fill="#F1BF00"/>
-      <rect y="3.5" width="20" height="1" fill="#AA151B"/>
-      <rect y="9.5" width="20" height="1" fill="#AA151B"/>
     </svg>
   ),
 };
 
-// Avatar do usuario logado
 function UserAvatar({ user, size }) {
   var s = size || 28;
   var name = user.user_metadata?.full_name || user.email || 'U';
   var initial = name[0].toUpperCase();
   if (user.user_metadata?.avatar_url) {
     return (
-      <img
-        src={user.user_metadata.avatar_url}
-        alt={name}
-        width={s}
-        height={s}
+      <img src={user.user_metadata.avatar_url} alt={name} width={s} height={s}
         className="rounded-full object-cover flex-shrink-0"
         style={{ width:s+'px', height:s+'px', border:'2px solid rgba(57,255,20,0.4)' }}
-        referrerPolicy="no-referrer"
-      />
+        referrerPolicy="no-referrer"/>
     );
   }
   return (
@@ -63,14 +54,13 @@ function UserAvatar({ user, size }) {
 }
 
 export default function Navbar() {
-  var { lang, setLang, t }   = useLanguage();
-  var [open,    setOpen]     = useState(false);
-  var [user,    setUser]     = useState(null);
-  var [menuOpen, setMenuOpen]= useState(false);
+  var { lang, setLang, t }    = useLanguage();
+  var [open,     setOpen]     = useState(false);
+  var [user,     setUser]     = useState(null);
+  var [menuOpen, setMenuOpen] = useState(false);
   var pathname = usePathname();
   var menuRef  = useRef(null);
 
-  // Auth state
   useEffect(function() {
     supabase.auth.getSession().then(function({ data }) {
       setUser(data.session ? data.session.user : null);
@@ -81,7 +71,6 @@ export default function Navbar() {
     return function() { sub.data.subscription.unsubscribe(); };
   }, []);
 
-  // Fechar dropdown ao clicar fora
   useEffect(function() {
     function fn(e) {
       if (menuRef.current && !menuRef.current.contains(e.target)) setMenuOpen(false);
@@ -96,10 +85,10 @@ export default function Navbar() {
   }
 
   var NAV = [
-    { href:'/planejar',   label: t('nav_planejar')  },
-    { href:'/comunidade', label: t('nav_galera')    },
-    { href:'/explorar',   label: t('nav_explorar')  },
-    { href:'/ajuda',      label: t('nav_ajuda')     },
+    { href:'/planejar',   label: t('nav_planejar') },
+    { href:'/comunidade', label: t('nav_galera')   },
+    { href:'/explorar',   label: t('nav_explorar') },
+    { href:'/ajuda',      label: t('nav_ajuda')    },
   ];
 
   var firstName = user
@@ -107,20 +96,22 @@ export default function Navbar() {
     : '';
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 border-b border-white/5" style={{ background:'rgba(10,10,10,0.85)', backdropFilter:'blur(12px)' }}>
+    <nav className="fixed top-0 left-0 right-0 z-50 border-b border-white/5"
+      style={{ background:'rgba(10,10,10,0.85)', backdropFilter:'blur(12px)' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-4">
 
-        {/* Logo */}
+        {/* ===== LOGO ===== */}
         <Link href="/" className="flex items-center gap-2.5 flex-shrink-0">
-          <div className="w-8 h-8 rounded-lg bg-br-green flex items-center justify-center">
-            <span className="text-black font-syne font-black text-sm">BR</span>
+          {/* Logo image — coloque logo.png em /public/logo.png */}
+          <div className="w-9 h-9 rounded-lg overflow-hidden flex-shrink-0" style={{ background:'#000' }}>
+            <img src="/logo.png" alt="BoraRodar" className="w-full h-full object-cover" draggable={false}/>
           </div>
           <span className="font-syne font-extrabold text-lg hidden sm:block">
             Bora<span className="text-br-green">Rodar</span>
           </span>
         </Link>
 
-        {/* Links — desktop */}
+        {/* ===== LINKS DESKTOP ===== */}
         <div className="hidden md:flex items-center gap-1 flex-1 justify-center">
           {NAV.map(function({ href, label }) {
             var active = pathname === href;
@@ -134,32 +125,28 @@ export default function Navbar() {
           })}
         </div>
 
-        {/* Direita: flags + perfil */}
+        {/* ===== DIREITA: FLAGS + PERFIL ===== */}
         <div className="hidden md:flex items-center gap-2 flex-shrink-0">
-          {/* Seletor de idioma */}
           {Object.keys(FLAGS).map(function(l) {
             return (
               <button key={l} onClick={function() { setLang(l); }} title={l.toUpperCase()}
-                className="rounded-md overflow-hidden transition-all hover:opacity-100"
-                style={{ opacity: lang === l ? 1 : 0.4, outline: lang === l ? '2px solid rgba(57,255,20,0.5)' : 'none', borderRadius:'4px' }}>
+                className="rounded-md overflow-hidden transition-all"
+                style={{ opacity: lang===l ? 1 : 0.38, outline: lang===l ? '2px solid rgba(57,255,20,0.5)' : 'none', borderRadius:'4px' }}>
                 {FLAGS[l]}
               </button>
             );
           })}
 
-          {/* Perfil ou Avatar */}
           {user ? (
             <div ref={menuRef} className="relative ml-1">
-              <button
-                onClick={function() { setMenuOpen(!menuOpen); }}
+              <button onClick={function() { setMenuOpen(!menuOpen); }}
                 className="flex items-center gap-2 px-2.5 py-1.5 rounded-xl border transition-all hover:border-br-green/30"
                 style={{ border:'1px solid rgba(57,255,20,0.2)', background:'rgba(57,255,20,0.06)' }}>
                 <UserAvatar user={user} size={26}/>
                 <span className="text-sm font-medium text-white max-w-[90px] truncate">{firstName}</span>
-                <ChevronDown className="w-3.5 h-3.5 text-gray-500" style={{ transform: menuOpen ? 'rotate(180deg)' : 'none', transition:'transform 0.2s' }}/>
+                <ChevronDown className="w-3.5 h-3.5 text-gray-500"
+                  style={{ transform: menuOpen ? 'rotate(180deg)' : 'none', transition:'transform 0.2s' }}/>
               </button>
-
-              {/* Dropdown */}
               {menuOpen && (
                 <div className="absolute right-0 top-full mt-2 w-48 rounded-xl overflow-hidden shadow-card z-50"
                   style={{ background:'#111', border:'1px solid rgba(255,255,255,0.1)' }}>
@@ -168,13 +155,11 @@ export default function Navbar() {
                   </div>
                   <Link href="/perfil" onClick={function(){ setMenuOpen(false); }}
                     className="flex items-center gap-2.5 w-full px-4 py-2.5 text-sm text-gray-300 transition-colors hover:bg-white/5">
-                    <User className="w-4 h-4 text-br-green"/>
-                    {t('nav_perfil')}
+                    <User className="w-4 h-4 text-br-green"/>{t('nav_perfil')}
                   </Link>
                   <button onClick={handleLogout}
                     className="flex items-center gap-2.5 w-full px-4 py-2.5 text-sm text-red-400 transition-colors hover:bg-white/5">
-                    <LogOut className="w-4 h-4"/>
-                    {t('profile_logout')}
+                    <LogOut className="w-4 h-4"/>{t('profile_logout')}
                   </button>
                 </div>
               )}
@@ -182,13 +167,12 @@ export default function Navbar() {
           ) : (
             <Link href="/perfil"
               className="flex items-center gap-2 px-3 py-1.5 rounded-xl text-sm font-medium text-gray-400 hover:text-white transition-colors border border-white/8 hover:border-white/20">
-              <User className="w-4 h-4"/>
-              {t('nav_perfil')}
+              <User className="w-4 h-4"/>{t('nav_perfil')}
             </Link>
           )}
         </div>
 
-        {/* Mobile: avatar + hamburger */}
+        {/* ===== MOBILE: avatar + hamburger ===== */}
         <div className="flex md:hidden items-center gap-2">
           {user && <UserAvatar user={user} size={30}/>}
           <button onClick={function() { setOpen(!open); }} className="text-gray-400 hover:text-white transition-colors">
@@ -197,9 +181,10 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Mobile menu */}
+      {/* ===== MENU MOBILE ===== */}
       {open && (
-        <div className="md:hidden border-t border-white/5 px-4 py-3 space-y-1" style={{ background:'rgba(10,10,10,0.95)' }}>
+        <div className="md:hidden border-t border-white/5 px-4 py-3 space-y-1"
+          style={{ background:'rgba(10,10,10,0.95)' }}>
           {NAV.map(function({ href, label }) {
             return (
               <Link key={href} href={href} onClick={function() { setOpen(false); }}
@@ -210,7 +195,6 @@ export default function Navbar() {
             );
           })}
 
-          {/* Perfil mobile */}
           {user ? (
             <div className="pt-2 border-t border-white/5 mt-2">
               <div className="flex items-center gap-3 px-3 py-2 mb-2">
@@ -236,12 +220,11 @@ export default function Navbar() {
             </Link>
           )}
 
-          {/* Flags mobile */}
           <div className="flex gap-2 px-3 pt-2 border-t border-white/5 mt-1">
             {Object.keys(FLAGS).map(function(l) {
               return (
-                <button key={l} onClick={function() { setLang(l); setOpen(false); }}
-                  className="rounded overflow-hidden" style={{ opacity: lang===l ? 1 : 0.4 }}>
+                <button key={l} onClick={function(){ setLang(l); setOpen(false); }}
+                  className="rounded overflow-hidden" style={{ opacity: lang===l ? 1 : 0.38 }}>
                   {FLAGS[l]}
                 </button>
               );

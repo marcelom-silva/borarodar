@@ -6,28 +6,32 @@ import { useLanguage } from '@/contexts/LanguageContext';
 export default function Footer() {
   var { t } = useLanguage();
   var NAV_LINKS = [
-    { href:'/planejar',   l: t('nav_planejar')  },
-    { href:'/comunidade', l: t('nav_galera')    },
-    { href:'/explorar',   l: t('nav_explorar')  },
-    { href:'/ajuda',      l: t('nav_ajuda')     },
-    { href:'/perfil',     l: t('nav_perfil')    },
+    { href:'/planejar',   l: t('nav_planejar') },
+    { href:'/comunidade', l: t('nav_galera')   },
+    { href:'/explorar',   l: t('nav_explorar') },
+    { href:'/ajuda',      l: t('nav_ajuda')    },
+    { href:'/perfil',     l: t('nav_perfil')   },
   ];
   return (
     <footer className="border-t border-white/5 bg-[#080808] mt-20">
       <div className="max-w-7xl mx-auto px-6 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mb-12">
           <div className="md:col-span-2">
-            <div className="flex items-center gap-2 mb-4">
-              <div className="w-8 h-8 rounded-lg bg-br-green flex items-center justify-center">
-                <span className="text-black font-syne font-black text-sm">BR</span>
+            <div className="flex items-center gap-2.5 mb-4">
+              {/* Logo image */}
+              <div className="w-9 h-9 rounded-lg overflow-hidden flex-shrink-0" style={{ background:'#000' }}>
+                <img src="/logo.png" alt="BoraRodar" className="w-full h-full object-cover" draggable={false}/>
               </div>
-              <span className="font-syne font-extrabold text-xl">Bora<span className="text-br-green">Rodar</span></span>
+              <span className="font-syne font-extrabold text-xl">
+                Bora<span className="text-br-green">Rodar</span>
+              </span>
             </div>
             <p className="text-gray-500 text-sm leading-relaxed max-w-xs">{t('footer_made')}</p>
             <div className="flex gap-3 mt-6">
               {[Github, Instagram, Twitter].map(function(Icon, i) {
                 return (
-                  <a key={i} href="#" className="w-9 h-9 rounded-lg border border-white/8 flex items-center justify-center text-gray-500 hover:text-br-green hover:border-br-green/30 transition-all">
+                  <a key={i} href="#"
+                    className="w-9 h-9 rounded-lg border border-white/8 flex items-center justify-center text-gray-500 hover:text-br-green hover:border-br-green/30 transition-all">
                     <Icon className="w-4 h-4"/>
                   </a>
                 );
