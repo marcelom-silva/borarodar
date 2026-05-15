@@ -157,15 +157,15 @@ export default function PlannerMain() {
                   </div>
                 )
               }
+              <RouteNavButtons
+                origem={formValues.origem}
+                destino={formValues.destino}
+                waypoints={formValues.waypoints}
+                routeResult={routeResult}
+              />
             </div>
           )}
-        </div>
-        <RouteNavButtons
-          origem={formValues.origem}
-          destino={formValues.destino}
-          waypoints={formValues.waypoints}
-          routeResult={routeResult}
-        />
+        </div>        
       </div>
 
       {error && (
