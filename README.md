@@ -17,75 +17,116 @@
 | Mapas | Leaflet + OpenStreetMap |
 | Roteamento | OSRM (gratuito, sem API key) |
 | Geocoding/Autocomplete | Nominatim (OpenStreetMap) |
-| IA / Roteiro | Google Gemini Flash |
+| IA Principal | Google Gemini 2.0 Flash (1.500 req/dia gratuito) |
+| IA Fallback | Groq Llama 3.3 70B (14.400 req/dia gratuito) |
+| Clima | OpenWeatherMap (1.000 req/dia gratuito) |
 | Deploy | Vercel |
-| Afiliados (pendente) | Booking.com, GetYourGuide, Decolar |
+| PWA | Service Worker + Web App Manifest |
 
 ---
 
 ## ✨ Funcionalidades
 
-### Planejador de Rotas
+### 🗺️ Planejador de Rotas
 - Autocomplete de cidades via Nominatim (OpenStreetMap)
 - Até 4 paradas intermediárias
-- Cálculo de rota via OSRM com visualização no mapa (Leaflet)
-- Dois modos: **Planejamento Completo** (rota + orçamento + roteiro) e **Montar Roteiro** (apenas itinerário IA)
+- Cálculo de rota via OSRM com visualização Leaflet
+- **2 modos:** Planejamento Completo (rota + orçamento + roteiro) ou Montar Roteiro (só itinerário)
 - Toggles: Ida e Volta, Evitar Pedágios
+- **Validação completa:** campos obrigatórios, lógica de datas, ranges de valores
 
-### Seletor de Veículo
-- Banco de dados com 100+ modelos populares no Brasil (Fiat, VW, GM, Toyota, Honda, etc.)
-- 3 campos: Marca → Modelo → Ano com filtro de busca
-- Km/L sugerido automaticamente pelo modelo selecionado
-- Default: sedan/hatch 1.6 (13 km/L) se nenhum veículo selecionado
-- Multiplicador de pedágio por tipo de veículo (moto 0.5×, carro 1×, pickup 1.5×, motorhome 2×, caminhão 2.5×)
+### 🎲 Destino Surpresa
+- Botão "Me surpreenda! 🎲" no formulário
+- IA sugere 3 destinos: Próximo (<3h), Médio (3-6h), Aventura (+6h ou internacional)
+- Cada sugestão mostra: tempo de viagem, distância, destaque principal, dica local exclusiva
+- Um clique preenche o formulário automaticamente
 
-### Orçamento Separado
-- **Custos do Veículo:** combustível + pedágios
-- **Custos do Roteiro:** alimentação + hospedagem
-- **Racha por pessoa:** total / nº de passageiros
-- Estilos: Econômico 💰 / Moderado ⚖️ / Esbanjando ✨
+### 🚗 Seletor de Veículo
+- 100+ modelos populares no Brasil (Fiat, VW, GM, Toyota, Honda, etc.)
+- 3 campos: Marca → Modelo → Ano com busca/filtro
+- Km/L sugerido automaticamente por modelo
+- Multiplicador de pedágio por tipo (moto 0.5×, carro 1×, pickup 1.5×, motorhome 2×, caminhão 2.5×)
 
-### Perfil de Viajante
-- 5 perfis: Solo 🧍, Casal 👫, Família+Bebê 👶, Com Idosos 👴, Grupo 👥
-- A IA adapta 100% do roteiro: locais, horários, acessibilidade, clima de cada perfil
+### 💰 Orçamento Detalhado
+- Custos separados: **Veículo** (combustível + pedágios) vs **Roteiro** (alimentação + hospedagem)
+- Racha por pessoa calculado automaticamente
+- 3 estilos: Econômico 💰 / Moderado ⚖️ / Esbanjando ✨
 
-### Período e Clima
-- Campos de Data de Ida e Data de Retorno (dia/mês/ano)
-- Dicas automáticas de clima, vestuário e eventos sazonais por data
-- Cobre: verão, inverno, época de chuvas, Carnaval, Semana Santa, Festas Juninas
+### 👥 Perfis de Viajante
+| Perfil | Foco |
+|--------|------|
+| 🧍 Solo | Segurança, hostels sociais, economia |
+| 👫 Casal | Romântico, mirantes, spa, boutique |
+| 👩 Só Mulheres | **Safety-first**, locais movimentados, dicas de segurança feminina |
+| 👶 Família+Bebê | Acessibilidade carrrinho, trocador, antes das 17h, **confirmação obrigatória** |
+| 👴 Com Idosos | Acessibilidade total, passeios curtos, ritmo tranquilo |
+| 👥 Grupo de Amigos | Atividades em grupo, happy hour, custo-benefício |
+| 🐾 Com Pets | **Pet-friendly exclusivo**, confirmação de políticas, dicas de vets |
 
-### Roteiro com IA (Google Gemini)
-- Itinerário dia a dia (manhã, tarde, noite)
-- Sugestões de refeições com links para Google Maps
-- Sugestões de hospedagem com links para Booking.com
-- Links de atividades via GetYourGuide
-- Sem repetição de atrações ou check-in nos dias seguintes
-- Limite gratuito: 1.500 req/dia
+### 🤖 Roteiro com IA (Gemini → Groq fallback automático)
+- **Prompt em 2 fases:** planejamento de tema por dia → execução sem repetições
+- **60% clássicos + 40% descobertas locais** que guias não mencionam
+- **"Vale o desvio":** locais que valem mesmo sendo distantes
+- Mini-mapa Leaflet por dia com marcadores numerados
+- Botão "Abrir dia no Google Maps" com rota multi-parada sequencial
+- Links diretos: Google Maps, Booking.com, GetYourGuide
+- **Fallback automático:** Gemini → Groq/Llama se limite diário atingido
 
-### Links Externos
-- Cada local sugerido tem link "Ver no Maps" (Google Maps)
-- Hospedagem: link para Booking.com
-- Atividades: link para GetYourGuide
-- Todos os links abrem em nova aba com aviso ao usuário
-- **IDs de afiliado:** configuráveis via variáveis de ambiente (ver abaixo)
+### 🛡️ Alertas de Segurança
+- IA identifica trechos perigosos na rota específica
+- Alertas de criminalidade, horários a evitar, áreas de risco
+- Cobertura: Brasil (polígono da Bahia, trechos noturnos) e internacional (cartéis, áreas restritas)
+- Integrado no roteiro E na checklist de viagem
 
-### Comunidade
-- Feed de dicas em tempo real (Supabase Realtime)
-- Ranking de exploradores
-- Publicação de alertas e avaliações de rota
+### 📋 Checklist de Viagem
+- Categorias: Documentos Pessoais, Itens do Carro, Roupas, Medicamentos, Eletrônicos, Emergência
+- **Fronteiras internacionais:** requisitos específicos por país
+  - 🇦🇷 Argentina: RG/Passaporte + Carta Verde + extintor + triângulo + colete
+  - 🇨🇱 Chile: SOAP EX + proibição de alimentos frescos na fronteira
+  - 🇧🇴 Bolívia: galão de combustível extra + altitude + documentação
+  - 🇵🇾 Paraguai: RG + limite aduaneiro
+  - 🇺🇾 Uruguai: SOAT + pneu reserva
+  - 🇲🇽 México: TIP + seguro mexicano + zonas de risco
+- **Pets:** certidão veterinária, vacina antirrábica, microchip, CRMV, exigências do país
+- **Bebê:** cadeirinha (norma do país), certidão, autorização notarial
+- Items com checkbox (marca como "feito")
+- Nota obrigatória recomendando confirmação com consulados e estabelecimentos
 
-### Autenticação
-- Login por email/senha
-- Login com Google OAuth
-- Avatar + primeiro nome do usuário no Navbar quando logado
-- Dropdown com link para Perfil e botão Sair
+### ⛅ Clima em Tempo Real
+- Busca automática ao digitar o destino
+- Previsão de 5 dias via OpenWeatherMap
+- Mostra: temperatura máx/mín, condições, umidade, ícone do tempo
+- Fallback: dicas sazonais baseadas no mês (sem API key)
 
-### Internacionalização
+### 📅 Período e Dicas Sazonais
+- Seletor de data de ida e retorno
+- **Auto-calcula noites** e exibe "X noites → Y dias de roteiro"
+- Dicas automáticas de clima e vestuário por época
+- Cobre: Carnaval, Semana Santa, Festas Juninas, verão, inverno, chuvas
+
+### 📍 Passeios de Um Dia (/explorar)
+6 roteiros curados com dados reais:
+- Ouro Preto · Gramado/Canela · Bonito · Campos do Jordão · Chapada dos Veadeiros · Paraty
+- Cada um: paradas com horários, mini-mapa Leaflet interativo, link Google Maps completo
+- Botão "Planejar" pré-preenche o planejador
+
+### 📱 PWA — Instalar como App
+- `manifest.json` configurado (ícone, nome, cores, atalhos)
+- Service Worker com cache offline das páginas principais
+- Estratégia: cache-first para assets, stale-while-revalidate para páginas, network-only para APIs
+- Instalar: Chrome/Safari → "Adicionar à tela inicial"
+
+### 🌐 Internacionalização
 - 🇧🇷 Português (PT) — padrão
 - 🇺🇸 English (EN)
 - 🇪🇸 Español (ES)
-- Seletor de idioma no Navbar (bandeiras)
+- ~200 chaves de tradução em `translations.js`
 - Persistência via localStorage
+
+### 🔐 Autenticação
+- Login email/senha ou Google OAuth
+- Avatar + primeiro nome no Navbar quando logado
+- Dropdown: Perfil + Sair
 
 ---
 
@@ -93,10 +134,8 @@
 
 ### Pré-requisitos
 - Node.js 18+
-- npm
 
 ### Instalação
-
 ```bash
 git clone https://github.com/marcelom-silva/borarodar.git
 cd borarodar
@@ -105,78 +144,72 @@ npm install
 
 ### Variáveis de Ambiente
 
-Crie o arquivo `.env.local` na raiz do projeto:
+Crie `.env.local` na raiz:
 
 ```env
-# Supabase
+# Supabase (obrigatório)
 NEXT_PUBLIC_SUPABASE_URL=https://xxx.supabase.co
 NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJ...
 
-# Google Gemini (IA para roteiros)
-# Obtenha em: https://aistudio.google.com/app/apikey
+# Google Gemini — IA principal (obrigatório)
+# https://aistudio.google.com/app/apikey
 NEXT_PUBLIC_GEMINI_API_KEY=AIza...
+
+# Groq — IA fallback (recomendado — gratuito)
+# https://console.groq.com/
+NEXT_PUBLIC_GROQ_API_KEY=gsk_...
+
+# OpenWeatherMap — Clima em tempo real (opcional — gratuito)
+# https://openweathermap.org/api
+NEXT_PUBLIC_OPENWEATHER_API_KEY=
 
 # URL do app
 NEXT_PUBLIC_APP_URL=http://localhost:3000
 
-# Afiliados — adicionar quando disponível (links já preparados no código)
+# Afiliados (opcional — adicionar quando disponível)
 NEXT_PUBLIC_BOOKING_AFFILIATE_ID=
 NEXT_PUBLIC_DECOLAR_AFFILIATE_ID=
 NEXT_PUBLIC_GYG_AFFILIATE_ID=
 NEXT_PUBLIC_TRIPADVISOR_AFFILIATE_ID=
 ```
 
-### Rodar
-
+### Executar
 ```bash
 npm run dev
 ```
-
 Acesse http://localhost:3000
 
 ---
 
 ## 🗄️ Banco de Dados (Supabase)
 
-Execute o seguinte SQL no Editor SQL do Supabase:
+Execute no SQL Editor do Supabase:
 
 ```sql
--- Perfis de usuário
 CREATE TABLE profiles (
-  id UUID REFERENCES auth.users ON DELETE CASCADE,
+  id UUID REFERENCES auth.users ON DELETE CASCADE PRIMARY KEY,
   email TEXT, full_name TEXT, avatar_url TEXT,
   km_rodados INT DEFAULT 0, viagens_count INT DEFAULT 0,
-  created_at TIMESTAMPTZ DEFAULT NOW(),
-  PRIMARY KEY (id)
+  created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Viagens salvas
 CREATE TABLE trips (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   user_id UUID REFERENCES profiles(id) ON DELETE CASCADE,
-  origem TEXT, destino TEXT, distance_km NUMERIC, duration_hours NUMERIC,
+  origem TEXT, destino TEXT, distance_km NUMERIC,
   budget JSONB, route_data JSONB,
   created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Dicas da comunidade
 CREATE TABLE community_tips (
   id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
   user_id UUID REFERENCES profiles(id),
   user_name TEXT, content TEXT, tip_type TEXT,
-  likes INT DEFAULT 0,
-  created_at TIMESTAMPTZ DEFAULT NOW()
+  likes INT DEFAULT 0, created_at TIMESTAMPTZ DEFAULT NOW()
 );
 
--- Curtidas
-CREATE TABLE tip_likes (
-  user_id UUID, tip_id UUID,
-  PRIMARY KEY (user_id, tip_id)
-);
-
--- Trigger: cria perfil automaticamente no cadastro
-CREATE OR REPLACE FUNCTION handle_new_user()
-RETURNS TRIGGER AS $$
+-- Trigger: cria perfil automaticamente
+CREATE OR REPLACE FUNCTION handle_new_user() RETURNS TRIGGER AS $$
 BEGIN
   INSERT INTO profiles (id, email, full_name, avatar_url)
   VALUES (NEW.id, NEW.email, NEW.raw_user_meta_data->>'full_name', NEW.raw_user_meta_data->>'avatar_url');
@@ -185,75 +218,51 @@ END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
 CREATE TRIGGER on_auth_user_created
-AFTER INSERT ON auth.users
-FOR EACH ROW EXECUTE FUNCTION handle_new_user();
+AFTER INSERT ON auth.users FOR EACH ROW EXECUTE FUNCTION handle_new_user();
 
 -- RLS
-ALTER TABLE profiles        ENABLE ROW LEVEL SECURITY;
-ALTER TABLE trips            ENABLE ROW LEVEL SECURITY;
-ALTER TABLE community_tips   ENABLE ROW LEVEL SECURITY;
-ALTER TABLE tip_likes         ENABLE ROW LEVEL SECURITY;
+ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
+ALTER TABLE trips ENABLE ROW LEVEL SECURITY;
 
--- Realtime para comunidade
+-- Realtime
 ALTER PUBLICATION supabase_realtime ADD TABLE community_tips;
 ```
 
 ---
 
-## 🔐 Google OAuth (Supabase)
+## 🔐 Google OAuth
 
-1. **Google Cloud Console** → Criar credencial OAuth 2.0 para Web
-2. **Origens JavaScript autorizadas:**
-   - `http://localhost:3000`
-   - `https://borarodar.vercel.app`
-3. **URIs de redirecionamento autorizados:**
-   - `https://xxx.supabase.co/auth/v1/callback`
-   - `https://borarodar.vercel.app`
-4. **Supabase** → Authentication → Sign In / Providers → Google → Habilitar → colar Client ID e Secret
-5. **Supabase** → Authentication → URL Configuration:
-   - Site URL: `https://borarodar.vercel.app`
-   - Redirect URLs: `https://borarodar.vercel.app/**` e `http://localhost:3000/**`
+1. Google Cloud Console → Criar credencial OAuth 2.0 Web
+2. Origens autorizadas: `http://localhost:3000`, `https://borarodar.vercel.app`
+3. URIs de redirecionamento: `https://xxx.supabase.co/auth/v1/callback`
+4. Supabase → Auth → Providers → Google → habilitar + colar Client ID e Secret
+5. Supabase → Auth → URL Config → Site URL: `https://borarodar.vercel.app`
 
 ---
 
 ## 🚢 Deploy (Vercel)
 
-Push para `main` → Vercel faz deploy automático.
+Push para `main` → deploy automático.
 
-Adicionar no Vercel → Environment Variables:
+Variables no Vercel:
 
-| Variável | Descrição |
-|----------|-----------|
-| `NEXT_PUBLIC_SUPABASE_URL` | URL do projeto Supabase |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Anon key do Supabase |
-| `NEXT_PUBLIC_GEMINI_API_KEY` | Chave da API Gemini |
-| `NEXT_PUBLIC_APP_URL` | `https://borarodar.vercel.app` |
-| `NEXT_PUBLIC_BOOKING_AFFILIATE_ID` | ID afiliado Booking (opcional) |
-| `NEXT_PUBLIC_GYG_AFFILIATE_ID` | ID afiliado GetYourGuide (opcional) |
-
----
-
-## 🤝 Programas de Afiliados (Pendente)
-
-Cadastros realizados / em processo:
-
-| Programa | URL | Status |
-|----------|-----|--------|
-| Booking.com | https://www.booking.com/affiliate-program/ | Pendente ID |
-| GetYourGuide | https://partner.getyourguide.com/ | Pendente ID |
-| Decolar.com | https://www.decolar.com/afiliados | Pendente ID |
-| TripAdvisor | https://www.cj.com (buscar TripAdvisor) | Pendente ID |
-
-Quando os IDs chegarem, adicionar nas variáveis de ambiente — o código já está preparado.
+```
+NEXT_PUBLIC_SUPABASE_URL
+NEXT_PUBLIC_SUPABASE_ANON_KEY
+NEXT_PUBLIC_GEMINI_API_KEY
+NEXT_PUBLIC_GROQ_API_KEY
+NEXT_PUBLIC_OPENWEATHER_API_KEY
+NEXT_PUBLIC_APP_URL=https://borarodar.vercel.app
+```
 
 ---
 
-## 📁 Estrutura de Arquivos
+## 📁 Estrutura
 
 ```
 src/
   app/
-    layout.js              # LanguageProvider wrapper
+    layout.js              # LanguageProvider + manifest link + SW registration
     page.js                # Home
     planejar/page.js
     comunidade/page.js
@@ -262,89 +271,70 @@ src/
     ajuda/page.js
   components/
     home/
-      Hero.jsx             # Título animado com rodas SVG + autocomplete
-      Features.jsx         # Cards de funcionalidades com scroll reveal
-      AnimatedMap.jsx      # Mapa esquemático do Brasil com carrinho SVG
-      TrendingRoutes.jsx   # Rotas em alta
-      CommunityPreview.jsx # Preview do feed da comunidade
+      Hero.jsx             # Título animado + autocomplete de destino
+      Features.jsx         # Cards de funcionalidades
+      AnimatedMap.jsx      # Mapa esquemático do Brasil
+      TrendingRoutes.jsx
+      CommunityPreview.jsx
     layout/
-      Navbar.jsx           # Logo, links, bandeiras, avatar do usuário logado
-      Footer.jsx           # Links, redes sociais
+      Navbar.jsx           # Logo, links, bandeiras, avatar do usuário
+      Footer.jsx
     planner/
-      PlannerMain.jsx      # Orquestrador principal do planejador
-      RouteForm.jsx        # Formulário (modo, perfil, rota, veículo, período)
-      MapView.jsx          # Wrapper SSR-safe do Leaflet
-      LeafletMap.jsx       # Mapa interativo com marcadores
-      VehicleSelect.jsx    # Seletor de marca/modelo/ano com filtro
-      BudgetBreakdown.jsx  # Custos separados (veículo / roteiro / racha)
-      StopPoints.jsx       # Pit stops e atrações da rota
-      SafetyAlerts.jsx     # Alertas de segurança por distância e veículo
-      DayItinerary.jsx     # Roteiro IA com links Maps/Booking/GYG
+      PlannerMain.jsx      # Orquestrador principal
+      RouteForm.jsx        # Formulário com validação + SurpriseMode integrado
+      SurpriseMode.jsx     # Modo destino surpresa (3 opções da IA)
+      VehicleSelect.jsx    # Seletor marca/modelo/ano
+      BudgetBreakdown.jsx  # Orçamento separado veículo/roteiro
+      StopPoints.jsx       # Pit stops e atrações
+      SafetyAlerts.jsx     # Alertas de segurança da rota
+      DayItinerary.jsx     # Roteiro IA com mapa + disclaimer bebê/pet
+      TravelChecklist.jsx  # Checklist com fronteiras, segurança, pets, bebê
+      WeatherWidget.jsx    # Clima em tempo real (OpenWeatherMap)
       ExportOptions.jsx    # WhatsApp, PDF, Email, Link
-    community/
-      CommunityPage.jsx
-    explore/
-      ExplorePage.jsx
-    profile/
-      ProfilePage.jsx      # Login email/Google + perfil do usuário
-    help/
-      HelpPage.jsx         # FAQ completo
+    community/CommunityPage.jsx
+    explore/ExplorePage.jsx      # Passeios de Um Dia + Rotas + Destinos
+    profile/ProfilePage.jsx
+    help/HelpPage.jsx            # FAQ completo PT/EN/ES via getFAQData(lang)
     ui/
-      CityAutocomplete.jsx # Autocomplete Nominatim debounced
+      CityAutocomplete.jsx       # Autocomplete Nominatim debounced
+      DayTripLeaflet.jsx         # Mapa Leaflet para passeios
+      DayTripMap.jsx             # Wrapper SSR-safe
   lib/
-    ai.js                  # Gemini API + mapsLink/bookingLink/gygLink
-    budget.js              # Cálculo de orçamento + dicas sazonais (com t())
+    ai.js                  # Gemini + Groq fallback; itinerary, checklist, surprise
+    budget.js              # Orçamento + dicas sazonais com t()
     routing.js             # OSRM multi-waypoints
-    supabase.js            # Cliente Supabase
-    translations.js        # PT / EN / ES — ~170 chaves
-    vehicleData.js         # Base de veículos BR com km/L e tipo
-    itinerary.js           # Fallback estático de roteiro
-    export.js              # Exportação para PDF / WhatsApp / Email
+    supabase.js
+    translations.js        # PT/EN/ES — ~200 chaves
+    vehicleData.js         # Veículos BR com km/L
+    itinerary.js           # Fallback estático
+    export.js
   contexts/
-    LanguageContext.jsx    # Provider com t(), lang, setLang + localStorage
-  hooks/
-    useAuth.js
-    useTrip.js
+    LanguageContext.jsx
 public/
-  logo.png                 # Logo da estrada ao pôr do sol
+  logo.png
+  manifest.json            # PWA manifest
+  sw.js                    # Service Worker (cache + offline)
 ```
 
 ---
 
-## 📝 Convenções de Desenvolvimento
+## ✅ Checklist ao adicionar feature
 
-### Tradução
-Todo texto visível ao usuário **deve** usar `t('chave')` via `useLanguage()`. Nunca adicionar strings hardcoded em PT nos componentes. Ao criar uma nova chave:
-1. Adicionar em `translations.js` nas três línguas (pt, en, es)
-2. Usar `t('nova_chave')` no componente
-
-### Novos componentes
-Seguir o padrão:
-```jsx
-'use client';
-import { useLanguage } from '@/contexts/LanguageContext';
-export default function MeuComponente() {
-  var { t } = useLanguage();
-  // ...
-}
-```
-
-### Checklist ao adicionar uma feature
-- [ ] Strings visíveis usam `t()`?
-- [ ] Chaves adicionadas em PT, EN e ES em `translations.js`?
-- [ ] HelpPage.jsx atualizado com FAQ se necessário?
-- [ ] README.md atualizado?
-- [ ] Commit com mensagem descritiva (`feat:`, `fix:`, `docs:`)?
+- [ ] Strings visíveis usam `t('chave')`?
+- [ ] Chave adicionada em PT, EN e ES em `translations.js`?
+- [ ] FAQ em `HelpPage.jsx` atualizado nas 3 línguas via `getFAQData(lang)`?
+- [ ] `README.md` atualizado?
+- [ ] Commit com prefixo `feat:`, `fix:` ou `docs:`?
 
 ---
 
-## 🐛 Bugs Conhecidos / Pendências
+## 🤝 Afiliados (Pendentes)
 
-- [ ] IDs de afiliados (Booking, GYG, Decolar, TripAdvisor) — aguardando cadastros
-- [ ] Salvar viagens no banco (ProfilePage → histórico de viagens)
-- [ ] Achievements / medalhas funcionais (banco já criado, lógica pendente)
-- [ ] HelpPage em EN e ES com FAQ completo (atualmente PT)
-- [ ] StopPoints: dados estáticos — futura integração com API de POIs
+| Programa | URL |
+|----------|-----|
+| Booking.com | https://www.booking.com/affiliate-program/ |
+| GetYourGuide | https://partner.getyourguide.com/ |
+| Decolar.com | https://www.decolar.com/afiliados |
 
 ---
 
