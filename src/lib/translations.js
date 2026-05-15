@@ -30,7 +30,7 @@ export var translations = {
     mode_itinerary:'Montar Roteiro', mode_itinerary_desc:'Apenas o roteiro dia a dia',
     mode_itinerary_hint:'Preencha o destino e os dias.',
     profile_traveler_label:'Quem vai viajar?',
-    profile_solo:'Solo', profile_couple:'Casal', profile_family_baby:'Familia+Bebe', profile_family_senior:'Com Idosos', profile_friends:'Grupo', profile_women_only:'So Mulheres', profile_pets:'Com Pets', profile_women_only:'So Mulheres',
+    profile_solo:'Solo', profile_couple:'Casal', profile_family_baby:'Familia+Bebe', profile_family_senior:'Com Idosos', profile_friends:'Grupo', profile_women_only:'So Mulheres', profile_pets:'Com Pets', profile_pets:'Com Pets', profile_women_only:'So Mulheres', profile_pets:'Com Pets',
     vehicle_label:'Tipo e Modelo do Veiculo',
     vehicle_brand_ph:'Selecione a marca...', vehicle_model_ph2:'Selecione o modelo...', vehicle_year_ph:'Ano do veiculo...',
     vehicle_kml_hint:'Consumo estimado sugerido:', vehicle_kml_editable:'voce pode alterar acima.',
@@ -115,7 +115,7 @@ export var translations = {
     help_tag:'Suporte', help_title:'Duvidas? A gente explica tudo', help_sub:'Encontre respostas rapidas sobre o BoraRodar.',
     footer_nav:'Navegacao', footer_routes:'Rotas Tematicas', footer_made:'Feito com amor para quem ama a estrada.',
     common_loading:'Carregando...', common_error:'Algo deu errado. Tente novamente.',
-    common_back:'Voltar', common_save:'Salvar', common_cancel:'Cancelar', common_close:'Fechar',
+    common_back:'Voltar', common_save:'Salvar', common_cancel:'Cancelar', common_close:'Fechar', validation_required:'Campo obrigatorio', validation_date_past:'A data de ida nao pode ser no passado', validation_date_order:'A data de retorno deve ser apos a data de ida', validation_same_city:'Origem e destino nao podem ser iguais', validation_passengers:'Informe entre 1 e 12 passageiros', validation_kml:'Consumo invalido (3 a 60 km/L)', validation_price:'Preco invalido (R\$ 2 a R\$ 25/L)', validation_fix_errors:'Corrija os campos destacados antes de continuar.', checklist_title:'Checklist de Viagem', checklist_sub:'Documentos, carro, fronteira e seguranca', checklist_btn:'Gerar Checklist', checklist_loading:'Gerando checklist...', checklist_hint:'Geramos uma lista completa com documentos pessoais, itens obrigatorios do carro, requisitos de cruzamento de fronteira (se internacional), alertas de seguranca e muito mais.', checklist_error:'Erro ao gerar checklist', checklist_confirm_note:'As informacoes de fronteira, requisitos de seguranca e politicas pet/bebe podem mudar. Confirme sempre diretamente com os orgaos competentes, consulados e estabelecimentos antes de viajar.', checklist_regenerate:'Gerar nova checklist', surprise_title:'Destino Surpresa', surprise_toggle:'Me surpreenda! ??', surprise_sub:'Nao sabe para onde ir? A IA escolhe para voce!', surprise_loading:'Buscando destinos...', surprise_choose:'Usar este destino', surprise_new:'Outras sugestoes', surprise_need_origin:'Informe a cidade de origem primeiro.', weather_forecast:'Previsao do Tempo', weather_loading:'Buscando previsao...', weather_error:'Previsao indisponivel', weather_no_key:'Configure NEXT_PUBLIC_OPENWEATHER_API_KEY para ver a previsao em tempo real.', period_nights_auto:'auto',
   },
 
   en: {
@@ -148,7 +148,7 @@ export var translations = {
     mode_itinerary:'Build Itinerary', mode_itinerary_desc:'Day-by-day itinerary only',
     mode_itinerary_hint:'Fill in destination and days.',
     profile_traveler_label:'Who is traveling?',
-    profile_solo:'Solo', profile_couple:'Couple', profile_family_baby:'Family+Baby', profile_family_senior:'With Seniors', profile_friends:'Group', profile_women_only:'Women Only', profile_pets:'With Pets', profile_women_only:'Women Only',
+    profile_solo:'Solo', profile_couple:'Couple', profile_family_baby:'Family+Baby', profile_family_senior:'With Seniors', profile_friends:'Group', profile_women_only:'Women Only', profile_pets:'With Pets', profile_pets:'With Pets', profile_women_only:'Women Only', profile_pets:'With Pets',
     vehicle_label:'Vehicle Type & Model',
     vehicle_brand_ph:'Select brand...', vehicle_model_ph2:'Select model...', vehicle_year_ph:'Vehicle year...',
     vehicle_kml_hint:'Suggested fuel efficiency:', vehicle_kml_editable:'you can edit above.',
@@ -223,7 +223,7 @@ export var translations = {
     help_tag:'Support', help_title:'Questions? We explain everything', help_sub:'Find quick answers about BoraRodar.',
     footer_nav:'Navigation', footer_routes:'Thematic Routes', footer_made:'Made with love for those who love the road.',
     common_loading:'Loading...', common_error:'Something went wrong. Try again.',
-    common_back:'Back', common_save:'Save', common_cancel:'Cancel', common_close:'Close',
+    common_back:'Back', common_save:'Save', common_cancel:'Cancel', common_close:'Close', validation_required:'Required field', validation_date_past:'Departure date cannot be in the past', validation_date_order:'Return date must be after departure date', validation_same_city:'Origin and destination cannot be the same', validation_passengers:'Enter between 1 and 12 passengers', validation_kml:'Invalid consumption (3 to 60 km/L)', validation_price:'Invalid price (R\$ 2 to R\$ 25/L)', validation_fix_errors:'Fix the highlighted fields before continuing.', checklist_title:'Travel Checklist', checklist_sub:'Documents, car, border and safety', checklist_btn:'Generate Checklist', checklist_loading:'Generating checklist...', checklist_hint:'We generate a complete list with personal documents, mandatory car items, border crossing requirements (if international), safety alerts and more.', checklist_error:'Error generating checklist', checklist_confirm_note:'Border information, safety requirements and pet/baby policies can change. Always confirm directly with the relevant authorities, consulates and establishments before traveling.', checklist_regenerate:'Generate new checklist', surprise_title:'Surprise Destination', surprise_toggle:'Surprise me! ??', surprise_sub:'Not sure where to go? AI picks for you!', surprise_loading:'Finding destinations...', surprise_choose:'Use this destination', surprise_new:'Other suggestions', surprise_need_origin:'Please enter your departure city first.', weather_forecast:'Weather Forecast', weather_loading:'Loading forecast...', weather_error:'Forecast unavailable', weather_no_key:'Set NEXT_PUBLIC_OPENWEATHER_API_KEY to see real-time weather.', period_nights_auto:'auto',
   },
 
   es: {
@@ -256,7 +256,7 @@ export var translations = {
     mode_itinerary:'Armar Itinerario', mode_itinerary_desc:'Solo el itinerario dia a dia',
     mode_itinerary_hint:'Completa el destino y los dias.',
     profile_traveler_label:'Quien viaja?',
-    profile_solo:'Solo', profile_couple:'Pareja', profile_family_baby:'Familia+Bebe', profile_family_senior:'Con Mayores', profile_friends:'Grupo', profile_women_only:'Solo Mujeres', profile_pets:'Con Mascotas', profile_women_only:'Solo Mujeres',
+    profile_solo:'Solo', profile_couple:'Pareja', profile_family_baby:'Familia+Bebe', profile_family_senior:'Con Mayores', profile_friends:'Grupo', profile_women_only:'Solo Mujeres', profile_pets:'Con Mascotas', profile_pets:'Con Mascotas', profile_women_only:'Solo Mujeres', profile_pets:'Con Mascotas',
     vehicle_label:'Tipo y Modelo del Vehiculo',
     vehicle_brand_ph:'Selecciona la marca...', vehicle_model_ph2:'Selecciona el modelo...', vehicle_year_ph:'Ano del vehiculo...',
     vehicle_kml_hint:'Consumo estimado sugerido:', vehicle_kml_editable:'puedes editarlo arriba.',
@@ -331,9 +331,10 @@ export var translations = {
     help_tag:'Soporte', help_title:'Preguntas? Lo explicamos todo', help_sub:'Encuentra respuestas rapidas sobre BoraRodar.',
     footer_nav:'Navegacion', footer_routes:'Rutas Tematicas', footer_made:'Hecho con amor para quienes aman la carretera.',
     common_loading:'Cargando...', common_error:'Algo salio mal. Intentalo de nuevo.',
-    common_back:'Volver', common_save:'Guardar', common_cancel:'Cancelar', common_close:'Cerrar',
+    common_back:'Volver', common_save:'Guardar', common_cancel:'Cancelar', common_close:'Cerrar', validation_required:'Campo obligatorio', validation_date_past:'La fecha de ida no puede ser en el pasado', validation_date_order:'La fecha de retorno debe ser posterior a la de ida', validation_same_city:'El origen y el destino no pueden ser iguales', validation_passengers:'Ingresa entre 1 y 12 pasajeros', validation_kml:'Consumo invalido (3 a 60 km/L)', validation_price:'Precio invalido (R\$ 2 a R\$ 25/L)', validation_fix_errors:'Corrige los campos marcados antes de continuar.', checklist_title:'Lista de Viaje', checklist_sub:'Documentos, auto, frontera y seguridad', checklist_btn:'Generar Lista', checklist_loading:'Generando lista...', checklist_hint:'Generamos una lista completa con documentos personales, elementos obligatorios del auto, requisitos de cruce de frontera y alertas de seguridad.', checklist_error:'Error al generar la lista', checklist_confirm_note:'La informacion de frontera, requisitos de seguridad y politicas pet/bebe pueden cambiar. Confirma siempre directamente con las autoridades y establecimientos antes de viajar.', checklist_regenerate:'Generar nueva lista', surprise_title:'Destino Sorpresa', surprise_toggle:'Sorprendeme! ??', surprise_sub:'No sabes adonde ir? La IA elige por ti!', surprise_loading:'Buscando destinos...', surprise_choose:'Usar este destino', surprise_new:'Otras sugerencias', surprise_need_origin:'Ingresa la ciudad de origen primero.', weather_forecast:'Pronostico del Tiempo', weather_loading:'Cargando pronostico...', weather_error:'Pronostico no disponible', weather_no_key:'Configura NEXT_PUBLIC_OPENWEATHER_API_KEY para ver el pronostico en tiempo real.', period_nights_auto:'auto',
   },
 };
+
 
 
 

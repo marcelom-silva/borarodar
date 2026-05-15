@@ -5,6 +5,8 @@ import RouteForm from './RouteForm';
 import MapView from './MapView';
 import BudgetBreakdown from './BudgetBreakdown';
 import StopPoints from './StopPoints';
+import TravelChecklist from '@/components/planner/TravelChecklist';
+import WeatherWidget from '@/components/planner/WeatherWidget';
 import SafetyAlerts from './SafetyAlerts';
 import ExportOptions from './ExportOptions';
 import DayItinerary from './DayItinerary';
@@ -58,6 +60,7 @@ export default function PlannerMain() {
   }, []);
 
   useEffect(function() {
+    if ('serviceWorker' in navigator) { navigator.serviceWorker.register('/sw.js').catch(console.warn); }
     if (formValues.origem && formValues.destino) handleCalculate(formValues);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -219,3 +222,4 @@ export default function PlannerMain() {
     </div>
   );
 }
+

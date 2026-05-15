@@ -1,0 +1,21 @@
+{
+  "name": "BoraRodar — Planejador de Viagens",
+  "short_name": "BoraRodar",
+  "description": "Planeje sua viagem de carro pelo Brasil e pelo mundo. Calcule rotas, orçamento e gere roteiros com IA.",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#0F0F13",
+  "theme_color": "#39FF14",
+  "lang": "pt-BR",
+  "categories": ["travel", "navigation", "lifestyle"],
+  "icons": [
+    { "src": "/logo.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "/logo.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ],
+  "shortcuts": [
+    { "name": "Planejar Rota", "url": "/planejar", "description": "Calcular nova rota" },
+    { "name": "Explorar",      "url": "/explorar", "description": "Descobrir destinos" }
+  ],
+  "screenshots": []
+}
