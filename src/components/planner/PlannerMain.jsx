@@ -1,4 +1,4 @@
-'use client';
+﻿'use client';
 import { useState, useEffect, useCallback } from 'react';
 import { useSearchParams } from 'next/navigation';
 import RouteForm from './RouteForm';
@@ -128,7 +128,7 @@ export default function PlannerMain() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 pt-24 pb-16">
       <div className="mb-6">
         <span className="text-br-green font-mono text-xs uppercase tracking-widest">{t('planner_tag')}</span>
-        <h1 className="font-syne font-extrabold text-3xl sm:text-4xl mt-1">{t('planner_title')} 🗺️</h1>
+        <h1 className="font-syne font-extrabold text-3xl sm:text-4xl mt-1">{t('planner_title')} ðŸ—ºï¸</h1>
         <p className="text-gray-500 mt-2">{t('planner_sub')}</p>
       </div>
 
@@ -161,7 +161,7 @@ export default function PlannerMain() {
                 origem={formValues.origem}
                 destino={formValues.destino}
                 waypoints={formValues.waypoints}
-                routeResult={routeResult}
+                routeResult={routeData}
               />
             </div>
           )}
@@ -187,7 +187,7 @@ export default function PlannerMain() {
             <div className="br-card p-4">
               <p className="font-syne font-bold text-sm mb-3 text-br-orange">Paradas confirmadas:</p>
               <div className="flex flex-wrap gap-2">
-                {routeData.waypoints.map(function(wp, i){ return <span key={i} className="waypoint-item text-xs">📍 {wp.name}</span>; })}
+                {routeData.waypoints.map(function(wp, i){ return <span key={i} className="waypoint-item text-xs">ðŸ“ {wp.name}</span>; })}
               </div>
             </div>
           )}
@@ -229,4 +229,5 @@ export default function PlannerMain() {
     </div>
   );
 }
+
 
