@@ -1,4 +1,4 @@
-// src/lib/translations.js — UTF-8
+﻿// src/lib/translations.js â€” UTF-8
 // Todas as chaves do projeto BoraRodar em PT / EN / ES
 export var translations = {
 
@@ -160,7 +160,7 @@ export var translations = {
 
     // Destino Surpresa
     surprise_title:'Destino Surpresa',
-    surprise_toggle:'Me surpreenda! 🎲',
+    surprise_toggle:'Me surpreenda! ðŸŽ²',
     surprise_sub:'Nao sabe para onde ir? A IA escolhe para voce!',
     surprise_loading:'Buscando destinos...', surprise_choose:'Usar este destino',
     surprise_new:'Outras sugestoes', surprise_need_origin:'Informe a cidade de origem primeiro.',
@@ -234,7 +234,7 @@ export var translations = {
     // Comum
     common_loading:'Carregando...', common_error:'Algo deu errado. Tente novamente.',
     common_back:'Voltar', common_save:'Salvar',
-    common_cancel:'Cancelar', common_close:'Fechar',
+    common_cancel:'Cancelar', common_close:'Fechar', route_open_nav:'Navegar pela rota', route_open_nav_sub:'Abre o trajeto no app de navegacao. Waze usa apenas o destino final.', route_stops:'paradas',
   },
 
   // ===========================================================
@@ -352,7 +352,7 @@ export var translations = {
     daytrip_show_map:'View on map', daytrip_hide_map:'Close map',
     daytrip_open_maps:'Open in Google Maps',
     surprise_title:'Surprise Destination',
-    surprise_toggle:'Surprise me! 🎲',
+    surprise_toggle:'Surprise me! ðŸŽ²',
     surprise_sub:"Not sure where to go? AI picks for you!",
     surprise_loading:'Finding destinations...', surprise_choose:'Use this destination',
     surprise_new:'Other suggestions', surprise_need_origin:'Please enter your departure city first.',
@@ -406,7 +406,7 @@ export var translations = {
     footer_made:'Made with love for those who love the road.',
     common_loading:'Loading...', common_error:'Something went wrong. Try again.',
     common_back:'Back', common_save:'Save',
-    common_cancel:'Cancel', common_close:'Close',
+    common_cancel:'Cancel', common_close:'Close', route_open_nav:'Navigate the route', route_open_nav_sub:'Opens the full route in your navigation app. Waze uses the final destination only.', route_stops:'stops',
   },
 
   // ===========================================================
@@ -524,7 +524,7 @@ export var translations = {
     daytrip_show_map:'Ver en el mapa', daytrip_hide_map:'Cerrar mapa',
     daytrip_open_maps:'Abrir en Google Maps',
     surprise_title:'Destino Sorpresa',
-    surprise_toggle:'Sorprendeme! 🎲',
+    surprise_toggle:'Sorprendeme! ðŸŽ²',
     surprise_sub:'No sabes adonde ir? La IA elige por ti!',
     surprise_loading:'Buscando destinos...', surprise_choose:'Usar este destino',
     surprise_new:'Otras sugerencias', surprise_need_origin:'Ingresa la ciudad de origen primero.',
@@ -578,6 +578,7 @@ export var translations = {
     footer_made:'Hecho con amor para quienes aman la carretera.',
     common_loading:'Cargando...', common_error:'Algo salio mal. Intentalo de nuevo.',
     common_back:'Volver', common_save:'Guardar',
-    common_cancel:'Cancelar', common_close:'Cerrar',
+    common_cancel:'Cancelar', common_close:'Cerrar', route_open_nav:'Navegar por la ruta', route_open_nav_sub:'Abre el recorrido en tu app de navegacion. Waze usa solo el destino final.', route_stops:'paradas',
   },
 };
+

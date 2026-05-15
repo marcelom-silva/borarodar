@@ -15,6 +15,7 @@ import { calculateBudget, DEFAULT_KML } from '@/lib/budget';
 import { DEFAULT_VEHICLE } from '@/lib/vehicleData';
 import { Map, AlertCircle, Sparkles } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
+import RouteNavButtons from '@/components/planner/RouteNavButtons';
 
 function formatDuration(hours) {
   var h = Math.floor(hours); var m = Math.round((hours - h) * 60);
@@ -159,6 +160,12 @@ export default function PlannerMain() {
             </div>
           )}
         </div>
+        <RouteNavButtons
+          origem={formValues.origem}
+          destino={formValues.destino}
+          waypoints={formValues.waypoints}
+          routeResult={routeResult}
+        />
       </div>
 
       {error && (
