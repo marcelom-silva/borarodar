@@ -103,7 +103,7 @@ export default function RouteForm({ values, onChange, onCalculate, loading }) {
       {/* PERFIL DE VIAJANTE */}
       <div>
         <label className="text-xs text-gray-400 uppercase tracking-wide mb-2 block">{t('profile_traveler_label')}</label>
-        <div className="grid grid-cols-5 gap-1.5">
+        <div className="grid grid-cols-3 gap-1.5">
           {TRAVEL_PROFILES.map(function(p) {
             var active=profile===p.id;
             return (
@@ -329,3 +329,4 @@ export default function RouteForm({ values, onChange, onCalculate, loading }) {
     </form>
   );
 }
+

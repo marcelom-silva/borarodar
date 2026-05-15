@@ -30,7 +30,7 @@ export var translations = {
     mode_itinerary:'Montar Roteiro', mode_itinerary_desc:'Apenas o roteiro dia a dia',
     mode_itinerary_hint:'Preencha o destino e os dias.',
     profile_traveler_label:'Quem vai viajar?',
-    profile_solo:'Solo', profile_couple:'Casal', profile_family_baby:'Familia+Bebe', profile_family_senior:'Com Idosos', profile_friends:'Grupo',
+    profile_solo:'Solo', profile_couple:'Casal', profile_family_baby:'Familia+Bebe', profile_family_senior:'Com Idosos', profile_friends:'Grupo', profile_women_only:'So Mulheres',
     vehicle_label:'Tipo e Modelo do Veiculo',
     vehicle_brand_ph:'Selecione a marca...', vehicle_model_ph2:'Selecione o modelo...', vehicle_year_ph:'Ano do veiculo...',
     vehicle_kml_hint:'Consumo estimado sugerido:', vehicle_kml_editable:'voce pode alterar acima.',
@@ -148,7 +148,7 @@ export var translations = {
     mode_itinerary:'Build Itinerary', mode_itinerary_desc:'Day-by-day itinerary only',
     mode_itinerary_hint:'Fill in destination and days.',
     profile_traveler_label:'Who is traveling?',
-    profile_solo:'Solo', profile_couple:'Couple', profile_family_baby:'Family+Baby', profile_family_senior:'With Seniors', profile_friends:'Group',
+    profile_solo:'Solo', profile_couple:'Couple', profile_family_baby:'Family+Baby', profile_family_senior:'With Seniors', profile_friends:'Group', profile_women_only:'Women Only',
     vehicle_label:'Vehicle Type & Model',
     vehicle_brand_ph:'Select brand...', vehicle_model_ph2:'Select model...', vehicle_year_ph:'Vehicle year...',
     vehicle_kml_hint:'Suggested fuel efficiency:', vehicle_kml_editable:'you can edit above.',
@@ -256,7 +256,7 @@ export var translations = {
     mode_itinerary:'Armar Itinerario', mode_itinerary_desc:'Solo el itinerario dia a dia',
     mode_itinerary_hint:'Completa el destino y los dias.',
     profile_traveler_label:'Quien viaja?',
-    profile_solo:'Solo', profile_couple:'Pareja', profile_family_baby:'Familia+Bebe', profile_family_senior:'Con Mayores', profile_friends:'Grupo',
+    profile_solo:'Solo', profile_couple:'Pareja', profile_family_baby:'Familia+Bebe', profile_family_senior:'Con Mayores', profile_friends:'Grupo', profile_women_only:'Solo Mujeres',
     vehicle_label:'Tipo y Modelo del Vehiculo',
     vehicle_brand_ph:'Selecciona la marca...', vehicle_model_ph2:'Selecciona el modelo...', vehicle_year_ph:'Ano del vehiculo...',
     vehicle_kml_hint:'Consumo estimado sugerido:', vehicle_kml_editable:'puedes editarlo arriba.',
@@ -334,5 +334,6 @@ export var translations = {
     common_back:'Volver', common_save:'Guardar', common_cancel:'Cancelar', common_close:'Cerrar',
   },
 };
+
 
 
