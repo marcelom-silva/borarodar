@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { generateItinerary, mapsLink, bookingLink, gygLink } from '@/lib/ai';
 import { generateStaticItinerary } from '@/lib/itinerary';
 import DayTripMap from '@/components/ui/DayTripMap';
-import { Sparkles, Coffee, Sun, Moon, Bed, Lightbulb, Calendar, ChevronLeft, ChevronRight, Loader2, AlertCircle, ExternalLink, Map, Navigation } from 'lucide-react';
+import { Sparkles, Coffee, Sun, Moon, Bed, Lightbulb, Calendar, ChevronLeft, ChevronRight, Loader2, AlertCircle, AlertTriangle, ExternalLink, Map, Navigation } from 'lucide-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 var INTERESTS = [
@@ -16,29 +16,45 @@ var INTERESTS = [
 // Badge do provedor de IA
 function ProviderBadge({ provider }) {
   if (!provider) return null;
-  if (provider === 'gemini') {
-    return (
-      <span className="flex items-center gap-1 text-xs px-2.5 py-1 rounded-full flex-shrink-0" style={{background:'rgba(178,75,243,0.2)',color:'#B24BF3'}}>
-        ⭐ Gemini
-      </span>
-    );
-  }
-  if (provider === 'groq') {
-    return (
-      <span className="flex items-center gap-1 text-xs px-2.5 py-1 rounded-full flex-shrink-0" style={{background:'rgba(255,107,53,0.2)',color:'#FF6B35'}}>
-        🦙 Llama
-      </span>
-    );
-  }
-  return null;
+  var isGroq = provider === 'groq';
+  return (
+    <span className="flex items-center gap-1 text-xs px-2.5 py-1 rounded-full flex-shrink-0"
+      style={isGroq
+        ? {background:'rgba(255,107,53,0.2)',color:'#FF6B35'}
+        : {background:'rgba(178,75,243,0.2)',color:'#B24BF3'}
+      }>
+      {isGroq ? '🦙 Llama' : '⭐ Gemini'}
+    </span>
+  );
+}
+
+// Aviso de confirmacao para bebê e pets
+function ConfirmationDisclaimer({ profile, t }) {
+  if (profile !== 'family_baby' && profile !== 'pets') return null;
+  var isBaby = profile === 'family_baby';
+  var color  = isBaby ? '#00D4FF' : '#FF6B35';
+  return (
+    <div className="mb-5 flex items-start gap-3 p-4 rounded-xl"
+      style={{background: color+'0D', border:'1px solid '+color+'30'}}>
+      <AlertTriangle className="w-5 h-5 flex-shrink-0 mt-0.5" style={{color:color}}/>
+      <div>
+        <p className="font-syne font-bold text-sm mb-1" style={{color:color}}>
+          {isBaby ? '👶 '+t('itinerary_baby_disclaimer_title') : '🐾 '+t('itinerary_pet_disclaimer_title')}
+        </p>
+        <p className="text-xs text-gray-400 leading-relaxed">
+          {isBaby ? t('itinerary_baby_disclaimer') : t('itinerary_pet_disclaimer')}
+        </p>
+      </div>
+    </div>
+  );
 }
 
 async function geocodePlace(name, destination) {
   try {
-    var q   = name + ', ' + destination;
-    var url = 'https://nominatim.openstreetmap.org/search?' + new URLSearchParams({q, format:'json', limit:'1'}).toString();
-    var res = await fetch(url, {headers:{'Accept-Language':'pt-BR','User-Agent':'BoraRodar/1.0'}});
-    var data= await res.json();
+    var url = 'https://nominatim.openstreetmap.org/search?'
+      + new URLSearchParams({q:name+', '+destination, format:'json', limit:'1'}).toString();
+    var res  = await fetch(url, {headers:{'Accept-Language':'pt-BR','User-Agent':'BoraRodar/1.0'}});
+    var data = await res.json();
     if (data[0]) return {lat:parseFloat(data[0].lat), lng:parseFloat(data[0].lon)};
   } catch(_) {}
   return null;
@@ -46,7 +62,7 @@ async function geocodePlace(name, destination) {
 
 function buildGoogleMapsRoute(points, destination) {
   var stops = points.map(function(p){return encodeURIComponent(p.name+', '+destination);});
-  return 'https://www.google.com/maps/dir/' + stops.join('/');
+  return 'https://www.google.com/maps/dir/'+stops.join('/');
 }
 
 function ExtLink({ href, label, icon, color }) {
@@ -65,9 +81,9 @@ function extractPlaceName(text) {
 }
 
 function MealRow({ label, meal, t }) {
-  var desc  = typeof meal==='string' ? meal : (meal&&meal.description)||'';
-  var place = typeof meal==='object'&&meal ? meal.placeName : extractPlaceName(desc);
-  var query = typeof meal==='object'&&meal ? meal.mapQuery  : place;
+  var desc  = typeof meal==='string'?meal:(meal&&meal.description)||'';
+  var place = typeof meal==='object'&&meal?meal.placeName:extractPlaceName(desc);
+  var query = typeof meal==='object'&&meal?meal.mapQuery:place;
   return (
     <div className="mt-1.5">
       <p className="text-xs text-gray-600 mb-0.5">{label}</p>
@@ -77,11 +93,11 @@ function MealRow({ label, meal, t }) {
   );
 }
 
-function AttractionLinks({ attractions, color, t }) {
+function AttractionLinks({ attractions, color }) {
   if (!attractions||!attractions.length) return null;
   return (
     <div className="flex flex-wrap gap-1.5 mt-2">
-      {attractions.map(function(a,i){return <ExtLink key={i} href={mapsLink(a.mapQuery||a.name)} label={a.name} icon="📍" color={color}/>;} )}
+      {attractions.map(function(a,i){return <ExtLink key={i} href={mapsLink(a.mapQuery||a.name)} label={a.name} icon="📍" color={color}/>;}) }
     </div>
   );
 }
@@ -92,9 +108,9 @@ function DayCard({ day, destination, t }) {
   var [geocoding, setGeocoding] = useState(false);
 
   var accom     = day.accommodation;
-  var accomDesc = typeof accom==='string' ? accom : (accom&&accom.description)||'';
-  var accomMap  = typeof accom==='object'&&accom ? accom.mapQuery   : null;
-  var accomBook = typeof accom==='object'&&accom ? accom.bookingQuery: destination;
+  var accomDesc = typeof accom==='string'?accom:(accom&&accom.description)||'';
+  var accomMap  = typeof accom==='object'&&accom?accom.mapQuery:null;
+  var accomBook = typeof accom==='object'&&accom?accom.bookingQuery:destination;
 
   function getAllAttractions() {
     var all=[];
@@ -112,11 +128,10 @@ function DayCard({ day, destination, t }) {
     setGeocoding(true);
     try{
       var results=await Promise.all(attractions.map(async function(a){
-        var q=a.mapQuery||(a.name+', '+destination);
-        var c=await geocodePlace(q,destination);
+        var c=await geocodePlace(a.mapQuery||(a.name+', '+destination), destination);
         return c?Object.assign({},c,{name:a.name}):null;
       }));
-      setMapPoints(results.filter(Boolean));setShowMap(true);
+      setMapPoints(results.filter(Boolean)); setShowMap(true);
     }catch(_){setShowMap(true);}finally{setGeocoding(false);}
   }
 
@@ -154,7 +169,7 @@ function DayCard({ day, destination, t }) {
         <div className="flex-1 min-w-0">
           <p className="text-xs text-yellow-400 font-mono uppercase tracking-wide mb-1">{t('itinerary_morning_label')}</p>
           <p className="text-sm text-gray-300 leading-relaxed">{day.morning}</p>
-          <AttractionLinks attractions={day.morningAttractions} color="#FBBF24" t={t}/>
+          <AttractionLinks attractions={day.morningAttractions} color="#FBBF24"/>
           {day.meals&&<MealRow label={'☕ '+t('itinerary_breakfast')} meal={day.meals.breakfast} t={t}/>}
         </div>
       </div>
@@ -164,7 +179,7 @@ function DayCard({ day, destination, t }) {
         <div className="flex-1 min-w-0">
           <p className="text-xs text-br-orange font-mono uppercase tracking-wide mb-1">{t('itinerary_afternoon_label')}</p>
           <p className="text-sm text-gray-300 leading-relaxed">{day.afternoon}</p>
-          <AttractionLinks attractions={day.afternoonAttractions} color="#FF6B35" t={t}/>
+          <AttractionLinks attractions={day.afternoonAttractions} color="#FF6B35"/>
           {day.meals&&<MealRow label={'🍽️ '+t('itinerary_lunch')} meal={day.meals.lunch} t={t}/>}
         </div>
       </div>
@@ -182,7 +197,9 @@ function DayCard({ day, destination, t }) {
         <div className="flex gap-3 p-3 rounded-xl" style={{background:'rgba(178,75,243,0.05)',border:'1px solid rgba(178,75,243,0.1)'}}>
           <Bed className="w-4 h-4 text-br-purple flex-shrink-0 mt-0.5"/>
           <div className="flex-1 min-w-0">
-            <p className="text-xs text-gray-400 leading-relaxed"><span className="text-br-purple font-medium">{t('itinerary_accommodation_prefix')}: </span>{accomDesc}</p>
+            <p className="text-xs text-gray-400 leading-relaxed">
+              <span className="text-br-purple font-medium">{t('itinerary_accommodation_prefix')}: </span>{accomDesc}
+            </p>
             <div className="flex flex-wrap gap-1.5 mt-1.5">
               {accomMap&&<ExtLink href={mapsLink(accomMap)} label={t('link_maps')} icon="🗺️" color="#B24BF3"/>}
               {accomBook&&<ExtLink href={bookingLink(accomBook)} label="Booking.com" icon="🏨" color="#00D4FF"/>}
@@ -209,8 +226,8 @@ export default function DayItinerary({ destination, days, passengers, travelStyl
   var [itinerary, setItinerary] = useState(null);
   var [loading,   setLoading]   = useState(false);
   var [error,     setError]     = useState('');
-  var [warning,   setWarning]   = useState(''); // aviso nao-bloqueante (ex: usando fallback)
-  var [provider,  setProvider]  = useState(null); // 'gemini' | 'groq' | null
+  var [warning,   setWarning]   = useState('');
+  var [provider,  setProvider]  = useState(null);
   var [activeDay, setActiveDay] = useState(0);
 
   function toggleInterest(id) {
@@ -222,7 +239,7 @@ export default function DayItinerary({ destination, days, passengers, travelStyl
   }
 
   async function generate() {
-    if (!destination){setError(t('itinerary_no_dest'));return;}
+    if(!destination){setError(t('itinerary_no_dest'));return;}
     setLoading(true); setError(''); setWarning(''); setItinerary(null); setProvider(null);
     try {
       var result = await generateItinerary({
@@ -230,23 +247,16 @@ export default function DayItinerary({ destination, days, passengers, travelStyl
         interests:selectedInterests, budget:travelStyle||'moderado',
         travelDate, travelProfile:travelProfile||'couple',
       });
-      var prov = result._provider || 'gemini';
-      setProvider(prov);
-      if (prov === 'groq') {
-        setWarning(t('itinerary_fallback_notice'));
-      }
+      var prov=result._provider||'gemini'; setProvider(prov);
+      if(prov==='groq') setWarning(t('itinerary_fallback_notice'));
       setItinerary(result);
     } catch(err) {
-      // Tenta fallback estatico antes de desistir
-      var staticResult = generateStaticItinerary({destination, days:days||1});
-      if (staticResult) {
+      var staticResult=generateStaticItinerary({destination, days:days||1});
+      if(staticResult){
         setItinerary(staticResult);
-        if(err.message==='ALL_LIMITS_REACHED')
-          setError(t('itinerary_all_limits'));
-        else if(err.message==='NO_API_KEY')
-          setError(t('itinerary_no_key'));
-        else
-          setError('Erro: '+err.message+'. Exibindo roteiro basico.');
+        if(err.message==='ALL_LIMITS_REACHED') setError(t('itinerary_all_limits'));
+        else if(err.message==='NO_API_KEY')     setError(t('itinerary_no_key'));
+        else setError('Erro: '+err.message+'. Exibindo roteiro basico.');
       } else {
         if(err.message==='ALL_LIMITS_REACHED') setError(t('itinerary_all_limits'));
         else if(err.message==='NO_API_KEY')     setError(t('itinerary_no_key'));
@@ -256,7 +266,7 @@ export default function DayItinerary({ destination, days, passengers, travelStyl
     } finally { setLoading(false); }
   }
 
-  var totalDays = itinerary&&itinerary.days ? itinerary.days.length : 0;
+  var totalDays=itinerary&&itinerary.days?itinerary.days.length:0;
 
   return (
     <div className="br-card p-6">
@@ -269,6 +279,9 @@ export default function DayItinerary({ destination, days, passengers, travelStyl
           <p className="text-xs text-gray-600">{t('itinerary_sub')}</p>
         </div>
       </div>
+
+      {/* Aviso de confirmacao para bebe/pets (antes de gerar) */}
+      {!itinerary && <ConfirmationDisclaimer profile={travelProfile} t={t}/>}
 
       {!itinerary&&(
         <div className="space-y-4">
@@ -295,18 +308,14 @@ export default function DayItinerary({ destination, days, passengers, travelStyl
           <button type="button" onClick={generate} disabled={loading||!destination}
             className="w-full flex items-center justify-center gap-2 rounded-xl py-3 font-syne font-bold text-sm transition-all"
             style={{background:loading||!destination?'rgba(178,75,243,0.3)':'#B24BF3',color:'#fff',cursor:loading||!destination?'not-allowed':'pointer'}}>
-            {loading
-              ?<><Loader2 className="w-4 h-4 animate-spin"/>{t('itinerary_loading')}</>
-              :<><Sparkles className="w-4 h-4"/>{t('itinerary_btn')}</>
-            }
+            {loading?<><Loader2 className="w-4 h-4 animate-spin"/>{t('itinerary_loading')}</>:<><Sparkles className="w-4 h-4"/>{t('itinerary_btn')}</>}
           </button>
         </div>
       )}
 
       {itinerary&&(
         <div>
-          {/* Header do roteiro */}
-          <div className="rounded-xl p-4 mb-5" style={{background:'linear-gradient(135deg,rgba(178,75,243,0.1),rgba(0,212,255,0.08))',border:'1px solid rgba(178,75,243,0.2)'}}>
+          <div className="rounded-xl p-4 mb-4" style={{background:'linear-gradient(135deg,rgba(178,75,243,0.1),rgba(0,212,255,0.08))',border:'1px solid rgba(178,75,243,0.2)'}}>
             <div className="flex items-start justify-between gap-3">
               <div>
                 <h3 className="font-syne font-extrabold text-lg">{itinerary.destination}</h3>
@@ -315,23 +324,15 @@ export default function DayItinerary({ destination, days, passengers, travelStyl
               <ProviderBadge provider={provider}/>
             </div>
             <div className="flex flex-wrap gap-3 mt-3 text-xs">
-              {itinerary.bestPeriod  && <span className="text-gray-500 flex items-center gap-1"><Calendar className="w-3 h-3"/>{itinerary.bestPeriod}</span>}
-              {itinerary.totalBudget && <span className="text-br-green font-mono">{itinerary.totalBudget}</span>}
+              {itinerary.bestPeriod  &&<span className="text-gray-500 flex items-center gap-1"><Calendar className="w-3 h-3"/>{itinerary.bestPeriod}</span>}
+              {itinerary.totalBudget &&<span className="text-br-green font-mono">{itinerary.totalBudget}</span>}
             </div>
-
-            {/* Aviso de fallback (nao-bloqueante) */}
-            {warning&&(
-              <div className="mt-3 flex items-center gap-2 text-xs px-3 py-2 rounded-lg" style={{background:'rgba(255,107,53,0.1)',color:'#FF6B35'}}>
-                <span>🦙</span>{warning}
-              </div>
-            )}
-            {/* Erro de fallback estatico */}
-            {error&&(
-              <div className="mt-3 flex items-start gap-2 text-xs px-3 py-2 rounded-lg" style={{background:'rgba(234,179,8,0.08)',color:'#d97706'}}>
-                <AlertCircle className="w-3.5 h-3.5 flex-shrink-0 mt-0.5"/>{error}
-              </div>
-            )}
+            {warning&&<div className="mt-3 flex items-center gap-2 text-xs px-3 py-2 rounded-lg" style={{background:'rgba(255,107,53,0.1)',color:'#FF6B35'}}><span>🦙</span>{warning}</div>}
+            {error  &&<div className="mt-3 flex items-start gap-2 text-xs px-3 py-2 rounded-lg" style={{background:'rgba(234,179,8,0.08)',color:'#d97706'}}><AlertCircle className="w-3.5 h-3.5 flex-shrink-0 mt-0.5"/>{error}</div>}
           </div>
+
+          {/* Aviso de confirmacao para bebe/pets (apos gerar — sempre visivel) */}
+          <ConfirmationDisclaimer profile={travelProfile} t={t}/>
 
           {/* Navegacao dias */}
           <div className="flex items-center gap-2 mb-4">

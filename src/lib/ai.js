@@ -8,6 +8,7 @@ var GROQ_MODEL = 'llama-3.3-70b-versatile';
 
 // ===== CONTEXTO POR PERFIL =====
 var PROFILE_CONTEXT = {
+
   solo:
     'O viajante esta SOZINHO. Priorize: areas seguras e movimentadas, atividades que permitem conhecer pessoas, '
     + 'hostels com areas sociais, opcoes economicas, dicas de seguranca para viajante solo.',
@@ -16,36 +17,54 @@ var PROFILE_CONTEXT = {
     'E um CASAL. Priorize: restaurantes romanticos e intimistas, mirantes para assistir ao por do sol, '
     + 'atividades para dois (trilha leve, barco, spa), pousadas boutique aconchegantes.',
 
+  // ===== BEBE — reforçado =====
   family_baby:
-    'Familia COM BEBE. Priorize EXCLUSIVAMENTE: locais 100% acessiveis para carrinho (sem escadas, piso plano), '
-    + 'restaurantes com trocador e espaco para bebe, atividades curtas (max 1h30min), horarios diurnos (terminar antes de 17h), '
-    + 'evite barulho intenso, calor extremo e locais superlotados.',
+    'Familia COM BEBE. ATENCAO TOTAL AS NECESSIDADES DO BEBE em cada sugestao:\n'
+    + '- Hospedagem: busque EXCLUSIVAMENTE hoteis/pousadas que aceitam bebes, com berco/cama extra disponivel, '
+    + 'trocador no quarto ou banheiro, e espaco seguro para o bebe se locomover\n'
+    + '- Acessibilidade OBRIGATORIA: TODOS os locais devem ter acesso para carrinho de bebe (sem degraus, piso plano, rampas). '
+    + 'Elimine qualquer sugestao com escadas ou terreno irregular\n'
+    + '- Restaurantes: apenas estabelecimentos com cadeira alta para bebe (highchair), espaco para o carrinho e trocador no banheiro\n'
+    + '- Atracoes: atividades curtas (max 1h30min), preferencialmente ao ar livre, sem fila longa, sem barulho intenso\n'
+    + '- Horarios: todas as atividades devem terminar antes de 17h para respeitar a rotina do bebe\n'
+    + '- Em CADA sugestao de hospedagem e restaurante, adicione a frase: "CONFIRME disponibilidade de estrutura para bebes antes de reservar"\n'
+    + '- Inclua na dica diaria: farmacia ou UPA mais proximo como referencia de seguranca',
 
   family_senior:
     'Grupo COM IDOSOS. Priorize: acessibilidade total (rampas, elevadores, pouco desnivel), '
     + 'passeios maximos de 1km a pe, ritmo tranquilo com intervalos de descanso, '
-    + 'restaurantes calmos com cadeiras confortaveis, evite trilhas íngremes ou superficies irregulares.',
+    + 'restaurantes calmos com cadeiras confortaveis. Evite trilhas ingremes.',
 
   friends:
     'GRUPO DE AMIGOS. Priorize: atividades em grupo (buggy, arvorismo, passeio de barco), '
-    + 'happy hours e bares locais com boa musica, restaurantes para grupos grandes, '
-    + 'opcoes custo-beneficio, programacao noturna animada adequada ao destino.',
+    + 'happy hours e bares locais animados, restaurantes para grupos grandes, '
+    + 'opcoes custo-beneficio, programacao noturna adequada ao destino.',
 
-  // ===== NOVO: VIAGEM SO DE MULHERES =====
   women_only:
-    'Viagem EXCLUSIVA DE MULHERES — solo ou grupo feminino. '
-    + 'SEGURANCA E BEM-ESTAR EM PRIMEIRO LUGAR em todas as sugestoes:\n'
-    + '- Hospedagem: prefira pousadas/hoteis no centro da cidade, com recepcao 24h, bem avaliados especificamente por mulheres viajantes\n'
-    + '- Passeios: priorize atracoes movimentadas e com presenca de outros turistas; evite trilhas isoladas sem guia\n'
-    + '- Noite: sugira apenas locais publicos, movimentados, bem iluminados e com boa reputacao de seguranca\n'
-    + '- Por dia, inclua 1 dica pratica de seguranca feminina (ex: app de seguranca recomendado, numero de emergencia local, dica de postura em areas movimentadas)\n'
-    + '- Se destino internacional com costumes conservadores: alerte sobre vestuario adequado, comportamento esperado e areas a evitar\n'
-    + '- Sugira cafes, restaurantes e espacos reconhecidos por serem acolhedores para mulheres\n'
-    + '- Valorize experiencias de conexao: tours guiados por mulheres locais, mercados de artesas, workshops criativos\n'
-    + '- Mencione o contato do Consulado ou Embaixada se destino internacional',
+    'Viagem EXCLUSIVA DE MULHERES — solo ou grupo feminino. SEGURANCA E BEM-ESTAR EM PRIMEIRO LUGAR:\n'
+    + '- Hospedagem: prefira pousadas/hoteis no centro, com recepcao 24h, bem avaliados por mulheres viajantes\n'
+    + '- Passeios: priorize atracoes movimentadas; evite trilhas isoladas sem guia\n'
+    + '- Noite: apenas locais publicos, movimentados, bem iluminados e com boa reputacao\n'
+    + '- Por dia: inclua 1 dica pratica de seguranca feminina (app recomendado, numero de emergencia local)\n'
+    + '- Destinos internacionais: alerte sobre vestuario, comportamento e areas a evitar\n'
+    + '- Valorize experiencias de conexao: tours guiados por mulheres locais, workshops criativos',
+
+  // ===== PETS — novo perfil =====
+  pets:
+    'Viagem COM PETS (caes, gatos ou outros animais de estimacao). PET-FRIENDLY EM PRIMEIRO LUGAR em TODAS as sugestoes:\n'
+    + '- Hospedagem: busque EXCLUSIVAMENTE hoteis, pousadas ou glamping que aceitam pets. '
+    + 'Especifique que o local deve ter politica clara de aceitacao de animais\n'
+    + '- Restaurantes: priorize estabelecimentos com area EXTERNA pet-friendly, varandas ou jardins onde animais sao bem-vindos. '
+    + 'Evite restaurantes internos fechados onde pets nao sao permitidos\n'
+    + '- Atracoes: prefira parques ao ar livre, praias pet-friendly, trilhas onde animais sao permitidos, '
+    + 'jardins e espacos abertos. EVITE museus, shoppings, atrações internas onde pets nao entram\n'
+    + '- Horarios: para passeios ao ar livre, sugira horarios frescos (antes das 10h ou apos as 16h) para o conforto do animal\n'
+    + '- Em CADA sugestao de hospedagem, restaurante e atracao, adicione: "CONFIRME aceitacao de pets, porte permitido e restricoes antes de ir"\n'
+    + '- Dica de seguranca: mencione o veterinario ou pet shop mais proximo do destino\n'
+    + '- Inclua dicas de parques, pracas e espacos abertos onde o pet pode passear livremente sem coleira (se houver)',
 };
 
-// ===== PROMPT EM 2 FASES + DICAS FORA DA CAIXINHA =====
+// ===== PROMPT EM 2 FASES + FORA DA CAIXINHA =====
 function buildPrompt({ destination, days, passengers, interests, budget, travelDate, travelProfile }) {
   var budgetLabel = budget === 'economico'
     ? 'economico (hostel, lanchonetes, custo baixo)'
@@ -55,13 +74,21 @@ function buildPrompt({ destination, days, passengers, interests, budget, travelD
 
   var profileCtx    = PROFILE_CONTEXT[travelProfile||'couple'] || PROFILE_CONTEXT.couple;
   var interestLabel = (interests&&interests.length) ? interests.join(', ') : 'gastronomia, natureza, cultura';
+  var isBabyOrPet   = travelProfile === 'family_baby' || travelProfile === 'pets';
 
   var dateCtx = '';
   if (travelDate) {
     var d = new Date(travelDate+'T12:00:00');
-    var months = ['janeiro','fevereiro','marco','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
+    var months=['janeiro','fevereiro','marco','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'];
     dateCtx = 'Viagem em '+d.getDate()+' de '+months[d.getMonth()]+' de '+d.getFullYear()+'. Considere clima e eventos locais.';
   }
+
+  var confirmationNote = isBabyOrPet
+    ? '\n## AVISO DE CONFIRMACAO (OBRIGATORIO para este perfil)\n'
+      + 'Em CADA sugestao de hospedagem, restaurante e atracao, inclua no campo "description" uma nota clara '
+      + '(ex: "CONFIRME aceitacao de bebes/pets diretamente com o local antes de reservar — politicas podem mudar"). '
+      + 'Isso e fundamental para evitar frustracao dos viajantes.\n'
+    : '';
 
   return '## PERFIL DO VIAJANTE\n'
     + profileCtx + '\n\n'
@@ -72,30 +99,28 @@ function buildPrompt({ destination, days, passengers, interests, budget, travelD
     + '- Orcamento: ' + budgetLabel + '\n'
     + '- Interesses: ' + interestLabel + '\n'
     + (dateCtx ? '- ' + dateCtx + '\n' : '')
+    + confirmationNote
     + '\n'
-    + '## FASE 1 — PLANEJAMENTO (obrigatorio antes de escrever)\n'
-    + 'Defina UM TEMA UNICO para cada um dos ' + days + ' dias, cobrindo area geografica ou tipo de atividade diferente.\n'
+    + '## FASE 1 — PLANEJAMENTO\n'
+    + 'Defina UM TEMA UNICO para cada um dos ' + days + ' dias, cobrindo area geografica ou tipo de atividade diferente de ' + destination + '.\n'
     + 'NUNCA repita bairro, area ou tema entre os dias.\n'
     + '\n'
-    + '## FASE 2 — EXECUCAO (siga os temas e use lugares unicos por dia)\n'
+    + '## FASE 2 — EXECUCAO\n'
     + '\n'
     + '## DICAS FORA DA CAIXINHA (obrigatorio em todo roteiro)\n'
-    + 'Para CADA DIA do roteiro:\n'
-    + '- Equilibre: ~60% atracoes classicas que todo turista deve ver + ~40% descobertas locais que fazem a viagem ser unica\n'
-    + '- Inclua pelo menos 1 experiencia inusitada: um cafe escondido, uma vista que guias nao mencionam, um mercado local, '
-    + 'uma atividade autentica, um ponto pouco conhecido mas incrivel\n'
-    + '- Se houver um local que vale a pena mesmo sendo mais distante, sugira-o! Indique que "vale o desvio" e explique por que\n'
-    + '- Pense como um MORADOR LOCAL apaixonado pela cidade, nao como um guia turistico generico\n'
-    + '- A dica local ("tip") deve ser ESPECIALMENTE autentica e inusitada — algo que turistas raramente descobrem sozinhos\n'
+    + '- Equilibre: ~60% atracoes classicas + ~40% descobertas locais unicas (cafes escondidos, vistas secretas, mercados locais)\n'
+    + '- Se um local vale o desvio mesmo sendo mais distante, sugira-o! Marque como "Vale o desvio" e explique por que\n'
+    + '- A dica local ("tip") de cada dia deve ser especialmente autentica e inusitada\n'
+    + '- Pense como um morador local apaixonado, nao como um guia turistico generico\n'
     + '\n'
     + '## REGRAS CRITICAS DE UNICIDADE\n'
     + '1. DIA 1 SOMENTE: mencione chegada e check-in UMA VEZ na manha.\n'
-    + '2. DIAS 2 a ' + (days-1>1?days-1:2) + ': NUNCA mencione check-in, chegada ou acomodacao inicial.\n'
+    + '2. DIAS 2 a ' + (days > 2 ? days-1 : 2) + ': NUNCA mencione check-in ou chegada.\n'
     + '3. DIA ' + days + ' (ultimo): mencione check-out e retorno apenas na manha.\n'
-    + '4. CADA DIA = AREA/TEMA DIFERENTE. Verificacao obrigatoria antes de cada dia.\n'
-    + '5. RESTAURANTES: estabelecimento DIFERENTE em cada refeicao de cada dia.\n'
-    + '6. ATRACOES: cada local pode aparecer em APENAS UM DIA.\n'
-    + '7. Use APENAS lugares REAIS e conhecidos de ' + destination + '.\n'
+    + '4. Cada dia = area/tema diferente. Verificacao obrigatoria antes de cada dia.\n'
+    + '5. Restaurantes: estabelecimento diferente em cada refeicao de cada dia.\n'
+    + '6. Atracoes: cada local pode aparecer em apenas um dia.\n'
+    + '7. Use apenas lugares REAIS e conhecidos de ' + destination + '.\n'
     + '\n'
     + 'Retorne SOMENTE JSON valido (sem markdown, sem texto extra):\n'
     + JSON.stringify({
@@ -106,19 +131,19 @@ function buildPrompt({ destination, days, passengers, interests, budget, travelD
         days: [{
           day: 1,
           title: 'titulo unico refletindo o tema do dia',
-          morning: 'atividades da manha (check-in apenas no dia 1)',
+          morning: 'atividades da manha',
           morningAttractions: [{name:'Nome do Local',mapQuery:'Nome do Local, '+destination}],
           afternoon: 'atividades da tarde — inclua ao menos 1 descoberta local',
           afternoonAttractions: [{name:'Nome do Local',mapQuery:'Nome do Local, '+destination}],
           evening: 'atividades da noite',
-          tip: 'dica local autentica e inusitada — algo que turistas raramente descobrem',
+          tip: 'dica local autentica e inusitada',
           meals: {
-            breakfast:{description:'texto com preco',placeName:'Nome do Cafe',  mapQuery:'Nome do Cafe, '+destination},
-            lunch:    {description:'texto com preco',placeName:'Nome do Rest.', mapQuery:'Nome do Rest., '+destination},
-            dinner:   {description:'texto com preco',placeName:'Nome do Rest.', mapQuery:'Nome do Rest., '+destination},
+            breakfast:{description:'texto com preco e nota de confirmacao se bebe/pet',placeName:'Nome do Cafe',  mapQuery:'Nome do Cafe, '+destination},
+            lunch:    {description:'texto com preco e nota de confirmacao se bebe/pet',placeName:'Nome do Rest.', mapQuery:'Nome do Rest., '+destination},
+            dinner:   {description:'texto com preco e nota de confirmacao se bebe/pet',placeName:'Nome do Rest.', mapQuery:'Nome do Rest., '+destination},
           },
           accommodation:{
-            description:'nome e preco por noite',
+            description:'nome, preco por noite e nota de confirmacao se bebe/pet',
             placeName:'Nome da Pousada',
             mapQuery:'Nome da Pousada, '+destination,
             bookingQuery:destination,
@@ -143,8 +168,7 @@ async function generateWithGemini(params) {
   if (!apiKey) throw new Error('KEY_MISSING');
 
   var res = await fetch(GEMINI_URL+'?key='+apiKey, {
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
+    method:'POST', headers:{'Content-Type':'application/json'},
     body: JSON.stringify({
       contents:[{parts:[{text: buildPrompt(params)}]}],
       generationConfig:{temperature:0.8, maxOutputTokens:8000},
@@ -156,16 +180,14 @@ async function generateWithGemini(params) {
       ],
     }),
   });
-
   if (!res.ok) {
-    var err = await res.json().catch(function(){return{};});
-    if (res.status===429||res.status===503) throw new Error('RATE_LIMIT');
+    var err=await res.json().catch(function(){return{};});
+    if(res.status===429||res.status===503) throw new Error('RATE_LIMIT');
     throw new Error('GEMINI_ERROR: '+(err.error&&err.error.message||res.status));
   }
-
-  var data = await res.json();
-  var text  = data.candidates&&data.candidates[0]&&data.candidates[0].content&&data.candidates[0].content.parts&&data.candidates[0].content.parts[0]&&data.candidates[0].content.parts[0].text;
-  if (!text) throw new Error('EMPTY_RESPONSE');
+  var data=await res.json();
+  var text=data.candidates&&data.candidates[0]&&data.candidates[0].content&&data.candidates[0].content.parts&&data.candidates[0].content.parts[0]&&data.candidates[0].content.parts[0].text;
+  if(!text) throw new Error('EMPTY_RESPONSE');
   return parseJsonResponse(text);
 }
 
@@ -180,60 +202,51 @@ async function generateWithGroq(params) {
     body: JSON.stringify({
       model: GROQ_MODEL,
       messages:[
-        {role:'system', content:'Voce e um especialista em turismo brasileiro. Responda APENAS com JSON valido. Nunca repita restaurantes, hoteis ou atracoes entre os dias. Inclua sempre dicas locais autenticas e inusitadas.'},
+        {role:'system', content:'Voce e um especialista em turismo. Responda APENAS com JSON valido. Nao repita lugares entre os dias. Para perfis bebe/pets, inclua avisos de confirmacao em cada sugestao.'},
         {role:'user',   content: buildPrompt(params)},
       ],
-      temperature:0.75,
-      max_tokens:6000,
+      temperature:0.75, max_tokens:6000,
     }),
   });
-
   if (!res.ok) {
-    var err = await res.json().catch(function(){return{};});
-    if (res.status===429||res.status===503) throw new Error('RATE_LIMIT');
+    var err=await res.json().catch(function(){return{};});
+    if(res.status===429||res.status===503) throw new Error('RATE_LIMIT');
     throw new Error('GROQ_ERROR: '+(err.error&&err.error.message||res.status));
   }
-
-  var data = await res.json();
-  var text  = data.choices&&data.choices[0]&&data.choices[0].message&&data.choices[0].message.content;
-  if (!text) throw new Error('EMPTY_RESPONSE');
+  var data=await res.json();
+  var text=data.choices&&data.choices[0]&&data.choices[0].message&&data.choices[0].message.content;
+  if(!text) throw new Error('EMPTY_RESPONSE');
   return parseJsonResponse(text);
 }
 
-// ===== FUNCAO PRINCIPAL: Gemini → Groq → erro =====
+// ===== FUNCAO PRINCIPAL =====
 export async function generateItinerary(params) {
   var hasGemini = !!process.env.NEXT_PUBLIC_GEMINI_API_KEY;
   var hasGroq   = !!process.env.NEXT_PUBLIC_GROQ_API_KEY;
-
   if (!hasGemini&&!hasGroq) throw new Error('NO_API_KEY');
 
   if (hasGemini) {
     try {
-      var result = await generateWithGemini(params);
-      result._provider = 'gemini';
-      return result;
+      var result=await generateWithGemini(params);
+      result._provider='gemini'; return result;
     } catch(err) {
-      if (err.message==='RATE_LIMIT'||err.message.includes('GEMINI_ERROR')) {
-        if (!hasGroq) throw new Error('RATE_LIMIT');
+      if(err.message==='RATE_LIMIT'||err.message.includes('GEMINI_ERROR')){
+        if(!hasGroq) throw new Error('RATE_LIMIT');
       } else { throw err; }
     }
   }
-
   if (hasGroq) {
     try {
-      var result = await generateWithGroq(params);
-      result._provider = 'groq';
-      return result;
+      var result=await generateWithGroq(params);
+      result._provider='groq'; return result;
     } catch(err) {
-      if (err.message==='RATE_LIMIT') throw new Error('ALL_LIMITS_REACHED');
+      if(err.message==='RATE_LIMIT') throw new Error('ALL_LIMITS_REACHED');
       throw err;
     }
   }
-
   throw new Error('ALL_LIMITS_REACHED');
 }
 
-// ===== HELPERS =====
 export function mapsLink(mapQuery) {
   return 'https://www.google.com/maps/search/?api=1&query='+encodeURIComponent(mapQuery);
 }

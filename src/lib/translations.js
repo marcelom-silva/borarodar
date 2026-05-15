@@ -30,7 +30,7 @@ export var translations = {
     mode_itinerary:'Montar Roteiro', mode_itinerary_desc:'Apenas o roteiro dia a dia',
     mode_itinerary_hint:'Preencha o destino e os dias.',
     profile_traveler_label:'Quem vai viajar?',
-    profile_solo:'Solo', profile_couple:'Casal', profile_family_baby:'Familia+Bebe', profile_family_senior:'Com Idosos', profile_friends:'Grupo', profile_women_only:'So Mulheres',
+    profile_solo:'Solo', profile_couple:'Casal', profile_family_baby:'Familia+Bebe', profile_family_senior:'Com Idosos', profile_friends:'Grupo', profile_women_only:'So Mulheres', profile_pets:'Com Pets', profile_women_only:'So Mulheres',
     vehicle_label:'Tipo e Modelo do Veiculo',
     vehicle_brand_ph:'Selecione a marca...', vehicle_model_ph2:'Selecione o modelo...', vehicle_year_ph:'Ano do veiculo...',
     vehicle_kml_hint:'Consumo estimado sugerido:', vehicle_kml_editable:'voce pode alterar acima.',
@@ -80,7 +80,7 @@ export var translations = {
     itinerary_morning_label:'Manha', itinerary_afternoon_label:'Tarde', itinerary_evening_label:'Noite',
     itinerary_breakfast:'Cafe da manha', itinerary_lunch:'Almoco', itinerary_dinner:'Jantar',
     itinerary_accommodation_prefix:'Hospedagem', itinerary_tip_prefix:'Dica local',
-    itinerary_external_note:'Links abrem em nova aba, fora do BoraRodar.', itinerary_fallback_notice:'Gemini atingiu o limite diario — usando Llama (Groq) como alternativa automatica.', itinerary_all_limits:'Limite de ambas as IAs atingido por hoje. Exibindo roteiro basico. Tente amanha!', itinerary_no_key:'Configure NEXT_PUBLIC_GEMINI_API_KEY ou NEXT_PUBLIC_GROQ_API_KEY no .env.local.', itinerary_rate_limit:'Limite diario da IA atingido. Tente amanha ou configure o Groq como alternativa.',
+    itinerary_external_note:'Links abrem em nova aba, fora do BoraRodar.', itinerary_baby_disclaimer_title:'Viagem com Bebe — Confirme antes de ir!', itinerary_baby_disclaimer:'As sugestoes abaixo priorizam locais baby-friendly. CONFIRME diretamente com cada hospedagem, restaurante e atracao se aceitam bebes, se tem trocador e acesso para carrinho — essas informacoes podem mudar a qualquer momento.', itinerary_pet_disclaimer_title:'Viagem com Pet — Confirme antes de ir!', itinerary_pet_disclaimer:'As sugestoes abaixo priorizam locais pet-friendly. CONFIRME diretamente com cada hospedagem, restaurante e atracao se aceitam pets, o porte permitido e eventuais restricoes — politicas pet-friendly podem mudar sem aviso previo.', itinerary_fallback_notice:'Gemini atingiu o limite diario — usando Llama (Groq) como alternativa automatica.', itinerary_all_limits:'Limite de ambas as IAs atingido por hoje. Exibindo roteiro basico. Tente amanha!', itinerary_no_key:'Configure NEXT_PUBLIC_GEMINI_API_KEY ou NEXT_PUBLIC_GROQ_API_KEY no .env.local.', itinerary_rate_limit:'Limite diario da IA atingido. Tente amanha ou configure o Groq como alternativa.',
     // Mapa do roteiro por dia
     itinerary_show_map:'Ver no mapa',
     itinerary_open_day_maps:'Abrir dia no Google Maps',
@@ -148,7 +148,7 @@ export var translations = {
     mode_itinerary:'Build Itinerary', mode_itinerary_desc:'Day-by-day itinerary only',
     mode_itinerary_hint:'Fill in destination and days.',
     profile_traveler_label:'Who is traveling?',
-    profile_solo:'Solo', profile_couple:'Couple', profile_family_baby:'Family+Baby', profile_family_senior:'With Seniors', profile_friends:'Group', profile_women_only:'Women Only',
+    profile_solo:'Solo', profile_couple:'Couple', profile_family_baby:'Family+Baby', profile_family_senior:'With Seniors', profile_friends:'Group', profile_women_only:'Women Only', profile_pets:'With Pets', profile_women_only:'Women Only',
     vehicle_label:'Vehicle Type & Model',
     vehicle_brand_ph:'Select brand...', vehicle_model_ph2:'Select model...', vehicle_year_ph:'Vehicle year...',
     vehicle_kml_hint:'Suggested fuel efficiency:', vehicle_kml_editable:'you can edit above.',
@@ -197,7 +197,7 @@ export var translations = {
     itinerary_morning_label:'Morning', itinerary_afternoon_label:'Afternoon', itinerary_evening_label:'Evening',
     itinerary_breakfast:'Breakfast', itinerary_lunch:'Lunch', itinerary_dinner:'Dinner',
     itinerary_accommodation_prefix:'Accommodation', itinerary_tip_prefix:'Local tip',
-    itinerary_external_note:'Links open in a new tab, outside BoraRodar.', itinerary_fallback_notice:'Gemini daily limit reached — using Llama (Groq) as automatic fallback.', itinerary_all_limits:'Both AI daily limits reached. Showing basic itinerary. Try again tomorrow!', itinerary_no_key:'Set NEXT_PUBLIC_GEMINI_API_KEY or NEXT_PUBLIC_GROQ_API_KEY in .env.local.', itinerary_rate_limit:'AI daily limit reached. Try tomorrow or configure Groq as fallback.',
+    itinerary_external_note:'Links open in a new tab, outside BoraRodar.', itinerary_baby_disclaimer_title:'Traveling with a Baby — Confirm before you go!', itinerary_baby_disclaimer:'The suggestions below prioritize baby-friendly places. CONFIRM directly with each accommodation, restaurant and attraction whether they accept babies, have changing tables and stroller access — this information can change at any time.', itinerary_pet_disclaimer_title:'Traveling with a Pet — Confirm before you go!', itinerary_pet_disclaimer:'The suggestions below prioritize pet-friendly places. CONFIRM directly with each accommodation, restaurant and attraction whether they accept pets, the allowed size and any restrictions — pet-friendly policies can change without notice.', itinerary_fallback_notice:'Gemini daily limit reached — using Llama (Groq) as automatic fallback.', itinerary_all_limits:'Both AI daily limits reached. Showing basic itinerary. Try again tomorrow!', itinerary_no_key:'Set NEXT_PUBLIC_GEMINI_API_KEY or NEXT_PUBLIC_GROQ_API_KEY in .env.local.', itinerary_rate_limit:'AI daily limit reached. Try tomorrow or configure Groq as fallback.',
     itinerary_show_map:'View on map', itinerary_open_day_maps:"Open day in Google Maps", itinerary_geocoding:'Locating points...',
     daytrip_stops:'stops', daytrip_this_day:'on this day',
     daytrip_show_map:'View on map', daytrip_hide_map:'Close map', daytrip_open_maps:'Open in Google Maps',
@@ -256,7 +256,7 @@ export var translations = {
     mode_itinerary:'Armar Itinerario', mode_itinerary_desc:'Solo el itinerario dia a dia',
     mode_itinerary_hint:'Completa el destino y los dias.',
     profile_traveler_label:'Quien viaja?',
-    profile_solo:'Solo', profile_couple:'Pareja', profile_family_baby:'Familia+Bebe', profile_family_senior:'Con Mayores', profile_friends:'Grupo', profile_women_only:'Solo Mujeres',
+    profile_solo:'Solo', profile_couple:'Pareja', profile_family_baby:'Familia+Bebe', profile_family_senior:'Con Mayores', profile_friends:'Grupo', profile_women_only:'Solo Mujeres', profile_pets:'Con Mascotas', profile_women_only:'Solo Mujeres',
     vehicle_label:'Tipo y Modelo del Vehiculo',
     vehicle_brand_ph:'Selecciona la marca...', vehicle_model_ph2:'Selecciona el modelo...', vehicle_year_ph:'Ano del vehiculo...',
     vehicle_kml_hint:'Consumo estimado sugerido:', vehicle_kml_editable:'puedes editarlo arriba.',
@@ -305,7 +305,7 @@ export var translations = {
     itinerary_morning_label:'Manana', itinerary_afternoon_label:'Tarde', itinerary_evening_label:'Noche',
     itinerary_breakfast:'Desayuno', itinerary_lunch:'Almuerzo', itinerary_dinner:'Cena',
     itinerary_accommodation_prefix:'Alojamiento', itinerary_tip_prefix:'Consejo local',
-    itinerary_external_note:'Los enlaces abren en nueva pestana, fuera de BoraRodar.', itinerary_fallback_notice:'Gemini alcanzo el limite diario — usando Llama (Groq) como alternativa automatica.', itinerary_all_limits:'Limite de ambas IAs alcanzado. Mostrando itinerario basico. Intenta manana!', itinerary_no_key:'Configura NEXT_PUBLIC_GEMINI_API_KEY o NEXT_PUBLIC_GROQ_API_KEY en .env.local.', itinerary_rate_limit:'Limite diario de la IA alcanzado. Intenta manana o configura Groq.',
+    itinerary_external_note:'Los enlaces abren en nueva pestana, fuera de BoraRodar.', itinerary_baby_disclaimer_title:'Viaje con Bebe — Confirma antes de ir!', itinerary_baby_disclaimer:'Las sugerencias priorizan lugares baby-friendly. CONFIRMA directamente con cada alojamiento, restaurante y atraccion si aceptan bebes, si tienen cambiador y acceso para carrito — esta informacion puede cambiar en cualquier momento.', itinerary_pet_disclaimer_title:'Viaje con Mascota — Confirma antes de ir!', itinerary_pet_disclaimer:'Las sugerencias priorizan lugares pet-friendly. CONFIRMA directamente con cada alojamiento, restaurante y atraccion si aceptan mascotas, el tamano permitido y restricciones — las politicas pueden cambiar sin aviso previo.', itinerary_fallback_notice:'Gemini alcanzo el limite diario — usando Llama (Groq) como alternativa automatica.', itinerary_all_limits:'Limite de ambas IAs alcanzado. Mostrando itinerario basico. Intenta manana!', itinerary_no_key:'Configura NEXT_PUBLIC_GEMINI_API_KEY o NEXT_PUBLIC_GROQ_API_KEY en .env.local.', itinerary_rate_limit:'Limite diario de la IA alcanzado. Intenta manana o configura Groq.',
     itinerary_show_map:'Ver en el mapa', itinerary_open_day_maps:'Abrir dia en Google Maps', itinerary_geocoding:'Localizando puntos...',
     daytrip_stops:'paradas', daytrip_this_day:'en este dia',
     daytrip_show_map:'Ver en el mapa', daytrip_hide_map:'Cerrar mapa', daytrip_open_maps:'Abrir en Google Maps',
@@ -334,6 +334,7 @@ export var translations = {
     common_back:'Volver', common_save:'Guardar', common_cancel:'Cancelar', common_close:'Cerrar',
   },
 };
+
 
 
 
