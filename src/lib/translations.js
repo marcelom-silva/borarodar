@@ -1,14 +1,8 @@
-﻿// src/lib/translations.js â€” UTF-8
-// Todas as chaves do projeto BoraRodar em PT / EN / ES
+// src/lib/translations.js
 export var translations = {
-
-  // ===========================================================
   pt: {
-    // Navbar
     nav_planejar:'Planejar', nav_galera:'Galera', nav_explorar:'Explorar',
     nav_perfil:'Perfil', nav_ajuda:'Ajuda',
-
-    // Hero
     hero_badge:'Nova forma de explorar o mundo',
     hero_subtitle:'Planeje sua rota, calcule os gastos e viva a viagem dos sonhos.',
     hero_cta:'Partiu, galera?',
@@ -17,32 +11,23 @@ export var translations = {
     hero_stats_rotas:'rotas criadas', hero_stats_viajantes:'viajantes', hero_stats_destinos:'destinos',
     hero_scroll:'Role para baixo',
     hero_hover_tip:'passe o mouse no titulo para ver as rodas girarem',
-
-    // Features
     features_tag:'Por que usar', features_title:'Tudo que sua viagem precisa',
     features_subtitle:'De Oiapoque ao Chui, do litoral ao sertao.',
-    feat1_title:'Rotas Inteligentes',    feat1_desc:'Melhor caminho com pedagios, balsas e trechos ruins.',
-    feat2_title:'Orcamento Detalhado',   feat2_desc:'Combustivel, pedagios, alimentacao e hospedagem antes de sair.',
-    feat3_title:'Pit Stops Incriveis',   feat3_desc:'Restaurantes, postos, cachoeiras, mirantes e apoio para bebes.',
-    feat4_title:'Alertas de Seguranca',  feat4_desc:'Avisos sobre trechos ruins e dicas de seguranca.',
-    feat5_title:'Comunidade',            feat5_desc:'Avalie rotas, compartilhe dicas e suba no ranking.',
-    feat6_title:'Exportar Tudo',         feat6_desc:'WhatsApp, PDF, e-mail. Simples assim.',
-
-    // Mapa animado
+    feat1_title:'Rotas Inteligentes',   feat1_desc:'Melhor caminho com pedagios, balsas e trechos ruins.',
+    feat2_title:'Orcamento Detalhado',  feat2_desc:'Combustivel, pedagios, alimentacao e hospedagem antes de sair.',
+    feat3_title:'Pit Stops Incriveis',  feat3_desc:'Restaurantes, postos, cachoeiras, mirantes e apoio para bebes.',
+    feat4_title:'Alertas de Seguranca', feat4_desc:'Avisos sobre trechos ruins e dicas de seguranca.',
+    feat5_title:'Comunidade',           feat5_desc:'Avalie rotas, compartilhe dicas e suba no ranking.',
+    feat6_title:'Exportar Tudo',        feat6_desc:'WhatsApp, PDF, e-mail. Simples assim.',
     map_tag:'Cobertura Nacional', map_title:'De qualquer cidade a qualquer destino',
     map_subtitle:'Calcule rotas em todo o Brasil.',
     map_live:'BRASIL - MAPA ESQUEMATICO', map_btn:'Planejar minha rota',
-    map_route_label:'Rota em destaque', map_distance:'Distancia',
-    map_time:'Tempo', map_fuel:'Combustivel',
-
-    // Trending / Community
+    map_route_label:'Rota em destaque', map_distance:'Distancia', map_time:'Tempo', map_fuel:'Combustivel',
     trending_tag:'Em alta', trending_title:'Rotas mais curtidas', trending_all:'Ver todas',
     community_tag:'Comunidade', community_title:'O que a galera ta falando', community_all:'Ver tudo',
     community_cta_title:'Partiu fazer parte da galera?',
     community_cta_sub:'Cadastre-se gratis e comece a planejar.',
     community_cta_btn1:'Criar conta gratis', community_cta_btn2:'Testar sem cadastro',
-
-    // Planejador
     planner_tag:'Planejador', planner_title:'Pit Stop do Role',
     planner_sub:'Calcule sua rota, adicione paradas e saiba quanto vai gastar.',
     planner_origem:'Origem', planner_destino:'Destino', planner_stop:'Parada',
@@ -51,35 +36,21 @@ export var translations = {
     planner_pax:'Passageiros', planner_nights:'Noites no destino',
     planner_btn:'Calcular Rota', planner_loading:'Calculando...',
     planner_map_hint:'Preencha a rota e clique em Calcular',
-
-    // Modo
     mode_complete:'Planejamento Completo', mode_complete_desc:'Rota + orcamento + paradas + roteiro',
-    mode_itinerary:'Montar Roteiro',       mode_itinerary_desc:'Apenas o roteiro dia a dia',
+    mode_itinerary:'Montar Roteiro', mode_itinerary_desc:'Apenas o roteiro dia a dia',
     mode_itinerary_hint:'Preencha o destino e os dias.',
-
-    // Perfis
     profile_traveler_label:'Quem vai viajar?',
     profile_solo:'Solo', profile_couple:'Casal',
     profile_women_only:'So Mulheres', profile_family_baby:'Familia+Bebe',
-    profile_family_senior:'Com Idosos', profile_friends:'Grupo',
-    profile_pets:'Com Pets',
-
-    // Veiculo
+    profile_family_senior:'Com Idosos', profile_friends:'Grupo', profile_pets:'Com Pets',
     vehicle_label:'Tipo e Modelo do Veiculo',
-    vehicle_brand_ph:'Selecione a marca...',
-    vehicle_model_ph2:'Selecione o modelo...',
-    vehicle_year_ph:'Ano do veiculo...',
-    vehicle_kml_hint:'Consumo estimado sugerido:',
-    vehicle_kml_editable:'voce pode alterar acima.',
+    vehicle_brand_ph:'Selecione a marca...', vehicle_model_ph2:'Selecione o modelo...', vehicle_year_ph:'Ano do veiculo...',
+    vehicle_kml_hint:'Consumo estimado sugerido:', vehicle_kml_editable:'voce pode alterar acima.',
     vehicle_default_note:'Sem veiculo selecionado: consumo padrao sedan/hatch 1.6 (13 km/L).',
     vehicle_filter_ph:'Filtrar...', vehicle_no_results:'Nenhum resultado',
-
-    // Periodo
     period_label:'Periodo da Viagem', period_from:'Data de Ida', period_to:'Data de Retorno',
     date_optional:'(opcional)', date_hint:'Usamos para dicas de clima e vestuario.',
     period_nights_auto:'auto',
-
-    // Sazonais
     seasonal_summer:'Verao: calor intenso. Leve muita agua, protetor solar FPS50+ e repelente.',
     seasonal_winter:'Inverno: frio no Sul e na Serra. Leve agasalho para a manha e noite.',
     seasonal_mild:'Clima agradavel para viagem - dias amenos e noites frescas.',
@@ -90,33 +61,22 @@ export var translations = {
     seasonal_adventure:'Aventura: calcado antiderrapante, roupas de secagem rapida e repelente DEET 20%+.',
     seasonal_beach:'Praia: protetor solar FPS50+, roupa UV, chapeu. Evite sol entre 10h e 16h.',
     seasonal_nature:'Trilhas: leve lanterna, kit de primeiros socorros e muita agua.',
-
-    // Toggles
     trip_roundtrip:'Ida e Volta', trip_oneway:'Apenas Ida',
     avoid_tolls:'Evitar Pedagios',
     avoid_tolls_note:'Sem pedagios, a rota pode ser mais longa e o custo total pode ser similar.',
-
-    // Estilo
     style_label:'Estilo de Viagem',
     style_economico:'Economico', style_economico_desc:'Hostel, lanchonetes',
     style_moderado:'Moderado',   style_moderado_desc:'Pousadas, restaurantes',
-    style_esbanjando:'Esbanjando',style_esbanjando_desc:'Hoteis, fine dining',
-
-    // Orcamento
+    style_esbanjando:'Esbanjando', style_esbanjando_desc:'Hoteis, fine dining',
     budget_title:'Orcamento do Role',
-    budget_fuel:'Combustivel', budget_toll:'Pedagios',
-    budget_food:'Alimentacao', budget_hotel:'Hospedagem',
+    budget_fuel:'Combustivel', budget_toll:'Pedagios', budget_food:'Alimentacao', budget_hotel:'Hospedagem',
     budget_total:'Total estimado', budget_no_tolls:'Sem pedagios',
     budget_note:'* Pedagios estimados por media x tipo de veiculo. Medias nacionais para comida e hospedagem.',
     cost_vehicle:'Custos do Veiculo', cost_vehicle_total:'Total veiculo',
     cost_itinerary:'Custos do Roteiro', cost_itinerary_total:'Total roteiro',
     cost_per_person:'Por pessoa (racha)', person:'pessoa', people:'pessoas',
-
-    // Links
     link_maps:'Ver no Maps', link_booking:'Ver hospedagem',
     link_activities:'Atividades', link_external:'Abre em nova aba',
-
-    // Seguranca
     safety_title:'Alertas de Seguranca',
     safety_long_trip:'Viagem longa: pare e descanse a cada 2 horas. Fadiga e a principal causa de acidentes.',
     safety_check_car:'Antes de sair: verifique oleo, agua do radiador, pneus e combustivel.',
@@ -124,14 +84,10 @@ export var translations = {
     safety_overnight:'Trecho muito longo: considere pernoitar no meio do caminho.',
     safety_moto:'Motociclista: use equipamento completo. Atencao ao vento lateral em rodovias.',
     safety_roundtrip:'Ida e volta: planeje ao menos 30 min de descanso entre os dois trechos.',
-
-    // Paradas
     stops_title:'Paradas e Atracoes', stops_pitstop:'Pit Stops', stops_attr:'Atracoes',
     stops_nearby:'Proximas da rota', stops_detour:'Vale o Desvio',
     stops_detour_sub:'mais de 40 km, mas valem muito!',
     stops_empty:'Insira um destino para ver as atracoes da regiao.',
-
-    // Roteiro / IA
     itinerary_title:'Roteiro', itinerary_sub:'Sugestoes personalizadas para seu destino',
     itinerary_interests:'Seus interesses (ate 4)', itinerary_budget:'Perfil de orcamento',
     itinerary_btn:'Gerar Roteiro', itinerary_loading:'Gerando roteiro...',
@@ -152,33 +108,25 @@ export var translations = {
     itinerary_baby_disclaimer:'As sugestoes priorizam locais baby-friendly. CONFIRME diretamente com cada hospedagem, restaurante e atracao se aceitam bebes, se tem trocador e acesso para carrinho - essas informacoes podem mudar a qualquer momento.',
     itinerary_pet_disclaimer_title:'Viagem com Pet - Confirme antes de ir!',
     itinerary_pet_disclaimer:'As sugestoes priorizam locais pet-friendly. CONFIRME diretamente com cada hospedagem, restaurante e atracao se aceitam pets, o porte permitido e eventuais restricoes - politicas podem mudar sem aviso previo.',
-
-    // Mapa por dia e passeios
     daytrip_stops:'paradas', daytrip_this_day:'neste dia',
     daytrip_show_map:'Ver no mapa', daytrip_hide_map:'Fechar mapa',
     daytrip_open_maps:'Abrir no Google Maps',
-
-    // Destino Surpresa
-    surprise_title:'Destino Surpresa',
-    surprise_toggle:'Me surpreenda! ðŸŽ²',
+    route_open_nav:'Navegar pela rota',
+    route_open_nav_sub:'Abre o trajeto no app de navegacao. Waze usa apenas o destino final.',
+    route_stops:'paradas',
+    surprise_title:'Destino Surpresa', surprise_toggle:'Me surpreenda!',
     surprise_sub:'Nao sabe para onde ir? A IA escolhe para voce!',
     surprise_loading:'Buscando destinos...', surprise_choose:'Usar este destino',
     surprise_new:'Outras sugestoes', surprise_need_origin:'Informe a cidade de origem primeiro.',
-
-    // Checklist
     checklist_title:'Checklist de Viagem', checklist_sub:'Documentos, carro, fronteira e seguranca',
     checklist_btn:'Gerar Checklist', checklist_loading:'Gerando checklist...',
     checklist_hint:'Geramos uma lista completa com documentos pessoais, itens obrigatorios do carro, requisitos de cruzamento de fronteira (se internacional), alertas de seguranca e muito mais.',
     checklist_error:'Erro ao gerar checklist',
     checklist_confirm_note:'As informacoes de fronteira, requisitos de seguranca e politicas pet/bebe podem mudar. Confirme sempre diretamente com os orgaos competentes, consulados e estabelecimentos antes de viajar.',
     checklist_regenerate:'Gerar nova checklist',
-
-    // Clima
     weather_forecast:'Previsao do Tempo', weather_loading:'Buscando previsao...',
     weather_error:'Previsao indisponivel',
     weather_no_key:'Configure NEXT_PUBLIC_OPENWEATHER_API_KEY para ver a previsao em tempo real.',
-
-    // Validacao
     validation_required:'Campo obrigatorio',
     validation_date_past:'A data de ida nao pode ser no passado',
     validation_date_order:'A data de retorno deve ser apos a data de ida',
@@ -187,28 +135,19 @@ export var translations = {
     validation_kml:'Consumo invalido (3 a 60 km/L)',
     validation_price:'Preco invalido (R$ 2 a R$ 25/L)',
     validation_fix_errors:'Corrija os campos destacados antes de continuar.',
-
-    // Exportar
     export_title:'Exportar Roteiro', export_sub:'Compartilhe com a galera ou salve para depois.',
     export_whats:'WhatsApp', export_email:'E-mail', export_pdf:'PDF',
     export_link:'Copiar link', export_copied:'Link copiado!',
-
-    // Comunidade
     comm_tag:'Comunidade', comm_title:'O Role da Galera',
     comm_sub:'Dicas, alertas, rotas e rankings dos viajantes.',
     comm_feed:'Feed de Dicas', comm_ranking:'Ranking', comm_publish:'Publicar',
     comm_placeholder:'Compartilhe uma dica, alerta ou avaliacao de rota...',
     comm_km:'Km rodados', comm_tips:'Dicas publicadas', comm_explorers:'Exploradores',
-
-    // Explorar
     explore_tag:'Descubra', explore_title:'Explorar o Brasil',
     explore_sub:'Rotas tematicas, passeios curados e destinos incriveis.',
     explore_daytrips:'Passeios de Um Dia',
     explore_daytrips_sub:'Roteiros curados com mapa, horarios e links para o Google Maps.',
-    explore_routes:'Rotas Tematicas', explore_dest:'Destinos',
-    explore_all:'Todos', explore_plan:'Planejar',
-
-    // Perfil do usuario
+    explore_routes:'Rotas Tematicas', explore_dest:'Destinos', explore_all:'Todos', explore_plan:'Planejar',
     profile_greeting:'Ola, aventureiro!', profile_trips:'Viagens',
     profile_km:'Km rodados', profile_tips_ct:'Dicas',
     profile_badges:'Minhas Medalhas',
@@ -222,22 +161,14 @@ export var translations = {
     profile_no_account:'Nao tem conta? Crie gratis',
     profile_has_account:'Ja tem conta? Entrar',
     profile_use_free:'Usar sem cadastro',
-
-    // Ajuda
     help_tag:'Suporte', help_title:'Duvidas? A gente explica tudo',
     help_sub:'Encontre respostas rapidas sobre o BoraRodar.',
-
-    // Footer
     footer_nav:'Navegacao', footer_routes:'Rotas Tematicas',
     footer_made:'Feito com amor para quem ama a estrada.',
-
-    // Comum
     common_loading:'Carregando...', common_error:'Algo deu errado. Tente novamente.',
-    common_back:'Voltar', common_save:'Salvar',
-    common_cancel:'Cancelar', common_close:'Fechar', route_open_nav:'Navegar pela rota', route_open_nav_sub:'Abre o trajeto no app de navegacao. Waze usa apenas o destino final.', route_stops:'paradas',
+    common_back:'Voltar', common_save:'Salvar', common_cancel:'Cancelar', common_close:'Fechar',
   },
 
-  // ===========================================================
   en: {
     nav_planejar:'Plan', nav_galera:'Community', nav_explorar:'Explore',
     nav_perfil:'Profile', nav_ajuda:'Help',
@@ -250,17 +181,16 @@ export var translations = {
     hero_scroll:'Scroll down', hero_hover_tip:'hover over the title to see the wheels spin',
     features_tag:'Why use it', features_title:'Everything your trip needs',
     features_subtitle:'From the Amazon to the Pampas.',
-    feat1_title:'Smart Routes',       feat1_desc:'Best route with tolls, ferries and bad sections.',
-    feat2_title:'Detailed Budget',    feat2_desc:'Fuel, tolls, food and accommodation before you leave.',
-    feat3_title:'Amazing Pit Stops',  feat3_desc:'Restaurants, gas stations, waterfalls and baby-friendly stops.',
-    feat4_title:'Safety Alerts',      feat4_desc:'Warnings about bad roads and safety tips.',
-    feat5_title:'Community',          feat5_desc:'Rate routes, share tips and climb the leaderboard.',
-    feat6_title:'Export Everything',  feat6_desc:'WhatsApp, PDF or email. Simple as that.',
+    feat1_title:'Smart Routes',      feat1_desc:'Best route with tolls, ferries and bad sections.',
+    feat2_title:'Detailed Budget',   feat2_desc:'Fuel, tolls, food and accommodation before you leave.',
+    feat3_title:'Amazing Pit Stops', feat3_desc:'Restaurants, gas stations, waterfalls and baby-friendly stops.',
+    feat4_title:'Safety Alerts',     feat4_desc:'Warnings about bad roads and safety tips.',
+    feat5_title:'Community',         feat5_desc:'Rate routes, share tips and climb the leaderboard.',
+    feat6_title:'Export Everything', feat6_desc:'WhatsApp, PDF or email. Simple as that.',
     map_tag:'National Coverage', map_title:'From any city to any destination',
     map_subtitle:'Calculate routes anywhere in Brazil.',
     map_live:'BRAZIL - SCHEMATIC MAP', map_btn:'Plan my route',
-    map_route_label:'Featured route', map_distance:'Distance',
-    map_time:'Time', map_fuel:'Fuel',
+    map_route_label:'Featured route', map_distance:'Distance', map_time:'Time', map_fuel:'Fuel',
     trending_tag:'Trending', trending_title:'Most liked routes', trending_all:'See all',
     community_tag:'Community', community_title:"What people are saying", community_all:'See all',
     community_cta_title:'Ready to join the crew?',
@@ -280,8 +210,7 @@ export var translations = {
     profile_traveler_label:'Who is traveling?',
     profile_solo:'Solo', profile_couple:'Couple',
     profile_women_only:'Women Only', profile_family_baby:'Family+Baby',
-    profile_family_senior:'With Seniors', profile_friends:'Group',
-    profile_pets:'With Pets',
+    profile_family_senior:'With Seniors', profile_friends:'Group', profile_pets:'With Pets',
     vehicle_label:'Vehicle Type & Model',
     vehicle_brand_ph:'Select brand...', vehicle_model_ph2:'Select model...', vehicle_year_ph:'Vehicle year...',
     vehicle_kml_hint:'Suggested fuel efficiency:', vehicle_kml_editable:'you can edit above.',
@@ -308,8 +237,7 @@ export var translations = {
     style_moderado:'Moderate', style_moderado_desc:'Guesthouses, restaurants',
     style_esbanjando:'Splurging', style_esbanjando_desc:'Hotels, fine dining',
     budget_title:'Trip Budget',
-    budget_fuel:'Fuel', budget_toll:'Tolls',
-    budget_food:'Food', budget_hotel:'Accommodation',
+    budget_fuel:'Fuel', budget_toll:'Tolls', budget_food:'Food', budget_hotel:'Accommodation',
     budget_total:'Estimated total', budget_no_tolls:'No tolls',
     budget_note:'* Tolls estimated per km x vehicle type. National averages for food and accommodation.',
     cost_vehicle:'Vehicle Costs', cost_vehicle_total:'Vehicle total',
@@ -345,14 +273,16 @@ export var translations = {
     itinerary_no_key:'Set NEXT_PUBLIC_GEMINI_API_KEY or NEXT_PUBLIC_GROQ_API_KEY.',
     itinerary_rate_limit:'AI daily limit reached. Try again tomorrow.',
     itinerary_baby_disclaimer_title:'Traveling with a Baby - Confirm before you go!',
-    itinerary_baby_disclaimer:'Suggestions prioritize baby-friendly places. CONFIRM directly with each accommodation, restaurant and attraction whether they accept babies, have changing tables and stroller access - this information can change at any time.',
+    itinerary_baby_disclaimer:'Suggestions prioritize baby-friendly places. CONFIRM directly with each accommodation, restaurant and attraction whether they accept babies, have changing tables and stroller access - this can change at any time.',
     itinerary_pet_disclaimer_title:'Traveling with a Pet - Confirm before you go!',
     itinerary_pet_disclaimer:'Suggestions prioritize pet-friendly places. CONFIRM directly with each accommodation, restaurant and attraction whether they accept pets, the allowed size and any restrictions - policies can change without notice.',
     daytrip_stops:'stops', daytrip_this_day:'on this day',
     daytrip_show_map:'View on map', daytrip_hide_map:'Close map',
     daytrip_open_maps:'Open in Google Maps',
-    surprise_title:'Surprise Destination',
-    surprise_toggle:'Surprise me! ðŸŽ²',
+    route_open_nav:'Navigate the route',
+    route_open_nav_sub:'Opens the route in your navigation app. Waze uses the final destination only.',
+    route_stops:'stops',
+    surprise_title:'Surprise Destination', surprise_toggle:'Surprise me!',
     surprise_sub:"Not sure where to go? AI picks for you!",
     surprise_loading:'Finding destinations...', surprise_choose:'Use this destination',
     surprise_new:'Other suggestions', surprise_need_origin:'Please enter your departure city first.',
@@ -385,8 +315,7 @@ export var translations = {
     explore_sub:'Thematic routes, curated day trips and amazing destinations.',
     explore_daytrips:'Day Trips',
     explore_daytrips_sub:'Curated itineraries with map, times and Google Maps links.',
-    explore_routes:'Thematic Routes', explore_dest:'Destinations',
-    explore_all:'All', explore_plan:'Plan',
+    explore_routes:'Thematic Routes', explore_dest:'Destinations', explore_all:'All', explore_plan:'Plan',
     profile_greeting:'Hey, adventurer!', profile_trips:'Trips',
     profile_km:'Km traveled', profile_tips_ct:'Tips',
     profile_badges:'My Badges',
@@ -405,11 +334,9 @@ export var translations = {
     footer_nav:'Navigation', footer_routes:'Thematic Routes',
     footer_made:'Made with love for those who love the road.',
     common_loading:'Loading...', common_error:'Something went wrong. Try again.',
-    common_back:'Back', common_save:'Save',
-    common_cancel:'Cancel', common_close:'Close', route_open_nav:'Navigate the route', route_open_nav_sub:'Opens the full route in your navigation app. Waze uses the final destination only.', route_stops:'stops',
+    common_back:'Back', common_save:'Save', common_cancel:'Cancel', common_close:'Close',
   },
 
-  // ===========================================================
   es: {
     nav_planejar:'Planificar', nav_galera:'Comunidad', nav_explorar:'Explorar',
     nav_perfil:'Perfil', nav_ajuda:'Ayuda',
@@ -422,17 +349,16 @@ export var translations = {
     hero_scroll:'Desplaza hacia abajo', hero_hover_tip:'pasa el mouse por el titulo para ver las ruedas girar',
     features_tag:'Por que usarlo', features_title:'Todo lo que tu viaje necesita',
     features_subtitle:'De norte a sur de Brasil.',
-    feat1_title:'Rutas Inteligentes',     feat1_desc:'Mejor camino con peajes, transbordadores y tramos malos.',
-    feat2_title:'Presupuesto Detallado',  feat2_desc:'Combustible, peajes, comida y alojamiento antes de salir.',
-    feat3_title:'Paradas Increibles',     feat3_desc:'Restaurantes, gasolineras, cascadas y paradas para bebes.',
-    feat4_title:'Alertas de Seguridad',   feat4_desc:'Avisos sobre tramos malos y consejos de seguridad.',
-    feat5_title:'Comunidad',              feat5_desc:'Evalua rutas, comparte consejos y sube en el ranking.',
-    feat6_title:'Exportar Todo',          feat6_desc:'WhatsApp, PDF o correo. Asi de simple.',
+    feat1_title:'Rutas Inteligentes',    feat1_desc:'Mejor camino con peajes, transbordadores y tramos malos.',
+    feat2_title:'Presupuesto Detallado', feat2_desc:'Combustible, peajes, comida y alojamiento antes de salir.',
+    feat3_title:'Paradas Increibles',    feat3_desc:'Restaurantes, gasolineras, cascadas y paradas para bebes.',
+    feat4_title:'Alertas de Seguridad',  feat4_desc:'Avisos sobre tramos malos y consejos de seguridad.',
+    feat5_title:'Comunidad',             feat5_desc:'Evalua rutas, comparte consejos y sube en el ranking.',
+    feat6_title:'Exportar Todo',         feat6_desc:'WhatsApp, PDF o correo. Asi de simple.',
     map_tag:'Cobertura Nacional', map_title:'De cualquier ciudad a cualquier destino',
     map_subtitle:'Calcula rutas en todo Brasil.',
     map_live:'BRASIL - MAPA ESQUEMATICO', map_btn:'Planificar mi ruta',
-    map_route_label:'Ruta destacada', map_distance:'Distancia',
-    map_time:'Tiempo', map_fuel:'Combustible',
+    map_route_label:'Ruta destacada', map_distance:'Distancia', map_time:'Tiempo', map_fuel:'Combustible',
     trending_tag:'En tendencia', trending_title:'Rutas mas populares', trending_all:'Ver todas',
     community_tag:'Comunidad', community_title:'Lo que dice la gente', community_all:'Ver todo',
     community_cta_title:'Listo para unirte?',
@@ -452,8 +378,7 @@ export var translations = {
     profile_traveler_label:'Quien viaja?',
     profile_solo:'Solo', profile_couple:'Pareja',
     profile_women_only:'Solo Mujeres', profile_family_baby:'Familia+Bebe',
-    profile_family_senior:'Con Mayores', profile_friends:'Grupo',
-    profile_pets:'Con Mascotas',
+    profile_family_senior:'Con Mayores', profile_friends:'Grupo', profile_pets:'Con Mascotas',
     vehicle_label:'Tipo y Modelo del Vehiculo',
     vehicle_brand_ph:'Selecciona la marca...', vehicle_model_ph2:'Selecciona el modelo...', vehicle_year_ph:'Ano del vehiculo...',
     vehicle_kml_hint:'Consumo estimado sugerido:', vehicle_kml_editable:'puedes editarlo arriba.',
@@ -478,10 +403,9 @@ export var translations = {
     style_label:'Estilo de Viaje',
     style_economico:'Economico', style_economico_desc:'Hostel, comida rapida',
     style_moderado:'Moderado',   style_moderado_desc:'Posadas, restaurantes',
-    style_esbanjando:'Derrochando',style_esbanjando_desc:'Hoteles, gastronomia premium',
+    style_esbanjando:'Derrochando', style_esbanjando_desc:'Hoteles, gastronomia premium',
     budget_title:'Presupuesto del Viaje',
-    budget_fuel:'Combustible', budget_toll:'Peajes',
-    budget_food:'Alimentacion', budget_hotel:'Alojamiento',
+    budget_fuel:'Combustible', budget_toll:'Peajes', budget_food:'Alimentacion', budget_hotel:'Alojamiento',
     budget_total:'Total estimado', budget_no_tolls:'Sin peajes',
     budget_note:'* Peajes estimados por km x tipo de vehiculo. Promedios nacionales.',
     cost_vehicle:'Costos del Vehiculo', cost_vehicle_total:'Total vehiculo',
@@ -523,8 +447,10 @@ export var translations = {
     daytrip_stops:'paradas', daytrip_this_day:'en este dia',
     daytrip_show_map:'Ver en el mapa', daytrip_hide_map:'Cerrar mapa',
     daytrip_open_maps:'Abrir en Google Maps',
-    surprise_title:'Destino Sorpresa',
-    surprise_toggle:'Sorprendeme! ðŸŽ²',
+    route_open_nav:'Navegar por la ruta',
+    route_open_nav_sub:'Abre el recorrido en tu app de navegacion. Waze usa solo el destino final.',
+    route_stops:'paradas',
+    surprise_title:'Destino Sorpresa', surprise_toggle:'Sorprendeme!',
     surprise_sub:'No sabes adonde ir? La IA elige por ti!',
     surprise_loading:'Buscando destinos...', surprise_choose:'Usar este destino',
     surprise_new:'Otras sugerencias', surprise_need_origin:'Ingresa la ciudad de origen primero.',
@@ -557,8 +483,7 @@ export var translations = {
     explore_sub:'Rutas tematicas, paseos de un dia y destinos increibles.',
     explore_daytrips:'Paseos de Un Dia',
     explore_daytrips_sub:'Itinerarios curados con mapa, horarios y links de Google Maps.',
-    explore_routes:'Rutas Tematicas', explore_dest:'Destinos',
-    explore_all:'Todos', explore_plan:'Planificar',
+    explore_routes:'Rutas Tematicas', explore_dest:'Destinos', explore_all:'Todos', explore_plan:'Planificar',
     profile_greeting:'Hola, aventurero!', profile_trips:'Viajes',
     profile_km:'Km recorridos', profile_tips_ct:'Consejos',
     profile_badges:'Mis Medallas',
@@ -577,8 +502,6 @@ export var translations = {
     footer_nav:'Navegacion', footer_routes:'Rutas Tematicas',
     footer_made:'Hecho con amor para quienes aman la carretera.',
     common_loading:'Cargando...', common_error:'Algo salio mal. Intentalo de nuevo.',
-    common_back:'Volver', common_save:'Guardar',
-    common_cancel:'Cancelar', common_close:'Cerrar', route_open_nav:'Navegar por la ruta', route_open_nav_sub:'Abre el recorrido en tu app de navegacion. Waze usa solo el destino final.', route_stops:'paradas',
+    common_back:'Volver', common_save:'Guardar', common_cancel:'Cancelar', common_close:'Cerrar',
   },
 };
-
