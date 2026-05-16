@@ -61,6 +61,14 @@ export default function ImmersiveHero() {
     if (typeof window === 'undefined') return;
     const cleanups = [];
 
+    /* ─── SYNCHRONOUS position set — prevents FOUC on F5/hard-reload ──────
+       Must run BEFORE any async import so logo is never at (0,0). */
+    (function syncPos() {
+      const el = document.getElementById('clogo');
+      if (el) el.style.transform =
+        'translate(' + (window.innerWidth / 2 - 100) + 'px, 75px)';
+    })();
+
     /* ─────────────────────────────────────────────────────
        1. EDGE SEGMENTS — 3D coin thickness
        Formula: rotateZ(θ) translateY(-R) rotateX(90deg)
@@ -176,14 +184,14 @@ export default function ImmersiveHero() {
       const { ScrollTrigger } = await import('gsap/ScrollTrigger');
       gsap.registerPlugin(ScrollTrigger);
       const XI = window.innerWidth/2  - HALF;
-      const YI = 105; /* logo center at ~230px from top — clearly below header */
+      const YI = 75; /* logo center at ~230px from top — clearly below header */
       const clogo = document.getElementById('clogo');
       if (!clogo) return;
       clogo.style.transform = `translate(${XI}px,${YI}px)`;
       gsap.set('#clogo', { transformPerspective: 900, x:XI, y:YI });
       const onResize = () => {
         const p = ScrollTrigger.getById('lt')?.progress || 0;
-        if (p<0.02) gsap.set('#clogo',{x:window.innerWidth/2-HALF,y:105});
+        if (p<0.02) gsap.set('#clogo',{x:window.innerWidth/2-HALF,y:75});
         ScrollTrigger.refresh();
       };
       window.addEventListener('resize', onResize, {passive:true});
@@ -199,7 +207,7 @@ export default function ImmersiveHero() {
           const p=s.progress;
           if (ytfRef.current) ytfRef.current.style.filter=`blur(${(p*13).toFixed(1)}px)`;
           const vo=document.getElementById('vover');
-          if (vo) vo.style.opacity=(0.50+p*.30).toFixed(3);
+          if (vo) vo.style.opacity=(0.52 + p * 0.28).toFixed(3);
         }
       });
       gsap.to('#shint',{opacity:0,y:-14,ease:'none',
@@ -285,13 +293,6 @@ export default function ImmersiveHero() {
               ytf.contentWindow.postMessage(JSON.stringify({ event:'command', func:'seekTo',    args:[0, true] }), '*');
               ytf.contentWindow.postMessage(JSON.stringify({ event:'command', func:'playVideo', args:''        }), '*');
             }
-          } else if (msg.info === 1) {
-            /* playing: fade overlay from 0.85 (thumbnail-hiding) down to 0.50 */
-            const vo = document.getElementById('vover');
-            if (vo && parseFloat(vo.style.opacity || '1') > 0.52) {
-              vo.style.transition = 'opacity 1.8s ease';
-              vo.style.opacity    = '0.50';
-            }
           }
         }
       } catch { /* non-JSON messages from other iframes */ }
@@ -353,14 +354,18 @@ export default function ImmersiveHero() {
       {/* Video background */}
       <div style={{position:'fixed',inset:0,zIndex:0,overflow:'hidden'}}>
         <iframe ref={ytfRef}
-          src="https://www.youtube.com/embed/w1DLJ6xCf7Y?autoplay=1&mute=1&loop=1&playlist=w1DLJ6xCf7Y&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&playsinline=1&disablekb=1&cc_load_policy=0&fs=0&enablejsapi=1"
+          src="https://www.youtube.com/embed/w1DLJ6xCf7Y?autoplay=1&mute=1&loop=1&playlist=w1DLJ6xCf7Y&controls=0&showinfo=0&rel=0&iv_load_policy=3&modestbranding=1&playsinline=1&disablekb=1&cc_load_policy=0&fs=0&enablejsapi=1&start=1"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           title="BoraRodar Background"
           style={{position:'absolute',width:'177.78vh',minWidth:'100%',height:'100%',minHeight:'56.25vw',top:'50%',left:'50%',transform:'translate(-50%,-50%)',border:'none',pointerEvents:'none'}}
         />
-        <div id="vover" style={{position:'absolute',inset:0,background:'#000',opacity:.85,pointerEvents:'none'}}/>
+        <div id="vover" style={{position:'absolute',inset:0,background:'#000',opacity:.52,pointerEvents:'none'}}/>
         <div style={{position:'absolute',inset:0,pointerEvents:'none',background:'radial-gradient(ellipse 58% 52% at 35% 56%,rgba(255,107,53,.055),transparent),linear-gradient(to bottom,transparent 63%,rgba(15,15,19,.78) 100%)'}}/>
-        <div style={{position:'absolute',inset:0,zIndex:1}}/>{/* click-blocker */}
+        <div style={{position:'absolute',inset:0,zIndex:1}}/>{/* Loading veil: starts at 0.70 opacity, CSS-animated to 0 after 3.5s.
+             Combined with #vover (0.52) = ~0.82 effective → hides YT thumbnail/controls.
+             Fades away via CSS animation; no JS timing required. */}
+        <div id="vload" style={{position:'absolute',inset:0,background:'#000',pointerEvents:'none'}}/>
+        {/* click-blocker */}
       </div>
 
       {/* ════════════════════════════════════════════════
