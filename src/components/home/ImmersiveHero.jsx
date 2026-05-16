@@ -176,14 +176,14 @@ export default function ImmersiveHero() {
       const { ScrollTrigger } = await import('gsap/ScrollTrigger');
       gsap.registerPlugin(ScrollTrigger);
       const XI = window.innerWidth/2  - HALF;
-      const YI = 130; /* logo center at ~230px from top — clearly below header */
+      const YI = 120; /* logo center at ~230px from top — clearly below header */
       const clogo = document.getElementById('clogo');
       if (!clogo) return;
       clogo.style.transform = `translate(${XI}px,${YI}px)`;
       gsap.set('#clogo', { transformPerspective: 900, x:XI, y:YI });
       const onResize = () => {
         const p = ScrollTrigger.getById('lt')?.progress || 0;
-        if (p<0.02) gsap.set('#clogo',{x:window.innerWidth/2-HALF,y:130});
+        if (p<0.02) gsap.set('#clogo',{x:window.innerWidth/2-HALF,y:120});
         ScrollTrigger.refresh();
       };
       window.addEventListener('resize', onResize, {passive:true});
@@ -199,7 +199,7 @@ export default function ImmersiveHero() {
           const p=s.progress;
           if (ytfRef.current) ytfRef.current.style.filter=`blur(${(p*13).toFixed(1)}px)`;
           const vo=document.getElementById('vover');
-          if (vo) vo.style.opacity=(0.58+p*.30).toFixed(3);
+          if (vo) vo.style.opacity=(0.50+p*.30).toFixed(3);
         }
       });
       gsap.to('#shint',{opacity:0,y:-14,ease:'none',
@@ -269,7 +269,29 @@ export default function ImmersiveHero() {
     }
 
     /* ─────────────────────────────────────────────────────
-       7. AUTO-UNMUTE on first interaction
+       7. YOUTUBE LOOP GUARD
+       YouTube sometimes shows the end screen even with loop=1.
+       We listen for state=0 (ended) via postMessage and
+       immediately seek to 0 + replay — guarantees seamless loop.
+    ───────────────────────────────────────────────────── */
+    const ytLoopGuard = (e) => {
+      try {
+        const msg = JSON.parse(e.data);
+        // state 0 = video ended
+        if (msg.event === 'onStateChange' && msg.info === 0) {
+          const ytf = ytfRef.current;
+          if (ytf?.contentWindow) {
+            ytf.contentWindow.postMessage(JSON.stringify({ event:'command', func:'seekTo',    args:[0, true] }), '*');
+            ytf.contentWindow.postMessage(JSON.stringify({ event:'command', func:'playVideo', args:''        }), '*');
+          }
+        }
+      } catch { /* non-JSON messages from other iframes */ }
+    };
+    window.addEventListener('message', ytLoopGuard);
+    cleanups.push(() => window.removeEventListener('message', ytLoopGuard));
+
+    /* ─────────────────────────────────────────────────────
+       8. AUTO-UNMUTE on first interaction
     ───────────────────────────────────────────────────── */
     const autoUnmute=()=>{sendYT('unMute');setIsMuted(false);};
     document.addEventListener('click', autoUnmute,{once:true});
@@ -327,7 +349,7 @@ export default function ImmersiveHero() {
           title="BoraRodar Background"
           style={{position:'absolute',width:'177.78vh',minWidth:'100%',height:'100%',minHeight:'56.25vw',top:'50%',left:'50%',transform:'translate(-50%,-50%)',border:'none',pointerEvents:'none'}}
         />
-        <div id="vover" style={{position:'absolute',inset:0,background:'#000',opacity:.58,pointerEvents:'none'}}/>
+        <div id="vover" style={{position:'absolute',inset:0,background:'#000',opacity:.50,pointerEvents:'none'}}/>
         <div style={{position:'absolute',inset:0,pointerEvents:'none',background:'radial-gradient(ellipse 58% 52% at 35% 56%,rgba(255,107,53,.055),transparent),linear-gradient(to bottom,transparent 63%,rgba(15,15,19,.78) 100%)'}}/>
         <div style={{position:'absolute',inset:0,zIndex:1}}/>{/* click-blocker */}
       </div>
