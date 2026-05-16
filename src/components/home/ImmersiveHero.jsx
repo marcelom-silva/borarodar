@@ -176,14 +176,14 @@ export default function ImmersiveHero() {
       const { ScrollTrigger } = await import('gsap/ScrollTrigger');
       gsap.registerPlugin(ScrollTrigger);
       const XI = window.innerWidth/2  - HALF;
-      const YI = 120; /* logo center at ~230px from top — clearly below header */
+      const YI = 105; /* logo center at ~230px from top — clearly below header */
       const clogo = document.getElementById('clogo');
       if (!clogo) return;
       clogo.style.transform = `translate(${XI}px,${YI}px)`;
       gsap.set('#clogo', { transformPerspective: 900, x:XI, y:YI });
       const onResize = () => {
         const p = ScrollTrigger.getById('lt')?.progress || 0;
-        if (p<0.02) gsap.set('#clogo',{x:window.innerWidth/2-HALF,y:120});
+        if (p<0.02) gsap.set('#clogo',{x:window.innerWidth/2-HALF,y:105});
         ScrollTrigger.refresh();
       };
       window.addEventListener('resize', onResize, {passive:true});
@@ -277,12 +277,21 @@ export default function ImmersiveHero() {
     const ytLoopGuard = (e) => {
       try {
         const msg = JSON.parse(e.data);
-        // state 0 = video ended
-        if (msg.event === 'onStateChange' && msg.info === 0) {
-          const ytf = ytfRef.current;
-          if (ytf?.contentWindow) {
-            ytf.contentWindow.postMessage(JSON.stringify({ event:'command', func:'seekTo',    args:[0, true] }), '*');
-            ytf.contentWindow.postMessage(JSON.stringify({ event:'command', func:'playVideo', args:''        }), '*');
+        if (msg.event === 'onStateChange') {
+          if (msg.info === 0) {
+            /* ended: seek to 0 and replay */
+            const ytf = ytfRef.current;
+            if (ytf?.contentWindow) {
+              ytf.contentWindow.postMessage(JSON.stringify({ event:'command', func:'seekTo',    args:[0, true] }), '*');
+              ytf.contentWindow.postMessage(JSON.stringify({ event:'command', func:'playVideo', args:''        }), '*');
+            }
+          } else if (msg.info === 1) {
+            /* playing: fade overlay from 0.85 (thumbnail-hiding) down to 0.50 */
+            const vo = document.getElementById('vover');
+            if (vo && parseFloat(vo.style.opacity || '1') > 0.52) {
+              vo.style.transition = 'opacity 1.8s ease';
+              vo.style.opacity    = '0.50';
+            }
           }
         }
       } catch { /* non-JSON messages from other iframes */ }
@@ -349,7 +358,7 @@ export default function ImmersiveHero() {
           title="BoraRodar Background"
           style={{position:'absolute',width:'177.78vh',minWidth:'100%',height:'100%',minHeight:'56.25vw',top:'50%',left:'50%',transform:'translate(-50%,-50%)',border:'none',pointerEvents:'none'}}
         />
-        <div id="vover" style={{position:'absolute',inset:0,background:'#000',opacity:.50,pointerEvents:'none'}}/>
+        <div id="vover" style={{position:'absolute',inset:0,background:'#000',opacity:.85,pointerEvents:'none'}}/>
         <div style={{position:'absolute',inset:0,pointerEvents:'none',background:'radial-gradient(ellipse 58% 52% at 35% 56%,rgba(255,107,53,.055),transparent),linear-gradient(to bottom,transparent 63%,rgba(15,15,19,.78) 100%)'}}/>
         <div style={{position:'absolute',inset:0,zIndex:1}}/>{/* click-blocker */}
       </div>
