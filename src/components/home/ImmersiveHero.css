@@ -1,0 +1,68 @@
+/* ──────────────────────────────────────────────────────────
+   ImmersiveHero.css
+   Extracted from inline <style> to avoid SSR hydration mismatch.
+   Sora font loaded via next/font in layout.js (--font-sora var).
+────────────────────────────────────────────────────────── */
+
+#ih-root { scroll-behavior: smooth; }
+#ih-root ::-webkit-scrollbar { width: 3px; }
+#ih-root ::-webkit-scrollbar-thumb { background: rgba(255,107,53,.3); border-radius: 2px; }
+
+
+/* ── Medal floating shadow ── */
+@keyframes shadow-pulse {
+  0%,100% { width: 130px; opacity: .6;  }
+  50%     { width: 116px; opacity: .42; }
+}
+
+/* ── Scroll hint ── */
+#shint { animation: shint-in 1s ease 1.2s both; }
+@keyframes shint-in {
+  from { opacity: 0; transform: translateX(-50%) translateY(14px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0);    }
+}
+#sline { animation: sb 1.6s ease-in-out infinite; }
+@keyframes sb {
+  0%,100% { opacity: 1; transform: scaleY(1);  }
+  50%     { opacity: .2; transform: scaleY(.4); }
+}
+
+/* ── Section / content reveal ── */
+.ih-reveal {
+  opacity: 0;
+  transform: translateY(28px);
+  transition: opacity .9s ease, transform .9s ease;
+}
+.ih-reveal.ih-in { opacity: 1; transform: translateY(0); }
+
+/* ── Cards ── */
+.ih-card {
+  opacity: 0;
+  transform: translateY(48px);
+  transition:
+    opacity  .8s var(--d,0s) ease,
+    transform .8s var(--d,0s) cubic-bezier(.16,1,.3,1),
+    box-shadow .3s,
+    border-color .25s;
+}
+.ih-card.ih-in { opacity: 1; transform: translateY(0); }
+.ih-card:hover { transform: translateY(-8px) scale(1.02) !important; }
+
+/* ── Nav links ── */
+.ih-nav-a {
+  color: #9CA3AF; text-decoration: none;
+  font-size: 13px; font-weight: 500; letter-spacing: .01em;
+  transition: color .2s;
+}
+.ih-nav-a:hover { color: #FF6B35; }
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  #hdrsep, #hdrtag { display: none !important; }
+}
+@media (max-width: 640px) {
+  #ih-nav     { display: none !important; }
+  #ih-content { padding: 80px 16px !important; }
+  #ih-stats   { grid-template-columns: 1fr !important; }
+  #shint, #ih-wc { display: none !important; }
+}
