@@ -77,6 +77,8 @@ export default function ImmersiveHero() {
        to simulate directional lighting.
     ───────────────────────────────────────────────────── */
     const setupEdge = () => {
+      /* Skip 3D edge on touch devices — 48 elements + preserve-3d is slow on mobile */
+      if (window.matchMedia('(pointer:coarse)').matches) return;
       const edge = document.getElementById('coin-edge');
       if (!edge) return;
       const arcLen = (2 * Math.PI * RE / N).toFixed(2);
@@ -137,30 +139,47 @@ export default function ImmersiveHero() {
 
         const R_OUTER = 98, R_RIM = 91, R_INNER = 82;
 
+        const isMobCanvas = window.matchMedia('(pointer:coarse)').matches;
+
         const draw = (t) => {
           const glow = 22.5 + 7.5 * Math.sin(t * 0.00224);
           const drawTo = (c) => {
             c.clearRect(0, 0, LS, LS);
-            /* Outer neon glow */
-            c.save();
-            c.shadowBlur = glow * 2.5; c.shadowColor = 'rgba(255,107,53,.55)';
-            c.fillStyle  = 'rgba(255,107,53,.005)';
-            c.beginPath(); c.arc(HALF, HALF, R_OUTER, 0, Math.PI*2); c.fill();
-            c.restore();
-            /* Canvas rim removed — 3D edge segments provide the border.
-               Just a thin dark separator so the logo edge reads clearly. */
-            c.save();
-            c.strokeStyle = 'rgba(30,30,50,0.5)';
-            c.lineWidth = 2;
-            c.beginPath(); c.arc(HALF, HALF, R_INNER + 1, 0, Math.PI*2); c.stroke();
-            c.restore();
-            /* Logo */
-            c.save();
-            c.beginPath(); c.arc(HALF,HALF,R_INNER,0,Math.PI*2); c.clip();
-            c.shadowBlur=glow*.55; c.shadowColor='#FF6B35'; c.globalAlpha=.7;
-            c.drawImage(off,0,0);
-            c.shadowBlur=0; c.globalAlpha=1; c.drawImage(off,0,0);
-            c.restore();
+
+            if (isMobCanvas) {
+              /* ── Mobile: 2-pass (perf) ─────────────────── */
+              c.save();
+              c.beginPath(); c.arc(HALF,HALF,R_INNER,0,Math.PI*2); c.clip();
+              c.shadowBlur = glow; c.shadowColor = '#FF6B35';
+              c.globalAlpha = 0.75; c.drawImage(off,0,0);
+              c.shadowBlur = 0;    c.globalAlpha = 1; c.drawImage(off,0,0);
+              c.restore();
+              /* Mobile rim (CSS-drawn, no conic gradient needed) */
+              c.save();
+              c.strokeStyle='rgba(200,152,10,0.85)'; c.lineWidth=8;
+              c.beginPath(); c.arc(HALF,HALF,R_RIM,0,Math.PI*2); c.stroke();
+              c.restore();
+            } else {
+              /* ── Desktop: 4-pass ───────────────────────── */
+              /* 1. Outer neon glow */
+              c.save();
+              c.shadowBlur = glow * 2.5; c.shadowColor = 'rgba(255,107,53,.55)';
+              c.fillStyle  = 'rgba(255,107,53,.005)';
+              c.beginPath(); c.arc(HALF, HALF, R_OUTER, 0, Math.PI*2); c.fill();
+              c.restore();
+              /* 2. Thin dark separator */
+              c.save();
+              c.strokeStyle = 'rgba(30,30,50,0.5)'; c.lineWidth = 2;
+              c.beginPath(); c.arc(HALF,HALF,R_INNER+1,0,Math.PI*2); c.stroke();
+              c.restore();
+              /* 3. Logo (clipped to inner circle) */
+              c.save();
+              c.beginPath(); c.arc(HALF,HALF,R_INNER,0,Math.PI*2); c.clip();
+              c.shadowBlur=glow*.55; c.shadowColor='#FF6B35'; c.globalAlpha=.7;
+              c.drawImage(off,0,0);
+              c.shadowBlur=0; c.globalAlpha=1; c.drawImage(off,0,0);
+              c.restore();
+            }
           };
 
           drawTo(ctx);
@@ -226,31 +245,49 @@ export default function ImmersiveHero() {
        Moving mouse left  → coin spins left.
        Effect suppressed during scroll (progress > 0.1).
     ───────────────────────────────────────────────────── */
-    let targetSpinY = 0, currentSpinY = 0, spinRaf;
-    const spinTick = () => {
-      currentSpinY += (targetSpinY - currentSpinY) * 0.06;
-      const mi = document.getElementById('medal-inner');
-      if (mi) mi.style.transform = `rotateY(${currentSpinY}deg)`;
-      spinRaf = requestAnimationFrame(spinTick);
-    };
-    spinRaf = requestAnimationFrame(spinTick);
+    const isMobSpin = window.matchMedia('(pointer:coarse)').matches;
+    let currentSpinY = 0, spinRaf;
 
-    const onMouseMove = async (e) => {
-      const { ScrollTrigger } = await import('gsap/ScrollTrigger');
-      const p = ScrollTrigger.getById('lt')?.progress || 0;
-      if (p > 0.1) { targetSpinY = 0; return; }
-      // Mouse X → spin angle: center=0°, edges=±40°
-      const x = (e.clientX - window.innerWidth/2) / (window.innerWidth * 0.5);
-      targetSpinY = x * 40;
-    };
-    const onMouseLeave = () => { targetSpinY = 0; };
-    document.addEventListener('mousemove', onMouseMove, {passive:true});
-    document.addEventListener('mouseleave', onMouseLeave);
-    cleanups.push(()=>{
-      cancelAnimationFrame(spinRaf);
-      document.removeEventListener('mousemove', onMouseMove);
-      document.removeEventListener('mouseleave', onMouseLeave);
-    });
+    if (isMobSpin) {
+      /* ── Mobile: gentle auto-spin (no mouse) ──────────────
+         ~1 revolution / 30 s at 60 fps; pauses when scrolled. */
+      const autoSpin = () => {
+        const mi = document.getElementById('medal-inner');
+        if (mi) {
+          currentSpinY += 0.18;
+          mi.style.transform = `rotateY(${currentSpinY}deg)`;
+        }
+        spinRaf = requestAnimationFrame(autoSpin);
+      };
+      spinRaf = requestAnimationFrame(autoSpin);
+      cleanups.push(() => cancelAnimationFrame(spinRaf));
+    } else {
+      /* ── Desktop: mouse-driven Y spin ─────────────────── */
+      let targetSpinY = 0;
+      const spinTick = () => {
+        currentSpinY += (targetSpinY - currentSpinY) * 0.06;
+        const mi = document.getElementById('medal-inner');
+        if (mi) mi.style.transform = `rotateY(${currentSpinY}deg)`;
+        spinRaf = requestAnimationFrame(spinTick);
+      };
+      spinRaf = requestAnimationFrame(spinTick);
+
+      const onMouseMove = async (e) => {
+        const { ScrollTrigger } = await import('gsap/ScrollTrigger');
+        const p = ScrollTrigger.getById('lt')?.progress || 0;
+        if (p > 0.1) { targetSpinY = 0; return; }
+        const x = (e.clientX - window.innerWidth/2) / (window.innerWidth * 0.5);
+        targetSpinY = x * 40;
+      };
+      const onMouseLeave = () => { targetSpinY = 0; };
+      document.addEventListener('mousemove', onMouseMove, {passive:true});
+      document.addEventListener('mouseleave', onMouseLeave);
+      cleanups.push(()=>{
+        cancelAnimationFrame(spinRaf);
+        document.removeEventListener('mousemove', onMouseMove);
+        document.removeEventListener('mouseleave', onMouseLeave);
+      });
+    }
 
     /* ─────────────────────────────────────────────────────
        5. INTERSECTION OBSERVER — content reveal
@@ -351,7 +388,7 @@ export default function ImmersiveHero() {
      JSX
   ───────────────────────────────────────────────────── */
   return (
-    <div id="ih-root" style={{background:'#0F0F13',minHeight:'100vh',overflowX:'hidden',color:'#fff',fontFamily:'var(--font-sora,system-ui,sans-serif)'}}>
+    <div id="ih-root" style={{background:'#0F0F13',minHeight:'100svh',overflowX:'hidden',touchAction:'pan-y',color:'#fff',fontFamily:'var(--font-sora,system-ui,sans-serif)'}}>
 
       {/* Wheel cursor */}
       <div id="ih-wc" style={{position:'fixed',top:0,left:0,width:44,height:44,pointerEvents:'none',zIndex:9999,opacity:0,transition:'opacity .2s',willChange:'transform'}}>
@@ -409,7 +446,7 @@ export default function ImmersiveHero() {
           #lc-back    : canvas at Z = -T/2 (back face)
           #coin-edge  : N segments → cylinder edge
       ═══════════════════════════════════════════════ */}
-      <div id="clogo" style={{position:'fixed',top:0,left:0,width:LS,height:LS,zIndex:600,pointerEvents:'none',transformStyle:'preserve-3d'}}>
+      <div id="clogo" style={{position:'fixed',top:0,left:0,width:LS,height:LS,zIndex:600,pointerEvents:'none',transformStyle:'preserve-3d',WebkitTransformStyle:'preserve-3d'}}>
 
         {/* medal-inner: receives mouse Y-spin via JS spinTick */}
         <div id="medal-inner" style={{position:'absolute',top:0,left:0,width:LS,height:LS,transformStyle:'preserve-3d'}}>
@@ -452,7 +489,7 @@ export default function ImmersiveHero() {
         {isMuted?'🔇 Som':'🔊 Mudo'}
       </button>
 
-      <div id="sarea" style={{height:'calc(100vh + 500px)',position:'relative',pointerEvents:'none'}}/>
+      <div id="sarea" style={{height:'calc(100svh + 500px)',position:'relative',pointerEvents:'none'}}/>
 
       {/* Content */}
       <section id="ih-content" style={{background:'#0F0F13',padding:'100px 32px 80px',position:'relative',zIndex:10}}>

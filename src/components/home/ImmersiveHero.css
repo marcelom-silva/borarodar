@@ -71,9 +71,107 @@
 @media (max-width: 900px) {
   #hdrsep, #hdrtag { display: none !important; }
 }
+
+/* ════════════════════════════════════════════════════════════
+   MOBILE — telas ≤ 640px
+   Contempla: iOS Safari, Android Chrome, telas 320–640px
+════════════════════════════════════════════════════════════ */
 @media (max-width: 640px) {
-  #ih-nav     { display: none !important; }
-  #ih-content { padding: 80px 16px !important; }
-  #ih-stats   { grid-template-columns: 1fr !important; }
-  #shint, #ih-wc { display: none !important; }
+
+  /* ── Layout base ─────────────────────────────────── */
+  #ih-nav, #shint, #ih-wc { display: none !important; }
+
+  /* iOS Safari: 100vh inclui a URL bar e causa overflow.
+     100dvh usa a altura real visível (suportado iOS 15.4+).
+     Fallback: -webkit-fill-available para iOS mais antigo. */
+  #ih-root {
+    min-height: -webkit-fill-available;
+    min-height: 100dvh;
+  }
+
+  /* Área de scroll: altura ligeiramente menor no mobile
+     (usuário não precisa rolar tanto para ver o conteúdo) */
+  #sarea { height: calc(100dvh + 380px) !important; }
+
+  /* ── Header ──────────────────────────────────────── */
+  #hdr {
+    padding: 0 16px !important;
+    height: 56px !important;           /* menor no mobile */
+  }
+  /* Logo "BoraRodar" no header: tamanho menor */
+  #hdr .font-bold { font-size: 17px !important; }
+
+  /* ── Medalha / Logo ──────────────────────────────── */
+  /* Em telas ≤ 375px o coin de 200px ocupa 53% da largura.
+     Reduzimos para 160px via CSS scale para não ocupar tanto espaço. */
+  #clogo { transform-origin: top left; }
+
+  /* ── Conteúdo / cards ────────────────────────────── */
+  #ih-content { padding: 72px 16px 40px !important; }
+  #ih-stats   { grid-template-columns: 1fr 1fr !important; gap: 12px !important; }
+  /* Cards: largura completa, sem hover transform (touch não tem hover) */
+  .ih-card { margin: 0 !important; }
+  .ih-card:hover { transform: none !important; }  /* desativa hover no touch */
+
+  /* ── CTA / botões ────────────────────────────────── */
+  #ih-cta {
+    flex-direction: column !important;
+    gap: 12px !important;
+  }
+  #ih-cta a, #ih-cta button {
+    width: 100% !important;
+    text-align: center !important;
+    padding: 14px 20px !important;
+  }
+
+  /* ── Botão Som (canto inferior direito) ─────────── */
+  #stgl {
+    bottom: 16px !important;
+    right: 16px !important;
+    padding: 8px 12px !important;
+    font-size: 12px !important;
+  }
+
+  /* ── Texto do hero ───────────────────────────────── */
+  /* Reduz headings para caberem em telas estreitas */
+  #ih-content h1 { font-size: clamp(1.6rem, 6vw, 2.2rem) !important; }
+  #ih-content h2 { font-size: clamp(1.2rem, 4.5vw, 1.6rem) !important; }
+  #ih-content p  { font-size: clamp(0.85rem, 3.5vw, 1rem) !important; }
+
+  /* ── Scroll hint: mostrar versão simplificada ────── */
+  /* Já ocultamos #shint, mas o texto de role se adapta */
 }
+
+/* ── Telas muito pequenas (320px — iPhone SE, etc.) ── */
+@media (max-width: 375px) {
+  #ih-stats { grid-template-columns: 1fr !important; }
+  #hdr .font-bold { font-size: 15px !important; }
+}
+
+/* ── Suporte a touch: desativa :hover nos cards ─────── */
+@media (hover: none) and (pointer: coarse) {
+  .ih-card:hover { transform: translateY(0) scale(1) !important; box-shadow: none !important; }
+  .ih-nav-a:hover { color: #9CA3AF !important; }
+
+  /* preserve-3d pode ser lento em Android. Só usamos em desktop. */
+  #clogo, #medal-inner {
+    -webkit-transform-style: flat !important;
+    transform-style: flat !important;
+  }
+
+  /* Sem borda de edge-segments (removidos via JS); garantia CSS */
+  #coin-edge { display: none !important; }
+}
+
+/* ── iOS Safari: evitar bounce scroll indesejado ─────── */
+@supports (-webkit-touch-callout: none) {
+  #ih-root { -webkit-overflow-scrolling: touch; }
+  /* No iOS, position:fixed pode tremer durante scroll inercial.
+     will-change cria um compositor layer, evitando o tremor.  */
+  #vbg, #clogo, #hdr {
+    will-change: transform;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+  }
+}
+
