@@ -11,12 +11,12 @@
 
 
 /* ── Loading veil ──────────────────────────────────────────
-   Starts at opacity 0.70, combined with #vover 0.52 ≈ 0.82 effective.
-   Fades to 0 after 3.5s, revealing the video (which is playing by then).
-   CSS-only: no dependency on YouTube API events or JS timing.      */
+   opacity 0.70 + #vover 0.52 = ~0.82 effective → hides YT thumbnail/controls.
+   JS (state=1 event) fades it out when video starts playing (typically 1-2s).
+   CSS animation (5s delay) is a fallback in case state=1 doesn't fire.       */
 #vload {
   opacity: 0.70;
-  animation: vload-fade 2s ease-out 3.5s forwards;
+  animation: vload-fade 2s ease-out 5s forwards;
 }
 @keyframes vload-fade { to { opacity: 0; } }
 

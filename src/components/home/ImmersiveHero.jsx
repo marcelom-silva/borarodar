@@ -205,7 +205,7 @@ export default function ImmersiveHero() {
         trigger:'#sarea',start:'top top',end:`+=${SCROLL_END}`,
         onUpdate:(s)=>{
           const p=s.progress;
-          if (ytfRef.current) ytfRef.current.style.filter=`blur(${(p*13).toFixed(1)}px)`;
+          const w=document.getElementById('ytf-wrap'); if(w) w.style.filter=`blur(${(p*13).toFixed(1)}px)`;
           const vo=document.getElementById('vover');
           if (vo) vo.style.opacity=(0.52 + p * 0.28).toFixed(3);
         }
@@ -287,15 +287,24 @@ export default function ImmersiveHero() {
         const msg = JSON.parse(e.data);
         if (msg.event === 'onStateChange') {
           if (msg.info === 0) {
-            /* ended: seek to 0 and replay */
+            /* Ended → seek to 0 and replay immediately */
             const ytf = ytfRef.current;
             if (ytf?.contentWindow) {
               ytf.contentWindow.postMessage(JSON.stringify({ event:'command', func:'seekTo',    args:[0, true] }), '*');
               ytf.contentWindow.postMessage(JSON.stringify({ event:'command', func:'playVideo', args:''        }), '*');
             }
+          } else if (msg.info === 1) {
+            /* Playing → fade out the loading veil immediately.
+               This is the reliable trigger: video IS playing, so
+               thumbnail/controls are already gone from the iframe.   */
+            const vl = document.getElementById('vload');
+            if (vl && parseFloat(getComputedStyle(vl).opacity) > 0.01) {
+              vl.style.transition = 'opacity 1.5s ease';
+              vl.style.opacity    = '0';
+            }
           }
         }
-      } catch { /* non-JSON messages from other iframes */ }
+      } catch { /* non-JSON messages from other iframes — ignore */ }
     };
     window.addEventListener('message', ytLoopGuard);
     cleanups.push(() => window.removeEventListener('message', ytLoopGuard));
@@ -308,9 +317,33 @@ export default function ImmersiveHero() {
     document.addEventListener('scroll',autoUnmute,{once:true,passive:true});
     cleanups.push(()=>{document.removeEventListener('click',autoUnmute);document.removeEventListener('scroll',autoUnmute);});
 
-    return ()=>{
-      cleanups.forEach(fn=>fn?.());
-      sendYT('pauseVideo');
+    /* ─────────────────────────────────────────────────────
+       9. RESUME VIDEO on page restore (browser back button / bfcache)
+       When the user navigates away and returns, the browser may restore
+       the page from bfcache with the iframe paused. We resume it here.
+    ───────────────────────────────────────────────────── */
+    const onPageShow = (e) => {
+      if (e.persisted) {
+        /* Restored from bfcache → play and reset vload */
+        setTimeout(() => sendYT('playVideo'), 400);
+        const vl = document.getElementById('vload');
+        if (vl) { vl.style.transition='none'; vl.style.opacity='0'; }
+      }
+    };
+    const onVisChange = () => {
+      /* Tab becomes visible again after being hidden */
+      if (!document.hidden) sendYT('playVideo');
+    };
+    window.addEventListener('pageshow',     onPageShow);
+    document.addEventListener('visibilitychange', onVisChange);
+    cleanups.push(() => {
+      window.removeEventListener('pageshow',     onPageShow);
+      document.removeEventListener('visibilitychange', onVisChange);
+    });
+
+    return () => {
+      cleanups.forEach(fn => fn?.());
+      /* Note: iframe is destroyed on unmount anyway, no need to pauseVideo */
     };
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
