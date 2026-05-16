@@ -176,14 +176,14 @@ export default function ImmersiveHero() {
       const { ScrollTrigger } = await import('gsap/ScrollTrigger');
       gsap.registerPlugin(ScrollTrigger);
       const XI = window.innerWidth/2  - HALF;
-      const YI = 50; /* logo center at ~150px from top, clear of header */
+      const YI = 130; /* logo center at ~230px from top — clearly below header */
       const clogo = document.getElementById('clogo');
       if (!clogo) return;
       clogo.style.transform = `translate(${XI}px,${YI}px)`;
       gsap.set('#clogo', { transformPerspective: 900, x:XI, y:YI });
       const onResize = () => {
         const p = ScrollTrigger.getById('lt')?.progress || 0;
-        if (p<0.02) gsap.set('#clogo',{x:window.innerWidth/2-HALF,y:50});
+        if (p<0.02) gsap.set('#clogo',{x:window.innerWidth/2-HALF,y:130});
         ScrollTrigger.refresh();
       };
       window.addEventListener('resize', onResize, {passive:true});
