@@ -175,3 +175,66 @@
   }
 }
 
+
+/* ════════════════════════════════════════════════════════════
+   ACESSIBILIDADE (a11y)
+════════════════════════════════════════════════════════════ */
+
+/* ── Skip-to-content link (visível ao receber foco via Tab) ─ */
+/* Já implementado inline via onFocus/onBlur no JSX.          */
+
+/* ── Foco visível para navegação por teclado ─────────────── */
+/* Garante que todos os elementos focáveis tenham contorno
+   visível — essencial para deficiência motora / teclado.     */
+#ih-root *:focus-visible {
+  outline: 2px solid #39FF14 !important;
+  outline-offset: 3px !important;
+  border-radius: 4px;
+}
+/* Links/botões com foco via mouse não precisam de contorno   */
+#ih-root *:focus:not(:focus-visible) {
+  outline: none !important;
+}
+
+/* ── Movimento reduzido (prefers-reduced-motion) ────────────
+   Usuários com epilepsia, vertigem, ou preferência por
+   menos animação devem ter uma experiência ainda completa.   */
+@media (prefers-reduced-motion: reduce) {
+  /* Para todas as animações CSS */
+  *, *::before, *::after {
+    animation-duration:        0.01ms !important;
+    animation-iteration-count: 1      !important;
+    transition-duration:       0.01ms !important;
+    scroll-behavior:           auto   !important;
+  }
+  /* Vídeo de fundo: substitui por gradiente estático         */
+  #vbg iframe { opacity: 0 !important; }
+  #vbg::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(160deg, #0a0a14 0%, #0F1A0F 40%, #14100A 100%);
+    z-index: 0;
+  }
+  /* Medalha: para animação do canvas                         */
+  #clogo canvas { animation: none !important; }
+  /* Cards: sem transição de entrada                          */
+  .ih-reveal, .ih-card {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+/* ── Alto contraste (Windows High Contrast Mode) ────────────
+   Forced-colors garante legibilidade no modo de alto
+   contraste do Windows — essencial para deficiência visual.  */
+@media (forced-colors: active) {
+  #ih-root { background: Canvas !important; color: CanvasText !important; }
+  .ih-card { border: 1px solid ButtonText !important; background: Canvas !important; }
+  #hdr     { border-bottom: 1px solid ButtonText !important; }
+  #stgl    { forced-color-adjust: none; }
+}
+
+/* ── Tamanho de fonte respeitado (zoom do browser) ──────────
+   Não bloqueamos o redimensionamento — o usuário pode usar
+   Ctrl+= para aumentar o texto sem quebrar o layout.         */
+#ih-root { font-size: 100%; }

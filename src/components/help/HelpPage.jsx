@@ -9,6 +9,23 @@ function getFAQData(lang) {
     // =====================================================
     pt: [
       {
+        title:'Página Principal', emoji:'🏠',
+        items:[
+          { q:'Como funciona a página inicial?',
+            a:'A homepage é imersiva: vídeo de fundo toca automaticamente, a medalha 3D animada move-se ao logo do header enquanto você rola, e os cards de navegação aparecem logo abaixo. No mobile, a medalha gira sozinha suavemente.' },
+          { q:'O vídeo de fundo não toca. O que fazer?',
+            a:'O vídeo roda mutado por padrão — autoplay com som é bloqueado pelos navegadores. Se não aparecer, verifique se o navegador bloqueia iframes de terceiros. No iOS Safari, recarregue a página. O conteúdo funciona normalmente mesmo sem o vídeo.' },
+          { q:'Como ativo o som do vídeo?',
+            a:'Clique em "Som / Mudo" no canto inferior direito. É necessária uma interação (clique ou scroll) antes de ativar o som — restrição dos navegadores modernos.' },
+          { q:'A animação da medalha pode ser desativada?',
+            a:'Sim. Se o seu sistema tiver "Reduzir movimento" ativado (Configurações → Acessibilidade), todas as animações são pausadas e o vídeo é substituído por fundo gradiente estático.' },
+          { q:'O site é acessível para pessoas com deficiência?',
+            a:'Sim. Implementamos: (1) Link "Pular para o conteúdo" para usuários de teclado; (2) Atributos ARIA em todos os elementos interativos; (3) Suporte a prefers-reduced-motion para sensibilidade a movimento; (4) Contraste WCAG AA; (5) Compatibilidade com Windows High Contrast Mode; (6) Navegação completa por teclado (Tab / Enter / Shift+Tab).' },
+          { q:'Funciona bem no celular?',
+            a:'Sim. Animações são simplificadas em dispositivos touch, o vídeo usa playsinline para não abrir em tela cheia no iOS, a medalha gira automaticamente sem precisar do mouse, cards e botões ficam em coluna para facilitar o toque, e a homepage usa 100svh para corrigir o problema clássico do 100vh no iOS Safari.' },
+        ],
+      },
+      {
         title:'O que é o BoraRodar?', emoji:'🚗',
         items:[
           { q:'O que é o BoraRodar?',

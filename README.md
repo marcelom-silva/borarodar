@@ -339,3 +339,41 @@ public/
 ---
 
 *Feito com ☕ e estrada. Bora Rodar! 🚗*
+
+---
+
+## 📱 Mobile & Responsividade
+
+| Dispositivo | Suporte |
+|-------------|---------|
+| iOS Safari 15.4+ | ✅ Completo (`100svh`, `playsinline`, `will-change`) |
+| iOS Safari < 15.4 | ✅ Fallback `-webkit-fill-available` |
+| Android Chrome 76+ | ✅ Completo |
+| Android Firefox | ✅ Completo |
+| Telas 320px (iPhone SE) | ✅ Stats em 1 coluna, CTA full-width |
+| Telas 375–640px | ✅ Stats em 2 colunas, header 56px |
+
+### Otimizações específicas para mobile
+- **Canvas da medalha**: 2 passes (glow + logo) em vez de 4 passes desktop → CPU mínima
+- **Edge segments 3D**: desativados em `pointer:coarse` → 48 elementos a menos no DOM
+- **Auto-spin suave**: medalha gira +0.18°/frame sem precisar de mouse
+- **YouTube**: `playsinline=1` impede fullscreen automático no iOS
+- **Viewport**: `100svh` corrige o problema clássico do `100vh` com a URL bar do iOS
+- **Touch-action**: `pan-y` no root evita conflito com gestos de zoom
+
+---
+
+## ♿ Acessibilidade (WCAG 2.1 AA)
+
+| Critério | Implementação |
+|----------|---------------|
+| Skip link | Link "Pular para o conteúdo" visível no foco (Tab) |
+| ARIA labels | Todos os botões, iframes, canvas e nav têm `aria-label` |
+| Semântica | `role="banner"`, `role="main"`, `role="navigation"`, `role="img"` |
+| Teclado | Navegação completa Tab / Shift+Tab / Enter |
+| Focus visível | `outline: 2px solid #39FF14` em `:focus-visible` |
+| Reduced motion | `prefers-reduced-motion: reduce` → para canvas, GSAP e vídeo |
+| Alto contraste | `forced-colors: active` (Windows High Contrast Mode) |
+| Contraste de cores | Texto claro sobre fundo escuro ≥ 4.5:1 (WCAG AA) |
+| Zoom | Layout não quebra em até 200% de zoom do navegador |
+

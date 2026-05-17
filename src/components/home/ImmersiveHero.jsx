@@ -27,12 +27,10 @@ const YF    = HT   - DELTA;   // -66
 const SCROLL_END = 500;
 
 const CARDS = [
-  { icon:'🗺️', title:'Planejar Rota',        color:'#39FF14', href:'/planejar',  desc:'Calcule rotas com mapas reais, paradas intermediárias e estimativa completa de gastos.' },
-  { icon:'🎲', title:'Destino Surpresa',      color:'#FF6B35', href:'/planejar',  desc:'A IA sugere 3 destinos incríveis baseados no seu perfil, cidade de origem e orçamento.' },
-  { icon:'🤖', title:'Roteiro com IA',        color:'#B24BF3', href:'/planejar',  desc:'Itinerário personalizado dia a dia com dicas locais exclusivas via Gemini + Llama.' },
-  { icon:'📋', title:'Checklist de Viagem',   color:'#00D4FF', href:'/planejar',  desc:'Documentos, itens do carro e requisitos para cruzar fronteiras internacionais com segurança.' },
-  { icon:'⛅', title:'Clima em Tempo Real',   color:'#FFD700', href:'/planejar',  desc:'Previsão de 5 dias integrada ao planejador para a data exata da sua viagem.' },
-  { icon:'🛡️', title:'Alertas de Segurança', color:'#FF3366', href:'/planejar',  desc:'Trechos perigosos, horários críticos e zonas de risco identificadas na rota.' },
+  { icon:'🗺️', titleKey:'ih_card_plan_title',      descKey:'ih_card_plan_desc',      color:'#39FF14', href:'/planejar'   },
+  { icon:'🧭', titleKey:'ih_card_explore_title',    descKey:'ih_card_explore_desc',    color:'#00D4FF', href:'/explorar'   },
+  { icon:'👥', titleKey:'ih_card_community_title',  descKey:'ih_card_community_desc',  color:'#B24BF3', href:'/comunidade' },
+  { icon:'❓', titleKey:'ih_card_help_title',       descKey:'ih_card_help_desc',       color:'#FF6B35', href:'/ajuda'      },
 ];
 
 /* Lerp between two hex colours */
@@ -43,6 +41,7 @@ function lerpHex(a, b, t) {
 }
 
 export default function ImmersiveHero() {
+  const { t } = useLanguage();
   const [isMuted, setIsMuted] = useState(true);
   const frontRef = useRef(null);   // front-face canvas
   const ytfRef   = useRef(null);
@@ -187,7 +186,12 @@ export default function ImmersiveHero() {
             bctx.clearRect(0,0,LS,LS);
             bctx.drawImage(frontCanvas,0,0); // mirror content from front
           }
+          /* Respects prefers-reduced-motion: stop canvas loop, render once */
+        if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+          draw(0); // single frame, no loop
+        } else {
           rafId = requestAnimationFrame(draw);
+        }
         };
         rafId = requestAnimationFrame(draw);
       };
@@ -199,6 +203,14 @@ export default function ImmersiveHero() {
        3. GSAP — Y-axis coin-flip scroll animation
     ───────────────────────────────────────────────────── */
     const setupGSAP = async () => {
+      /* If user prefers reduced motion: skip all scroll animations,
+         just place logo in final header position immediately.        */
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        const XI = window.innerWidth / 2 - HALF;
+        const el = document.getElementById('clogo');
+        if (el) el.style.transform = `translate(${XI}px,75px)`;
+        return; // skip GSAP entirely
+      }
       const { gsap }          = await import('gsap');
       const { ScrollTrigger } = await import('gsap/ScrollTrigger');
       gsap.registerPlugin(ScrollTrigger);
@@ -388,7 +400,8 @@ export default function ImmersiveHero() {
      JSX
   ───────────────────────────────────────────────────── */
   return (
-    <div id="ih-root" style={{background:'#0F0F13',minHeight:'100svh',overflowX:'hidden',touchAction:'pan-y',color:'#fff',fontFamily:'var(--font-sora,system-ui,sans-serif)'}}>
+    <a href="#ih-content" style={{position:"absolute",left:"-9999px",top:4,zIndex:9999,background:"#39FF14",color:"#000",padding:"8px 16px",borderRadius:8,fontWeight:700,fontSize:14,textDecoration:"none"}} onFocus={e=>{e.target.style.left="16px";}} onBlur={e=>{e.target.style.left="-9999px";}}>{t("ih_skip_link")}</a>
+      <div id="ih-root" style={{background:'#0F0F13',minHeight:'100svh',overflowX:'hidden',touchAction:'pan-y',color:'#fff',fontFamily:'var(--font-sora,system-ui,sans-serif)'}}>
 
       {/* Wheel cursor */}
       <div id="ih-wc" style={{position:'fixed',top:0,left:0,width:44,height:44,pointerEvents:'none',zIndex:9999,opacity:0,transition:'opacity .2s',willChange:'transform'}}>
@@ -411,11 +424,11 @@ export default function ImmersiveHero() {
           </span>
           <span id="hdrsep" style={{color:'rgba(255,255,255,.2)',margin:'0 10px',fontWeight:300,fontSize:14,alignSelf:'center'}}> — </span>
           <span id="hdrtag" style={{fontSize:12,fontWeight:300,color:'rgba(255,255,255,.42)',letterSpacing:'.045em'}}>
-            Transformando viagens em histórias épicas
+            {t("ih_tagline")}
           </span>
         </div>
-        <nav id="ih-nav" style={{display:'flex',gap:22}}>
-          {[['Planejar','/planejar'],['Explorar','/explorar'],['Galera','/comunidade'],['Ajuda','/ajuda']].map(([label,href])=>(
+        <nav id="ih-nav" aria-label={t("ih_nav_aria") || "Navegação principal"} role="navigation" style={{display:'flex',gap:22}}>
+          {[[t('ih_nav_plan'),'/planejar'],[t('ih_nav_explore'),'/explorar'],[t('ih_nav_gallery'),'/comunidade'],[t('ih_nav_help'),'/ajuda']].map(([label,href])=>(
             <Link key={href} href={href} className="ih-nav-a">{label}</Link>
           ))}
         </nav>
@@ -446,7 +459,7 @@ export default function ImmersiveHero() {
           #lc-back    : canvas at Z = -T/2 (back face)
           #coin-edge  : N segments → cylinder edge
       ═══════════════════════════════════════════════ */}
-      <div id="clogo" style={{position:'fixed',top:0,left:0,width:LS,height:LS,zIndex:600,pointerEvents:'none',transformStyle:'preserve-3d',WebkitTransformStyle:'preserve-3d'}}>
+      <div id="clogo" role="img" aria-label={t("ih_logo_aria")} style={{position:'fixed',top:0,left:0,width:LS,height:LS,zIndex:600,pointerEvents:'none',transformStyle:'preserve-3d',WebkitTransformStyle:'preserve-3d'}}>
 
         {/* medal-inner: receives mouse Y-spin via JS spinTick */}
         <div id="medal-inner" style={{position:'absolute',top:0,left:0,width:LS,height:LS,transformStyle:'preserve-3d'}}>
@@ -482,45 +495,46 @@ export default function ImmersiveHero() {
       </div>
 
       {/* Sound toggle */}
-      <button onClick={toggleSound}
+      <button id="stgl" onClick={toggleSound}
+        aria-label={isMuted ? t('ih_sound_unmute_aria') : t('ih_sound_mute_aria')}
         style={{position:'fixed',bottom:18,right:22,zIndex:700,background:'rgba(0,0,0,.55)',border:'1px solid rgba(255,107,53,.28)',borderRadius:8,color:'#fff',padding:'6px 12px',fontSize:12,cursor:'pointer',fontFamily:'inherit',transition:'border-color .2s'}}
         onMouseEnter={e=>e.currentTarget.style.borderColor='rgba(255,107,53,.65)'}
         onMouseLeave={e=>e.currentTarget.style.borderColor='rgba(255,107,53,.28)'}>
-        {isMuted?'🔇 Som':'🔊 Mudo'}
+        {isMuted ? '🔇 '+t('ih_sound_off') : '🔊 '+t('ih_sound_on')}
       </button>
 
       <div id="sarea" style={{height:'calc(100svh + 500px)',position:'relative',pointerEvents:'none'}}/>
 
       {/* Content */}
-      <section id="ih-content" style={{background:'#0F0F13',padding:'100px 32px 80px',position:'relative',zIndex:10}}>
+      <section id="ih-content" role="main" aria-label="Conteúdo principal" style={{background:'#0F0F13',padding:'100px 32px 80px',position:'relative',zIndex:10}}>
         <div style={{maxWidth:1200,margin:'0 auto'}}>
           <div className="ih-reveal" style={{marginBottom:60}}>
             <p style={{color:'#39FF14',fontSize:11,letterSpacing:'.38em',textTransform:'uppercase',fontWeight:600,marginBottom:14}}>Tudo para sua aventura</p>
             <h2 style={{fontSize:'clamp(2rem,4.5vw,3.5rem)',fontWeight:800,lineHeight:1.08,marginBottom:14,letterSpacing:'-.03em'}}>
-              Explore o Brasil{' '}<em style={{fontStyle:'normal',background:'linear-gradient(135deg,#FF6B35,#FFD700)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent',backgroundClip:'text'}}>sem limites</em>
+              {t('ih_section_h2_main')}{' '}<em style={{fontStyle:'normal',background:'linear-gradient(135deg,#FF6B35,#FFD700)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent',backgroundClip:'text'}}>{t('ih_section_h2_em')}</em>
             </h2>
             <p style={{color:'#6B7280',fontSize:16,fontWeight:300,maxWidth:520,lineHeight:1.65}}>Do Oiapoque ao Chui, do litoral ao sertão — planeje cada detalhe da sua viagem de carro.</p>
           </div>
 
           <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fit,minmax(300px,1fr))',gap:20,marginBottom:60}}>
             {CARDS.map((card,i)=>(
-              <Link key={card.title} href={card.href} style={{textDecoration:'none'}}>
+              <Link key={card.titleKey} href={card.href} style={{textDecoration:'none'}} aria-label={t(card.titleKey)}>
                 <div className="ih-card"
                   style={{'--d':`${i*.1}s`,background:'rgba(255,255,255,.035)',borderRadius:16,padding:28,backdropFilter:'blur(14px)',WebkitBackdropFilter:'blur(14px)',border:`1px solid ${card.color}28`,position:'relative',overflow:'hidden',color:'inherit',height:'100%'}}
                   onMouseEnter={e=>{e.currentTarget.style.borderColor=card.color+'55';e.currentTarget.style.boxShadow=`0 20px 60px ${card.color}18`;}}
                   onMouseLeave={e=>{e.currentTarget.style.borderColor=card.color+'28';e.currentTarget.style.boxShadow='none';}}>
                   <div style={{position:'absolute',bottom:0,left:0,right:0,height:2,background:`linear-gradient(90deg,transparent,${card.color},transparent)`,opacity:.35}}/>
                   <span style={{fontSize:38,display:'block',marginBottom:18}}>{card.icon}</span>
-                  <div style={{fontSize:17,fontWeight:700,color:'#fff',marginBottom:10,letterSpacing:'-.01em'}}>{card.title}</div>
-                  <div style={{fontSize:14,fontWeight:300,color:'#9CA3AF',lineHeight:1.65,marginBottom:18}}>{card.desc}</div>
-                  <div style={{fontSize:13,fontWeight:600,color:card.color,display:'flex',alignItems:'center',gap:6}}>Explorar <span>→</span></div>
+                  <div style={{fontSize:17,fontWeight:700,color:'#fff',marginBottom:10,letterSpacing:'-.01em'}}>{t(card.titleKey)}</div>
+                  <div style={{fontSize:14,fontWeight:300,color:'#9CA3AF',lineHeight:1.65,marginBottom:18}}>{t(card.descKey)}</div>
+                  <div style={{fontSize:13,fontWeight:600,color:card.color,display:'flex',alignItems:'center',gap:6}}>{t('ih_card_explore')} <span aria-hidden="true">→</span></div>
                 </div>
               </Link>
             ))}
           </div>
 
           <div id="ih-stats" className="ih-reveal" style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:16,marginBottom:80}}>
-            {[['10.000+','Rotas Criadas'],['50+','Destinos Curados'],['100%','Gratuito']].map(([v,l])=>(
+            {[['10.000+',t('ih_stat_routes')],['50+',t('ih_stat_destinations')],['100%',t('ih_stat_free')]].map(([v,l])=>(
               <div key={l} style={{textAlign:'center',padding:'32px 16px',background:'rgba(255,255,255,.025)',border:'1px solid rgba(255,255,255,.06)',borderRadius:12}}>
                 <div style={{fontSize:'clamp(1.6rem,3.5vw,2.5rem)',fontWeight:800,letterSpacing:'-.04em',background:'linear-gradient(135deg,#FF6B35,#FFD700)',WebkitBackgroundClip:'text',WebkitTextFillColor:'transparent',backgroundClip:'text'}}>{v}</div>
                 <div style={{color:'#6B7280',fontSize:13,fontWeight:300,marginTop:8}}>{l}</div>
@@ -533,7 +547,7 @@ export default function ImmersiveHero() {
               style={{display:'inline-flex',alignItems:'center',gap:12,background:'#39FF14',color:'#000',fontWeight:800,fontSize:18,padding:'18px 56px',borderRadius:60,textDecoration:'none',transition:'transform .25s,box-shadow .25s',letterSpacing:'-.01em'}}
               onMouseEnter={e=>{e.currentTarget.style.transform='scale(1.06)';e.currentTarget.style.boxShadow='0 0 60px rgba(57,255,20,.45)';}}
               onMouseLeave={e=>{e.currentTarget.style.transform='scale(1)';e.currentTarget.style.boxShadow='none';}}>
-              🚗 Partiu, Galera!
+              {t('ih_cta_btn')}
             </Link>
             <p style={{color:'#6B7280',fontSize:13,fontWeight:300,marginTop:16}}>Grátis · Sem cadastro · Funciona no celular</p>
           </div>
@@ -541,8 +555,8 @@ export default function ImmersiveHero() {
       </section>
 
       <footer style={{borderTop:'1px solid rgba(255,255,255,.05)',padding:'28px 32px',textAlign:'center',color:'#4B5563',fontSize:13,fontWeight:300}}>
-        Feito com ❤️ para quem ama a estrada &nbsp;·&nbsp;
-        <Link href="/planejar" style={{color:'#FF6B35',textDecoration:'none'}}>Começar a planejar</Link>
+        {t('ih_footer_text')} &nbsp;·&nbsp;
+        <Link href="/planejar" style={{color:'#FF6B35',textDecoration:'none'}}>{t('ih_footer_link')}</Link>
       </footer>
     </div>
   );
