@@ -204,13 +204,18 @@ export default function ImmersiveHero() {
        3. GSAP — Y-axis coin-flip scroll animation
     ───────────────────────────────────────────────────── */
     const setupGSAP = async () => {
-      /* If user prefers reduced motion: skip all scroll animations,
-         just place logo in final header position immediately.        */
+      /* Skip GSAP on mobile (pointer:coarse):
+         - Header geometry differs from desktop → XF/YF wrong on touch
+         - Auto-spin already provides visual motion
+         - syncPos() already placed logo at correct centered position   */
+      if (window.matchMedia('(pointer:coarse)').matches) return;
+
+      /* If user prefers reduced motion: skip all scroll animations. */
       if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
         const XI = window.innerWidth / 2 - HALF;
         const el = document.getElementById('clogo');
         if (el) el.style.transform = `translate(${XI}px,75px)`;
-        return; // skip GSAP entirely
+        return;
       }
       const { gsap }          = await import('gsap');
       const { ScrollTrigger } = await import('gsap/ScrollTrigger');
@@ -385,6 +390,22 @@ export default function ImmersiveHero() {
        When the user navigates away and returns, the browser may restore
        the page from bfcache with the iframe paused. We resume it here.
     ───────────────────────────────────────────────────── */
+    /* ── Android media session: clear it so Chrome/Samsung
+       don't show the system media controls widget (play/skip bar).
+       YouTube's iframe registers a media session; we clear it.     */
+    if ('mediaSession' in navigator) {
+      const clearMS = () => {
+        try {
+          navigator.mediaSession.metadata = null;
+          ['play','pause','previoustrack','nexttrack','seekbackward','seekforward']
+            .forEach(a => { try { navigator.mediaSession.setActionHandler(a, null); } catch(_){} });
+        } catch(_) {}
+      };
+      clearMS();                      // immediately
+      setTimeout(clearMS, 1500);      // again after YouTube registers its session
+      setTimeout(clearMS, 4000);      // once more as safety net
+    }
+
     const onPageShow = (e) => {
       if (e.persisted) {
         /* Restored from bfcache → play and reset vload */
@@ -393,6 +414,19 @@ export default function ImmersiveHero() {
         if (vl) { vl.style.transition='none'; vl.style.opacity='0'; }
       }
     };
+    /* On mobile: re-center logo on orientation change / resize */
+    const onOrient = () => {
+      if (!window.matchMedia('(pointer:coarse)').matches) return;
+      const el = document.getElementById('clogo');
+      if (el) el.style.transform =
+        'translate(' + (window.innerWidth/2 - 100) + 'px, 75px)';
+    };
+    window.addEventListener('resize',            onOrient, {passive:true});
+    window.addEventListener('orientationchange', onOrient, {passive:true});
+    cleanups.push(() => {
+      window.removeEventListener('resize',            onOrient);
+      window.removeEventListener('orientationchange', onOrient);
+    });
     const onVisChange = () => {
       /* Tab becomes visible again after being hidden */
       if (!document.hidden) sendYT('playVideo');

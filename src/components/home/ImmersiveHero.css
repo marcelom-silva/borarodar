@@ -16,9 +16,10 @@
    CSS animation (5s delay) is a fallback in case state=1 doesn't fire.       */
 #vload {
   opacity: 0.70;
-  animation: vload-fade 2s ease-out 5s forwards;
+  /* No CSS animation — JS handles fade via YouTube state=1 event.
+     If autoplay is blocked (mobile), overlay stays opaque until
+     the video actually starts, preventing YouTube controls showing. */
 }
-@keyframes vload-fade { to { opacity: 0; } }
 
 /* ── Medal floating shadow ── */
 @keyframes shadow-pulse {
@@ -77,6 +78,10 @@
    Contempla: iOS Safari, Android Chrome, telas 320–640px
 ════════════════════════════════════════════════════════════ */
 @media (max-width: 640px) {
+  /* Slightly more opaque overlay on mobile: better masks YT controls
+     during loading / if autoplay is slow                              */
+  #vover { opacity: 0.60 !important; }
+
 
   /* ── Layout base ─────────────────────────────────── */
   #ih-nav, #shint, #ih-wc { display: none !important; }
