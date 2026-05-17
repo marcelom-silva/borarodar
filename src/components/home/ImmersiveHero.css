@@ -80,7 +80,7 @@
 @media (max-width: 640px) {
   /* Slightly more opaque overlay on mobile: better masks YT controls
      during loading / if autoplay is slow                              */
-  #vover { opacity: 0.50 !important; }
+  #vover { opacity: 0.28 !important; }  /* matches lighter desktop overlay */
 
 
   /* ── Layout base ─────────────────────────────────── */
