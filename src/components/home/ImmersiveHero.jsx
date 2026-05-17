@@ -343,13 +343,16 @@ export default function ImmersiveHero() {
               ytf.contentWindow.postMessage(JSON.stringify({ event:'command', func:'playVideo', args:''        }), '*');
             }
           } else if (msg.info === 1) {
-            /* Playing → fade out the loading veil immediately.
-               This is the reliable trigger: video IS playing, so
-               thumbnail/controls are already gone from the iframe.   */
+            /* Playing → wait 800ms before fading the loading veil.
+               state=1 fires the moment YouTube switches to "playing",
+               but the first video frame may not have rendered yet.
+               The delay ensures the thumbnail is already gone visually. */
             const vl = document.getElementById('vload');
             if (vl && parseFloat(getComputedStyle(vl).opacity) > 0.01) {
-              vl.style.transition = 'opacity 1.5s ease';
-              vl.style.opacity    = '0';
+              setTimeout(() => {
+                vl.style.transition = 'opacity 1.8s ease';
+                vl.style.opacity    = '0';
+              }, 800);
             }
           }
         }
@@ -400,8 +403,10 @@ export default function ImmersiveHero() {
      JSX
   ───────────────────────────────────────────────────── */
   return (
+    <>
+    {/* Skip link — visível ao Tab, invisível ao mouse (a11y) */}
     <a href="#ih-content" style={{position:"absolute",left:"-9999px",top:4,zIndex:9999,background:"#39FF14",color:"#000",padding:"8px 16px",borderRadius:8,fontWeight:700,fontSize:14,textDecoration:"none"}} onFocus={e=>{e.target.style.left="16px";}} onBlur={e=>{e.target.style.left="-9999px";}}>{t("ih_skip_link")}</a>
-      <div id="ih-root" style={{background:'#0F0F13',minHeight:'100svh',overflowX:'hidden',touchAction:'pan-y',color:'#fff',fontFamily:'var(--font-sora,system-ui,sans-serif)'}}>
+    <div id="ih-root" style={{background:'#0F0F13',minHeight:'100svh',overflowX:'hidden',touchAction:'pan-y',color:'#fff',fontFamily:'var(--font-sora,system-ui,sans-serif)'}}>
 
       {/* Wheel cursor */}
       <div id="ih-wc" style={{position:'fixed',top:0,left:0,width:44,height:44,pointerEvents:'none',zIndex:9999,opacity:0,transition:'opacity .2s',willChange:'transform'}}>
@@ -559,5 +564,6 @@ export default function ImmersiveHero() {
         <Link href="/planejar" style={{color:'#FF6B35',textDecoration:'none'}}>{t('ih_footer_link')}</Link>
       </footer>
     </div>
+    </>
   );
 }

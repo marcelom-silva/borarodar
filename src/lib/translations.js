@@ -397,7 +397,7 @@ export var translations = {
     ih_card_help_desc:'Get answers, learn the app and browse frequently asked questions.',
     ih_stat_routes:'Routes Created', ih_stat_destinations:'Curated Destinations',
     ih_stat_free:'Free',
-    ih_cta_btn:'🚗 Let's Go!',
+    ih_cta_btn:"🚗 Let's Go!",
     ih_cta_sub:'Free · No sign-up · Works on mobile',
     ih_footer_text:'Made with ❤️ for road trip lovers',
     ih_footer_link:'Start planning',
