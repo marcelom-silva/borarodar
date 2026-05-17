@@ -261,7 +261,7 @@ export default function ImmersiveHero() {
           const p=s.progress;
           const w=document.getElementById('ytf-wrap'); if(w) w.style.filter=`blur(${(p*13).toFixed(1)}px)`;
           const vo=document.getElementById('vover');
-          if (vo) vo.style.opacity=(0.22 + p * 0.28).toFixed(3);
+          if (vo) vo.style.opacity=(0.12 + p * 0.25).toFixed(3);
         }
       });
       gsap.to('#shint',{opacity:0,y:-14,ease:'none',
@@ -384,6 +384,19 @@ export default function ImmersiveHero() {
     window.addEventListener('message', ytLoopGuard);
     cleanups.push(() => window.removeEventListener('message', ytLoopGuard));
 
+    /* ── Guaranteed vload reveal ────────────────────────────────────
+       YouTube state=1 postMessage is unreliable (some browsers/networks).
+       Force-fade #vload after 3 s regardless — ensures video is visible.
+       The state=1 handler still fires first when autoplay works fine.   */
+    const vloadGuarantee = setTimeout(() => {
+      const vl = document.getElementById('vload');
+      if (vl && parseFloat(getComputedStyle(vl).opacity || '1') > 0.01) {
+        vl.style.transition = 'opacity 2s ease';
+        vl.style.opacity    = '0';
+      }
+    }, 3000);
+    cleanups.push(() => clearTimeout(vloadGuarantee));
+
     /* ─────────────────────────────────────────────────────
        8. AUTO-UNMUTE on first interaction
     ───────────────────────────────────────────────────── */
@@ -503,8 +516,8 @@ export default function ImmersiveHero() {
           title="BoraRodar Background"
           style={{position:'absolute',width:'177.78vh',minWidth:'100%',height:'100%',minHeight:'56.25vw',top:'50%',left:'50%',transform:'translate(-50%,-50%)',border:'none',pointerEvents:'none'}}
         />
-        <div id="vover" style={{position:'absolute',inset:0,background:'#000',opacity:.22,pointerEvents:'none'}}/>
-        <div style={{position:'absolute',inset:0,pointerEvents:'none',background:'radial-gradient(ellipse 58% 52% at 35% 56%,rgba(255,107,53,.055),transparent),linear-gradient(to bottom,transparent 63%,rgba(15,15,19,.78) 100%)'}}/>
+        <div id="vover" style={{position:'absolute',inset:0,background:'#000',opacity:.12,pointerEvents:'none'}}/>
+        <div style={{position:'absolute',inset:0,pointerEvents:'none',background:'radial-gradient(ellipse 58% 52% at 35% 56%,rgba(255,107,53,.055),transparent),linear-gradient(to bottom,transparent 63%,rgba(15,15,19,.50) 100%)'}}/>
         <div style={{position:'absolute',inset:0,zIndex:1}}/>{/* Loading veil: starts at 0.70 opacity, CSS-animated to 0 after 3.5s.
              Combined with #vover (0.52) = ~0.82 effective → hides YT thumbnail/controls.
              Fades away via CSS animation; no JS timing required. */}
