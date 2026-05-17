@@ -16,10 +16,17 @@ var TRAVEL_STYLES   = [
   {id:'economico',emoji:'💰',color:'#39FF14'},{id:'moderado',emoji:'⚖️',color:'#00D4FF'},{id:'esbanjando',emoji:'✨',color:'#FF6B35'},
 ];
 var TRAVEL_PROFILES = [
-  {id:'solo',emoji:'🧍',color:'#39FF14'},{id:'couple',emoji:'👫',color:'#FF6B35'},
-  {id:'women_only',emoji:'👩',color:'#FF69B4'},{id:'family_baby',emoji:'👶',color:'#00D4FF'},
-  {id:'family_senior',emoji:'👴',color:'#B24BF3'},{id:'friends',emoji:'👥',color:'#FFD700'},
-  {id:'pets',emoji:'🐾',color:'#FF9500'},
+  {id:'solo',         emoji:'🧍', color:'#39FF14'},
+  {id:'couple',       emoji:'👫', color:'#FF6B35'},
+  {id:'women_only',   emoji:'👩', color:'#FF69B4'},
+  {id:'family_baby',  emoji:'👶', color:'#00D4FF'},
+  {id:'family_senior',emoji:'👴', color:'#B24BF3'},
+  {id:'friends',      emoji:'👥', color:'#FFD700'},
+  {id:'pets',         emoji:'🐾', color:'#FF9500'},
+  /* Novos perfis */
+  {id:'accessibility',  emoji:'♿', color:'#00BCD4'},
+  {id:'lgbt_friendly',  emoji:'🏳️‍🌈', color:'#FF4081'},
+  {id:'esporte_aventura',emoji:'⛰️', color:'#FF9800'},
 ];
 
 function calcNights(from, to) {
@@ -132,12 +139,12 @@ export default function RouteForm({ values, onChange, onCalculate, loading }) {
       {/* PERFIL */}
       <div>
         <label className="text-xs text-gray-400 uppercase tracking-wide mb-2 block">{t('profile_traveler_label')}</label>
-        <div className="grid grid-cols-4 gap-1.5 sm:grid-cols-7">
+        <div className="grid grid-cols-5 gap-1.5">
           {TRAVEL_PROFILES.map(function(p){
             var active=profile===p.id;
             return(
               <button key={p.id} type="button" onClick={function(){set('travel_profile',p.id);}}
-                className="flex flex-col items-center gap-1 py-2.5 rounded-xl border transition-all"
+                className="flex flex-col items-center gap-1 py-2.5 rounded-xl border transition-all" aria-label={t('profile_'+p.id)} aria-pressed={active}
                 style={active?{background:p.color+'14',borderColor:p.color+'50'}:{background:'rgba(255,255,255,0.03)',borderColor:'rgba(255,255,255,0.07)'}}>
                 <span className="text-lg">{p.emoji}</span>
                 <span className="text-[8px] text-center leading-tight font-medium" style={{color:active?p.color:'#9CA3AF'}}>{t('profile_'+p.id)}</span>
@@ -382,13 +389,17 @@ export default function RouteForm({ values, onChange, onCalculate, loading }) {
         </div>
       )}
 
-      <button type="submit" disabled={loading}
-        className="btn-neon w-full flex items-center justify-center gap-2 mt-1">
-        {loading
-          ?<><Loader2 className="w-4 h-4 animate-spin"/>{t('planner_loading')}</>
-          :<><Car className="w-4 h-4"/>{t('planner_btn')}</>
-        }
-      </button>
+      {/* "Calcular Rota" — only in Planejamento Completo mode.
+           In "Montar Roteiro" mode, DayItinerary has its own generate button. */}
+      {!isItineraryOnly && (
+        <button type="submit" disabled={loading}
+          className="btn-neon w-full flex items-center justify-center gap-2 mt-1">
+          {loading
+            ?<><Loader2 className="w-4 h-4 animate-spin"/>{t('planner_loading')}</>
+            :<><Car className="w-4 h-4"/>{t('planner_btn')}</>
+          }
+        </button>
+      )}
     </form>
   );
 }

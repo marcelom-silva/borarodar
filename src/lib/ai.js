@@ -36,6 +36,27 @@ var PROFILE_CONTEXT = {
     + '- Restaurantes: area externa pet-friendly obrigatoria\n'
     + '- Atracoes: parques, praias e trilhas onde pets sao permitidos\n'
     + '- Em CADA sugestao adicione: "CONFIRME aceitacao de pets, porte e restricoes antes de ir"',
+  accessibility:
+    'Viagem com ACESSIBILIDADE. MOBILIDADE REDUZIDA / CADEIRA DE RODAS:\n'
+    + '- Hospedagem: APENAS locais com rampa ou elevador, banheiro adaptado e quarto acessivel\n'
+    + '- Restaurantes: nivel teres, sem degraus, espaco para cadeira de rodas\n'
+    + '- Atracoes: calcadas planas, rampas, sem trilhas ingremes — priorize areas revitalizadas\n'
+    + '- Em CADA sugestao adicione: "CONFIRME acessibilidade antes de reservar"',
+  lgbt_friendly:
+    'Viagem LGBT+ FRIENDLY. INCLUSAO E SEGURANCA:\n'
+    + '- Hospedagem: APENAS locais com politica inclusiva e boas avaliacoes de hospedes LGBT+\n'
+    + '- Bares/restaurantes: estabelecimentos reconhecidamente inclusivos e acolhedores\n'
+    + '- Destinos internacionais: alerte sobre leis locais e nivel de aceitacao cultural\n'
+    + '- Inclua 1 evento, festival ou point LGBT+ do destino por dia quando houver\n'
+    + '- Seguranca: aponte areas ou horarios que exigem maior discricao',
+  esporte_aventura:
+    'Viagem ESPORTE E AVENTURA. ROTEIRO ATIVO:\n'
+    + '- Ao menos 1 atividade fisica ou radical por dia: trilha, escalada, mergulho, ciclismo, rafting, parapente\n'
+    + '- Hospedagem: pousadas com estrutura para bikes/equipamentos, cafe cedo, secagem de roupas\n'
+    + '- Restaurantes: opcoes proteicas, open early, cardapio para atletas\n'
+    + '- Verifique eventos esportivos (maratonas, triatlons, campeonatos) no destino na data da viagem\n'
+    + '- Em cada atividade inclua: nivel de dificuldade, equipamento necessario e operadora credenciada local\n'
+    + '- Alertas: condicoes climaticas e tecnicas especificas para cada modalidade',
 };
 
 // ===== PROMPT DO ROTEIRO (2 fases + seguranca + fora da caixinha) =====
@@ -103,6 +124,7 @@ function buildChecklistPrompt({ destination, travelProfile, dateFrom, dateTo }) 
     solo:'viajante solo',couple:'casal',family_baby:'familia com bebe',
     family_senior:'grupo com idosos',friends:'grupo de amigos',
     women_only:'mulheres viajando sozinhas',pets:'viagem com pets',
+    accessibility:'viagem com acessibilidade',lgbt_friendly:'viagem LGBT friendly',esporte_aventura:'esporte e aventura',
   }[travelProfile||'couple'] || 'casal';
 
   return 'Voce e um especialista em viagens de carro internacionais e nacionais.\n\n'
@@ -142,6 +164,7 @@ function buildSurprisePrompt({ departure, budget, travelProfile, dateFrom }) {
     solo:'solo',couple:'casal',family_baby:'familia com bebe',
     family_senior:'grupo com idosos',friends:'grupo de amigos',
     women_only:'mulheres',pets:'com pets',
+    accessibility:'acessibilidade',lgbt_friendly:'LGBT friendly',esporte_aventura:'esporte e aventura',
   }[travelProfile||'couple'] || 'casal';
 
   return 'Especialista em road trips. Sugira 3 destinos de viagem de carro saindo de '+departure+'.\n\n'
