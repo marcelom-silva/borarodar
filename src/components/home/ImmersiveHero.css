@@ -153,14 +153,10 @@
   .ih-card:hover { transform: translateY(0) scale(1) !important; box-shadow: none !important; }
   .ih-nav-a:hover { color: #9CA3AF !important; }
 
-  /* preserve-3d pode ser lento em Android. Só usamos em desktop. */
-  #clogo, #medal-inner {
-    -webkit-transform-style: flat !important;
-    transform-style: flat !important;
-  }
-
-  /* Sem borda de edge-segments (removidos via JS); garantia CSS */
+  /* Edge segments removed via JS on touch — CSS failsafe */
   #coin-edge { display: none !important; }
+  /* NOTE: transform-style NOT overridden here — GSAP needs preserve-3d
+     context intact on #clogo even on mobile, or perspective() collapses. */
 }
 
 /* ── iOS Safari: evitar bounce scroll indesejado ─────── */

@@ -220,7 +220,15 @@ export default function ImmersiveHero() {
       const clogo = document.getElementById('clogo');
       if (!clogo) return;
       clogo.style.transform = `translate(${XI}px,${YI}px)`;
-      gsap.set('#clogo', { transformPerspective: 900, x:XI, y:YI });
+      /* transformPerspective creates perspective() in CSS transform.
+         On mobile with transform-style:flat this collapses 3D coords
+         to origin (0,0). On mobile: use x/y only, no 3D perspective. */
+      const isMobGSAP = window.matchMedia('(pointer:coarse)').matches;
+      if (isMobGSAP) {
+        gsap.set('#clogo', { x:XI, y:YI });
+      } else {
+        gsap.set('#clogo', { transformPerspective: 900, x:XI, y:YI });
+      }
       const onResize = () => {
         const p = ScrollTrigger.getById('lt')?.progress || 0;
         if (p<0.02) gsap.set('#clogo',{x:window.innerWidth/2-HALF,y:75});
@@ -231,7 +239,9 @@ export default function ImmersiveHero() {
         scrollTrigger:{id:'lt',trigger:'#sarea',start:'top top',end:`+=${SCROLL_END}`,scrub:0.9}
       });
       tl
-        .to('#clogo',{x:XF,y:YF,scale:FS,rotationY:360,ease:'power2.inOut'},0)
+        .to('#clogo',{x:XF,y:YF,scale:FS,
+           rotationY: isMobGSAP ? 0 : 360,   /* skip Y-rotation on mobile — no 3D */
+           ease:'power2.inOut'},0)
         .to('#medal-shadow',{opacity:0,scale:.15,ease:'power2.in',duration:.4},0);
       ScrollTrigger.create({
         trigger:'#sarea',start:'top top',end:`+=${SCROLL_END}`,
