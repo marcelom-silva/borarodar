@@ -31,6 +31,8 @@ export async function POST(req) {
       samplePoints.push(waypoints[waypoints.length - 1]);
     }
 
+    // OCM works without API key (public access, lower rate limit)
+    // Register free at openchargemap.org for higher limits
     const headers = { 'Content-Type': 'application/json' };
     if (OCM_KEY) headers['X-API-Key'] = OCM_KEY;
 
@@ -46,6 +48,7 @@ export async function POST(req) {
       url.searchParams.set('verbose', 'false');
       url.searchParams.set('statustype', '50'); // 50 = Operational
       if (OCM_KEY) url.searchParams.set('key', OCM_KEY);
+      // Note: works without key, just with lower rate limit
       return fetch(url.toString(), { headers }).then(r => r.json()).catch(() => []);
     });
 

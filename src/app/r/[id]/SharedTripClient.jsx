@@ -86,7 +86,7 @@ export default function SharedTripClient({ id }) {
           </span>
         </Link>
         <div className="flex gap-2">
-          <button onClick={copyLink}
+          <button onClick={copyLink} aria-label={copied ? "Link copiado" : "Copiar link da viagem"}
             className="flex items-center gap-2 text-sm px-4 py-2 rounded-lg bg-white/5 hover:bg-white/10 transition-colors">
             <Share2 className="w-4 h-4" />
             {copied ? 'Copiado! ✓' : 'Copiar link'}

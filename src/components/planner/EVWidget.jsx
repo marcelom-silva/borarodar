@@ -92,7 +92,7 @@ export default function EVWidget({ vehicleModel, routeData, waypoints }) {
   if (!evModel && !distanceKm) return null;
 
   return (
-    <div className="br-card p-5 space-y-4">
+    <div className="br-card p-5 space-y-4" role="region" aria-label="Autonomia do Elétrico">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
@@ -218,7 +218,7 @@ export default function EVWidget({ vehicleModel, routeData, waypoints }) {
           <div className="bg-[#00D4FF]/5 border border-[#00D4FF]/20 rounded-xl p-3 text-xs text-gray-400 leading-relaxed">
             💡 <strong className="text-gray-300">Dica:</strong> Mantenha a bateria acima de 20% para preservar a vida útil. 
             Procure carregadores rápidos (DC) para viagens longas — carregam a 80% em ~30-45 min.
-            Apps úteis: <span className="text-[#00D4FF]">PlugShare</span>, <span className="text-[#00D4FF]">ABEV</span>.
+            Apps úteis para localizar eletropostos: <span className='text-[#00D4FF]'>PlugShare</span> e <span className='text-[#00D4FF]'>ABEV</span>.
           </div>
         </>
       )}

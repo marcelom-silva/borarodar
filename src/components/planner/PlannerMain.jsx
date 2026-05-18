@@ -19,7 +19,7 @@ import EVWidget from './EVWidget';
 import TollWidget from './TollWidget';
 import { isEVModel } from '@/lib/vehicleData';
 import { saveToHistory } from '@/lib/export';
-import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react';
+import { supabase } from '@/lib/supabase';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 function formatDuration(hours) {
@@ -39,9 +39,17 @@ export default function PlannerMain() {
   var [itinerary,  setItinerary]  = useState(null);
   var [savedTrip,  setSavedTrip]  = useState(false);
   var [savingTrip, setSavingTrip] = useState(false);
-  // supabase user for history
-  var supabaseUser = null;
-  try { supabaseUser = useUser?.(); } catch(_) {}
+  // Supabase session for history (using existing @/lib/supabase client)
+  var [supabaseSession, setSupabaseSession] = useState(null);
+  useEffect(function() {
+    supabase.auth.getSession().then(function({ data }) {
+      setSupabaseSession(data.session);
+    });
+    var { data: { subscription } } = supabase.auth.onAuthStateChange(function(_e, s) {
+      setSupabaseSession(s);
+    });
+    return function() { subscription.unsubscribe(); };
+  }, []);
   var [budgetData, setBudgetData] = useState(null);
   var [loading,    setLoading]    = useState(false);
   var [error,      setError]      = useState('');
@@ -340,12 +348,12 @@ export default function PlannerMain() {
             <TollWidget tollData={tollData} budgetToll={budgetData?.toll}/>
           )}
           {/* Salvar no histórico (se logado) */}
-          {supabaseUser && routeData && budgetData && (
+          {supabaseSession && routeData && budgetData && (
             <button
               onClick={async function() {
                 if (savingTrip || savedTrip) return;
                 setSavingTrip(true);
-                var token = (await supabaseUser?.session?.())?.access_token;
+                var token = supabaseSession?.access_token;
                 var id = await saveToHistory({ formValues:values, routeData, budgetData, itinerary }, token);
                 setSavingTrip(false);
                 if (id) setSavedTrip(true);

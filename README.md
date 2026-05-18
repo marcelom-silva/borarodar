@@ -377,3 +377,35 @@ public/
 | Contraste de cores | Texto claro sobre fundo escuro ≥ 4.5:1 (WCAG AA) |
 | Zoom | Layout não quebra em até 200% de zoom do navegador |
 
+## 🛣️ Pedágios em Tempo Real
+
+| País | Fonte | Custo |
+|------|-------|-------|
+| 🇧🇷 Brasil | calcularpedagio.com.br (dados ANTT) | Gratuito (cadastro) |
+| 🇦🇷 Argentina | Banco estático manual | Grátis |
+| 🇨🇱 Chile | Banco estático + aviso Free Flow | Grátis |
+| 🇺🇾 Uruguai / 🇵🇾 PY / 🇧🇴 BO / 🇵🇪 PE / 🇨🇴 CO | Banco estático | Grátis |
+
+### Cache inteligente
+Resultados salvos no Supabase por 30 dias. Mesma rota = zero chamadas extras à API.
+
+### ENV necessária
+```
+CALCPEDAGIO_API_KEY=  # Grátis em calcularpedagio.com.br/register
+```
+
+## 🔗 Compartilhamento e Histórico
+
+| Feature | Descrição |
+|---------|-----------|
+| Link público `/r/[id]` | Gera URL única com Open Graph (preview no WhatsApp) |
+| Export PDF | `window.print()` nativo — zero dependências extras |
+| Histórico de viagens | Salvo no Supabase, visível apenas ao dono (RLS) |
+| Cache de pedágios | Tabela `toll_cache` no Supabase |
+
+## ⚡ Carros Elétricos
+
+28 modelos EV de 9 marcas (BYD, Tesla, Hyundai/Kia, VW, BMW, Audi, Porsche, Renault, GM/Fiat).
+Para cada modelo: `batteryKwh`, `consumoKwh100`, `rangeKm`, `chargeKW`.
+Eletropostos via **OpenChargeMap API** (gratuito, sem chave obrigatória).
+

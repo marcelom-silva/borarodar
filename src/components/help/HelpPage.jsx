@@ -26,6 +26,25 @@ function getFAQData(lang) {
         ],
       },
       {
+        title:'Pedágios, Compartilhar e Elétricos', emoji:'🛣️',
+        items:[
+          { q:'Os pedágios mostrados são valores reais?',
+            a:'Sim! Para rotas no Brasil, consultamos a API calcularpedagio.com.br (dados da ANTT), que retorna cada praça individualmente com valor em dinheiro e TAG (Sem Parar, ConectCar). Os resultados ficam em cache — se outra pessoa planejou a mesma rota recentemente, você vê os dados instantaneamente.' },
+          { q:'Como funcionam os pedágios para Argentina, Chile e outros países?',
+            a:'Mantemos um banco de informações manual atualizado para Argentina, Chile, Uruguai, Paraguai, Bolívia, Peru e Colômbia. Inclui: se aceita cartão, qual TAG usar, aviso sobre o Free Flow do Chile (que exige cadastro do app Autopista.cl antes de viajar) e estimativa de custo por corredor.' },
+          { q:'Por que o Chile tem um aviso especial de pedágio?',
+            a:'O Chile usa sistema Free Flow eletrônico nas rodovias modernas: não há cabines físicas. As câmeras fotografam a placa e cobram eletronicamente. Turistas estrangeiros precisam baixar o app "Autopista.cl" e cadastrar a placa ANTES de entrar no Chile, senão a multa vai para o endereço do proprietário do veículo.' },
+          { q:'Como compartilho minha viagem?',
+            a:'Após calcular a rota, clique em "Link público" no painel de exportação. Um link único é gerado (ex: borarodar.vercel.app/r/abc123) que pode ser enviado pelo WhatsApp, Telegram, redes sociais ou copiado. Quem abre o link vê o roteiro completo sem precisar se cadastrar. O link fica ativo por 6 meses.' },
+          { q:'Como exporto o roteiro como PDF?',
+            a:'Clique em "Exportar PDF" no painel de exportação. Uma nova janela abre com o roteiro formatado. No diálogo de impressão que aparece, escolha "Salvar como PDF" em vez de uma impressora. O PDF inclui rota, orçamento detalhado e o roteiro dia a dia gerado pela IA.' },
+          { q:'O BoraRodar suporta carros elétricos?',
+            a:'Sim! Ao selecionar seu veículo, temos 28 modelos elétricos de marcas como BYD, Tesla, Hyundai, Kia, VW, Porsche, BMW e Audi. Para elétricos, calculamos: autonomia máxima, energia necessária para a rota, se precisa de recarga e onde estão os eletropostos ao longo do caminho (dados do OpenChargeMap, gratuito e global).' },
+          { q:'Como salvar viagens no meu histórico?',
+            a:'Faça login na área de Perfil (ícone de usuário) e, após calcular uma rota, clique em "Salvar no histórico". Suas viagens ficam salvas em sua conta e podem ser acessadas pela página de Perfil para rever rotas e orçamentos anteriores.' },
+        ],
+      },
+      {
         title:'O que é o BoraRodar?', emoji:'🚗',
         items:[
           { q:'O que é o BoraRodar?',

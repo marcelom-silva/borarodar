@@ -115,7 +115,7 @@ export default function TollWidget({ tollData, budgetToll }) {
   const displayedPlazas = showAll ? plazas : plazas?.slice(0, 5);
 
   return (
-    <div className="br-card p-5 space-y-4">
+    <div className="br-card p-5 space-y-4" role="region" aria-label="Pedágios">
       {/* Header */}
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-2">
