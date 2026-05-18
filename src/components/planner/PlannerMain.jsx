@@ -14,7 +14,12 @@ import RouteNavButtons from '@/components/planner/RouteNavButtons';
 import { calculateRoute, geocode } from '@/lib/routing';
 import { calculateBudget, DEFAULT_KML } from '@/lib/budget';
 import { DEFAULT_VEHICLE } from '@/lib/vehicleData';
-import { Map, AlertCircle, Sparkles } from 'lucide-react';
+import { Map, AlertCircle, Sparkles, Save, Check } from 'lucide-react';
+import EVWidget from './EVWidget';
+import TollWidget from './TollWidget';
+import { isEVModel } from '@/lib/vehicleData';
+import { saveToHistory } from '@/lib/export';
+import { useSupabaseClient, useUser } from '@supabase/auth-helpers-react';
 import { useLanguage } from '@/contexts/LanguageContext';
 
 function formatDuration(hours) {
@@ -30,6 +35,13 @@ export default function PlannerMain() {
   var { t } = useLanguage();
 
   var [routeData,  setRouteData]  = useState(null);
+  var [tollData,   setTollData]   = useState(null);
+  var [itinerary,  setItinerary]  = useState(null);
+  var [savedTrip,  setSavedTrip]  = useState(false);
+  var [savingTrip, setSavingTrip] = useState(false);
+  // supabase user for history
+  var supabaseUser = null;
+  try { supabaseUser = useUser?.(); } catch(_) {}
   var [budgetData, setBudgetData] = useState(null);
   var [loading,    setLoading]    = useState(false);
   var [error,      setError]      = useState('');
@@ -105,7 +117,7 @@ export default function PlannerMain() {
       var distKm = route.distance / 1000;
       var durHrs = route.duration / 3600;
 
-      setRouteData({
+      var rd = {
         distance:   distKm,
         duration:   durHrs,
         geometry:   route.geometry,
@@ -114,7 +126,30 @@ export default function PlannerMain() {
         origLabel:  values.origem,
         destLabel:  values.destino,
         waypoints:  resolvedWaypoints,
-      });
+      };
+      setRouteData(rd);
+
+      // Busca pedágios reais em background (não bloqueia UX)
+      setTollData(null);
+      var coords = route.geometry?.coordinates?.length
+        ? route.geometry.coordinates.map(function(c){ return [c[1], c[0]]; }).filter(function(_,i){ return i % 20 === 0; })
+        : null;
+      fetch('/api/tolls', {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({
+          origLabel:   values.origem,
+          destLabel:   values.destino,
+          vehicleType: values.vehicle_type || 'carro',
+          coordinates: coords,
+        }),
+      }).then(function(r){ return r.json(); }).then(function(td){
+        setTollData(td);
+        // Atualiza orçamento com pedágio real se disponível
+        if (td.totalToll && td.currency === 'BRL') {
+          setBudgetData(function(prev){ return prev ? { ...prev, toll: Math.round(td.totalToll) } : prev; });
+        }
+      }).catch(function(){});
 
       setBudgetData(calculateBudget({
         distanceKm:    distKm,
@@ -234,6 +269,14 @@ export default function PlannerMain() {
           )}
 
           {/* Cards de resumo */}
+          {/* EV Widget — só para veículos elétricos */}
+          {routeData && isEVModel(values.vehicle_type) && (
+            <EVWidget vehicleModel={values.vehicle_model} routeData={routeData} waypoints={resolvedWaypoints}/>
+          )}
+          {/* Toll Widget — pedágios reais */}
+          {routeData && !onlyItinerary && (
+            <TollWidget tollData={tollData} budgetToll={budgetData?.toll}/>
+          )}
           {!onlyItinerary && routeData && budgetData && (
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
               {[
@@ -272,7 +315,7 @@ export default function PlannerMain() {
             />
           )}
 
-          <DayItinerary
+          <DayItinerary onItineraryGenerated={setItinerary}
             destination={formValues.destino}
             days={totalDays}
             passengers={passengers}
@@ -288,6 +331,31 @@ export default function PlannerMain() {
             dateTo={formValues.date_to}
           />
 
+          {/* EV Widget — só para veículos elétricos */}
+          {routeData && isEVModel(values.vehicle_type) && (
+            <EVWidget vehicleModel={values.vehicle_model} routeData={routeData} waypoints={resolvedWaypoints}/>
+          )}
+          {/* Toll Widget — pedágios reais */}
+          {routeData && !onlyItinerary && (
+            <TollWidget tollData={tollData} budgetToll={budgetData?.toll}/>
+          )}
+          {/* Salvar no histórico (se logado) */}
+          {supabaseUser && routeData && budgetData && (
+            <button
+              onClick={async function() {
+                if (savingTrip || savedTrip) return;
+                setSavingTrip(true);
+                var token = (await supabaseUser?.session?.())?.access_token;
+                var id = await saveToHistory({ formValues:values, routeData, budgetData, itinerary }, token);
+                setSavingTrip(false);
+                if (id) setSavedTrip(true);
+              }}
+              disabled={savingTrip || savedTrip}
+              className="w-full flex items-center justify-center gap-2 py-2.5 rounded-xl border border-white/10 text-sm text-gray-400 hover:bg-white/5 transition-colors disabled:opacity-60">
+              {savedTrip ? <><Check className="w-4 h-4 text-[#39FF14]"/>Salvo no histórico!</> :
+               savingTrip ? 'Salvando...' : <><Save className="w-4 h-4"/>Salvar no meu histórico</>}
+            </button>
+          )}
           {!onlyItinerary && routeData && budgetData && (
             <ExportOptions
               routeData={routeData}

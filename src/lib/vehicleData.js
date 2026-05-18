@@ -176,3 +176,71 @@ export var DEFAULT_VEHICLE = {
   kml:   13.0,
   vtype: 'carro',
 };
+
+// ─────────────────────────────────────────────────────────────────────────────
+// VEÍCULOS ELÉTRICOS
+// batteryKwh = capacidade da bateria
+// consumoKwh100 = consumo médio em rodovia (kWh/100km)
+// range_km = autonomia estimada (WLTP/ciclo misto)
+// ─────────────────────────────────────────────────────────────────────────────
+export var EV_BRANDS = [
+  { id:'byd',        name:'BYD'          },
+  { id:'volkswagen', name:'Volkswagen'   },
+  { id:'chevrolet',  name:'Chevrolet'    },
+  { id:'fiat',       name:'Fiat'         },
+  { id:'hyundai',    name:'Hyundai'      },
+  { id:'kia',        name:'Kia'          },
+  { id:'tesla',      name:'Tesla'        },
+  { id:'renault',    name:'Renault'      },
+  { id:'porsche',    name:'Porsche'      },
+  { id:'bmw',        name:'BMW'          },
+  { id:'audi',       name:'Audi'         },
+  { id:'outro_ev',   name:'Outro Elétrico'},
+];
+
+export var EV_MODELS = [
+  // BYD
+  { brand:'byd',        name:'BYD Dolphin',        batteryKwh:44.9, consumoKwh100:14.2, rangeKm:340,  vtype:'ev',      chargeKW:60  },
+  { brand:'byd',        name:'BYD Atto 3',          batteryKwh:60.5, consumoKwh100:17.5, rangeKm:350,  vtype:'ev-suv',  chargeKW:70  },
+  { brand:'byd',        name:'BYD Seal',            batteryKwh:82.5, consumoKwh100:16.0, rangeKm:510,  vtype:'ev',      chargeKW:150 },
+  { brand:'byd',        name:'BYD Han',             batteryKwh:85.4, consumoKwh100:18.0, rangeKm:475,  vtype:'ev',      chargeKW:120 },
+  { brand:'byd',        name:'BYD Tang',            batteryKwh:108.8,consumoKwh100:22.0, rangeKm:500,  vtype:'ev-suv',  chargeKW:110 },
+  { brand:'byd',        name:'BYD Seal U (DM-i)',   batteryKwh:15.9, consumoKwh100:6.5,  rangeKm:247,  vtype:'ev-suv',  chargeKW:11  },
+  // Volkswagen
+  { brand:'volkswagen', name:'VW ID.4',             batteryKwh:77.0, consumoKwh100:17.0, rangeKm:450,  vtype:'ev-suv',  chargeKW:135 },
+  { brand:'volkswagen', name:'VW ID.3',             batteryKwh:58.0, consumoKwh100:15.5, rangeKm:374,  vtype:'ev',      chargeKW:100 },
+  { brand:'volkswagen', name:'VW ID.6',             batteryKwh:84.8, consumoKwh100:20.0, rangeKm:425,  vtype:'ev-suv',  chargeKW:135 },
+  // Hyundai / Kia
+  { brand:'hyundai',    name:'Hyundai IONIQ 5',     batteryKwh:77.4, consumoKwh100:17.5, rangeKm:481,  vtype:'ev-suv',  chargeKW:220 },
+  { brand:'hyundai',    name:'Hyundai IONIQ 6',     batteryKwh:77.4, consumoKwh100:14.3, rangeKm:543,  vtype:'ev',      chargeKW:220 },
+  { brand:'hyundai',    name:'Hyundai Kona Electric',batteryKwh:64.8, consumoKwh100:15.4, rangeKm:454, vtype:'ev-suv',  chargeKW:100 },
+  { brand:'kia',        name:'Kia EV6',             batteryKwh:77.4, consumoKwh100:16.0, rangeKm:528,  vtype:'ev',      chargeKW:233 },
+  { brand:'kia',        name:'Kia EV9',             batteryKwh:99.8, consumoKwh100:21.0, rangeKm:541,  vtype:'ev-suv',  chargeKW:233 },
+  // Tesla
+  { brand:'tesla',      name:'Tesla Model 3 SR',    batteryKwh:60.0, consumoKwh100:14.5, rangeKm:415,  vtype:'ev',      chargeKW:170 },
+  { brand:'tesla',      name:'Tesla Model 3 LR',    batteryKwh:75.0, consumoKwh100:14.0, rangeKm:576,  vtype:'ev',      chargeKW:250 },
+  { brand:'tesla',      name:'Tesla Model Y SR',    batteryKwh:60.0, consumoKwh100:16.0, rangeKm:455,  vtype:'ev-suv',  chargeKW:170 },
+  { brand:'tesla',      name:'Tesla Model Y LR',    batteryKwh:75.0, consumoKwh100:16.5, rangeKm:533,  vtype:'ev-suv',  chargeKW:250 },
+  { brand:'tesla',      name:'Tesla Model S',       batteryKwh:100.0,consumoKwh100:17.0, rangeKm:600,  vtype:'ev',      chargeKW:250 },
+  // Renault
+  { brand:'renault',    name:'Renault Zoe',         batteryKwh:52.0, consumoKwh100:17.8, rangeKm:315,  vtype:'ev',      chargeKW:50  },
+  { brand:'renault',    name:'Renault Megane E-Tech',batteryKwh:60.0,consumoKwh100:16.1, rangeKm:450,  vtype:'ev',      chargeKW:130 },
+  // Porsche
+  { brand:'porsche',    name:'Porsche Taycan',      batteryKwh:93.4, consumoKwh100:22.0, rangeKm:435,  vtype:'ev',      chargeKW:270 },
+  { brand:'porsche',    name:'Porsche Macan EV',    batteryKwh:100.0,consumoKwh100:20.0, rangeKm:516,  vtype:'ev-suv',  chargeKW:270 },
+  // BMW / Audi
+  { brand:'bmw',        name:'BMW iX3',             batteryKwh:74.0, consumoKwh100:18.0, rangeKm:459,  vtype:'ev-suv',  chargeKW:150 },
+  { brand:'bmw',        name:'BMW i4 M50',          batteryKwh:83.9, consumoKwh100:20.0, rangeKm:521,  vtype:'ev',      chargeKW:205 },
+  { brand:'audi',       name:'Audi Q4 e-tron',      batteryKwh:82.0, consumoKwh100:19.0, rangeKm:520,  vtype:'ev-suv',  chargeKW:135 },
+  { brand:'audi',       name:'Audi e-tron GT',      batteryKwh:93.4, consumoKwh100:21.0, rangeKm:488,  vtype:'ev',      chargeKW:270 },
+  // Fiat / GM
+  { brand:'fiat',       name:'Fiat 500e',           batteryKwh:42.0, consumoKwh100:14.0, rangeKm:300,  vtype:'ev',      chargeKW:85  },
+  { brand:'chevrolet',  name:'Chevy Bolt EV',       batteryKwh:65.0, consumoKwh100:15.6, rangeKm:417,  vtype:'ev',      chargeKW:55  },
+  // Genérico
+  { brand:'outro_ev',   name:'Outro Elétrico',      batteryKwh:60.0, consumoKwh100:18.0, rangeKm:333,  vtype:'ev',      chargeKW:50  },
+];
+
+// Helper: identifica se modelo é EV
+export function isEVModel(vehicleType) {
+  return vehicleType === 'ev' || vehicleType === 'ev-suv' || vehicleType === 'ev-pickup';
+}
