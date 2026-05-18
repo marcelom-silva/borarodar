@@ -32,6 +32,8 @@ const CARDS = [
   { icon:'🧭', titleKey:'ih_card_explore_title',    descKey:'ih_card_explore_desc',    color:'#00D4FF', href:'/explorar'   },
   { icon:'👥', titleKey:'ih_card_community_title',  descKey:'ih_card_community_desc',  color:'#B24BF3', href:'/comunidade' },
   { icon:'❓', titleKey:'ih_card_help_title',       descKey:'ih_card_help_desc',       color:'#FF6B35', href:'/ajuda'      },
+  { icon:'🛣️', titleKey:'ih_card_tolls_title',     descKey:'ih_card_tolls_desc',     color:'#FFD700', href:'/planejar'   },
+  { icon:'🔗', titleKey:'ih_card_share_title',      descKey:'ih_card_share_desc',      color:'#FF69B4', href:'/planejar'   },
 ];
 
 /* Lerp between two hex colours */

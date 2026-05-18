@@ -9,6 +9,15 @@ function getFAQData(lang) {
     // =====================================================
     pt: [
       {
+        title:'Área Administrativa', emoji:'🔒',
+        items:[
+          { q:'Existe uma área administrativa?',
+            a:'Sim. A URL borarodar.vercel.app/admin é acessível apenas pelo administrador do site (e-mail autorizado). Ela exibe métricas em tempo real como rotas calculadas, viagens compartilhadas, visualizações de links, histórico de usuários logados e dados para apresentação a investidores.' },
+          { q:'Quais estatísticas ficam disponíveis no painel admin?',
+            a:'O painel exibe: total e crescimento de rotas únicas calculadas, total de links compartilhados criados e suas visualizações, histórico de viagens de usuários cadastrados, corredores mais populares, e um resumo de diferenciais técnicos e modelo de receita para pitch com investidores.' },
+        ],
+      },
+      {
         title:'Página Principal', emoji:'🏠',
         items:[
           { q:'Como funciona a página inicial?',

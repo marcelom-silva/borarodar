@@ -409,3 +409,18 @@ CALCPEDAGIO_API_KEY=  # Grátis em calcularpedagio.com.br/register
 Para cada modelo: `batteryKwh`, `consumoKwh100`, `rangeKm`, `chargeKW`.
 Eletropostos via **OpenChargeMap API** (gratuito, sem chave obrigatória).
 
+## 🔒 Painel Administrativo
+
+Acesso restrito em `/admin` para `marcelo.993888@gmail.com`.
+
+### Métricas disponíveis
+- Rotas únicas calculadas (total e últimos 30 dias)
+- Links compartilhados criados + total de visualizações
+- Média de visualizações por link
+- Histórico de viagens salvas por usuários logados
+- Corredores mais populares
+- Pitch para investidores (diferenciais e modelo de receita)
+
+### Proteção
+Verificação de email no client-side via Supabase Auth. Redireciona para `/` se não autorizado.
+

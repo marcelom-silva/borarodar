@@ -197,6 +197,16 @@ export var translations = {
     ih_cta_sub:'Grátis · Sem cadastro · Funciona no celular',
     ih_footer_text:'Feito com ❤️ para quem ama a estrada',
     ih_footer_link:'Começar a planejar',
+    // ── Novos cards homepage ───────────────────────────────────────────────
+    ih_card_tolls_title:'Pedágios & Custos',
+    ih_card_tolls_desc:'Pedágios reais praça a praça no Brasil + info para Argentina, Chile, Uruguai e mais 5 países.',
+    ih_card_share_title:'Compartilhe sua Rota',
+    ih_card_share_desc:'Gere um link público e compartilhe seu roteiro pelo WhatsApp, redes sociais ou exporte como PDF.',
+    // ── Admin ──────────────────────────────────────────────────────────────
+    admin_loading:'Verificando acesso...',
+    admin_title:'Painel Executivo',
+    admin_subtitle:'Métricas em tempo real',
+
     // ── Features novas (pedágios, EV, compartilhar, histórico) ──────────
     toll_real_data:'Dados reais de pedágio',
     toll_loading:'Buscando pedágios...',
@@ -421,6 +431,16 @@ export var translations = {
     ih_cta_sub:'Free · No sign-up · Works on mobile',
     ih_footer_text:'Made with ❤️ for road trip lovers',
     ih_footer_link:'Start planning',
+    // ── New homepage cards ──────────────────────────────────────────────────
+    ih_card_tolls_title:'Tolls & Costs',
+    ih_card_tolls_desc:'Real toll data plaza by plaza in Brazil + info for Argentina, Chile, Uruguay and 5 more countries.',
+    ih_card_share_title:'Share your Route',
+    ih_card_share_desc:'Generate a public link and share your itinerary via WhatsApp, social media or export as PDF.',
+    // ── Admin ──────────────────────────────────────────────────────────────
+    admin_loading:'Checking access...',
+    admin_title:'Executive Dashboard',
+    admin_subtitle:'Real-time metrics',
+
     // ── New features (tolls, EV, share, history) ────────────────────────
     toll_real_data:'Real toll data',
     toll_loading:'Fetching tolls...',
@@ -645,6 +665,16 @@ export var translations = {
     ih_cta_sub:'Gratis · Sin registro · Funciona en móvil',
     ih_footer_text:'Hecho con ❤️ para amantes de la carretera',
     ih_footer_link:'Empezar a planear',
+    // ── Nuevas tarjetas homepage ─────────────────────────────────────────────
+    ih_card_tolls_title:'Peajes & Costos',
+    ih_card_tolls_desc:'Datos reales de peajes en Brasil + info para Argentina, Chile, Uruguay y 5 países más.',
+    ih_card_share_title:'Comparte tu Ruta',
+    ih_card_share_desc:'Genera un enlace público y comparte tu itinerario por WhatsApp, redes sociales o exporta como PDF.',
+    // ── Admin ──────────────────────────────────────────────────────────────
+    admin_loading:'Verificando acceso...',
+    admin_title:'Panel Ejecutivo',
+    admin_subtitle:'Métricas en tiempo real',
+
     // ── Nuevas funciones (peajes, EV, compartir, historial) ──────────────
     toll_real_data:'Datos reales de peaje',
     toll_loading:'Buscando peajes...',
